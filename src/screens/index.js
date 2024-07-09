@@ -3,6 +3,7 @@ import Splash from "./Splash/Splash";
 // Auth Screens///
 import Login from "./Auth/Login/Login";
 import SignUp from "./Auth/SignUp/SignUp";
+import UserType from "./Auth/UserType/UserType";
 
 
  /// Dashboard Screens///
@@ -15,6 +16,7 @@ import SignUp from "./Auth/SignUp/SignUp";
 
 export {
   Splash,
+  UserType,
   Home,
   Login,
   SignUp,

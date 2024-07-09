@@ -1,15 +1,17 @@
 const Colors = {
-  BLACK: "#212121",
-  PLACEHOLDER_COLOR: "#747474",
+  BLACK: "#000000",
+  ICON_BLACK:"#343330",
+  PLACEHOLDER_COLOR: "#BFBFBF",
   WHITE: "#FFFFFF",
-  GRAY_06: "rgba(248, 248, 248, 0.6)",
+  GRAY:"#565656",
+  LIGHT_GRAY:"#9DA6AB",
   PRIMARY_01: "rgba(58, 106, 255, 1)",
   TransParentBackground: "rgba(0, 0, 0, 0.29)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
-  PRIMARY: "#eb6648",
+  PRIMARY: "#FFF203",
   SECONDARY: "#C8E3FF",
   SECONDARY1: "#8DA9FF",
-  RED: "#F54949",
+  RED: "#FF471C",
   DARK_GRAY: "#747474",
   PLACEHOLDER: "#D0D0D0",
   EXTRA_DARK_GRAY: "#676D75",
@@ -28,7 +30,7 @@ const Colors = {
   SHADOW_COLOR: "rgba(0, 0, 0, 0.25)",
   GREEN: "#1F8D60",
   PRIMARY_GREEN: "#C9F5E3",
-  PLACEHOLDERTEXTCOLOR: "#D0D0D0",
+
 };
 
 export default Colors;

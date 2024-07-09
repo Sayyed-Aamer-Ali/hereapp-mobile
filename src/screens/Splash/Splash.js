@@ -1,21 +1,19 @@
-import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import React from "react";
+import { Image, Text, View } from "react-native";
+import { Images } from "../../assets";
 import styles from "./styles";
-import { Icons } from "../../assets";
-import { UtilityMethods } from "../../utility";
-import Routes from "../../navigation/Routes";
+
 const Splash = ({navigation}) => {
-
-
-  return (
+ return (
     <View
-      style={styles.cont}
-      
-    >
-    <Icons.SplashIcon width={UtilityMethods.wp(100)} height={UtilityMethods.hp(30)}/> 
+      style={styles.cont} >
+     <Image source={Images.SecondaryLogo} style={styles.logo} />
     <Text style={styles.titleText}>
-      Here App Io 
+      Here App
     </Text>
+    <Text style={styles.regText}>
+    Attendance Made Easier!
+      </Text>
     </View>
   );
 };

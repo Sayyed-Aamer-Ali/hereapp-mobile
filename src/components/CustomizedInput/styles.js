@@ -1,4 +1,4 @@
-import { Colors } from '../../assets';
+import { Colors, Fonts } from '../../assets';
 import { UtilityMethods, CommonStyles, FontSize } from '../../utility';
 
 const { StyleSheet, Platform } = require('react-native');
@@ -10,28 +10,68 @@ const styles = StyleSheet.create({
   },
   container: (isInValidField) => ({
     margin: 0,
-    paddingHorizontal: UtilityMethods.wp(3),
+  
    borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 100,
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: UtilityMethods.hp(6),
+    borderColor: isInValidField ? Colors.RED : Colors.ICON_BLACK,
+    
 
     // marginTop: UtilityMethods.hp(1.5),
     // paddingBottom: UtilityMethods.hp(0.5),
   }),
+
+  titleCont: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: UtilityMethods.wp(1),
+  },
+
+  TitleStyle: {
+    fontSize: FontSize.VALUE(16),
+    color: Colors.ICON_BLACK,
+     fontFamily:Fonts.REGULAR,
+
+  },
+  hashText: {
+    fontSize: FontSize.VALUE(18),
+    color: Colors.RED,
+    fontFamily:Fonts.REGULAR,
+    marginLeft: UtilityMethods.wp(1),
+
+  },
+
+  leftIconCont:{
+    width: UtilityMethods.wp(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor:"red",
+    height: UtilityMethods.hp(6),
+
+  },
+  rightIconCont:{
+    width: UtilityMethods.wp(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor:"green",
+    height: UtilityMethods.hp(6),
+  },
+
+
   input: {
     padding: 0,
     margin: 0,
     width: '100%',
-    color: Colors.DARK_GRAY,
-    fontSize: FontSize.VALUE(20),
-    ...CommonStyles.MEDIUM,
+    color: Colors.ICON_BLACK,
+    fontSize: FontSize.VALUE(16),
+    fontFamily:Fonts.REGULAR,
     textAlignVertical: 'center',
     height: UtilityMethods.hp(6),
-    textAlignVertical:"top",
+    // textAlignVertical:"top",
     
   },
   eyeIcon: {
@@ -55,13 +95,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     zIndex: 1,
   },
-  TitleStyle: {
-    ...CommonStyles.BOLD,
-    fontSize: FontSize.VALUE(30),
-    color: Colors.BLACK,
-
-    marginLeft: UtilityMethods.wp(1),
-  },
+ 
   TitleTextWithBorder: {
     ...CommonStyles.SEMI_BOLD,
     fontSize: FontSize.VALUE(20),
@@ -70,10 +104,11 @@ const styles = StyleSheet.create({
   },
   ErrorText: {
     marginTop: UtilityMethods.hp(1),
-    ...CommonStyles.MEDIUM,
-    fontSize: FontSize.VALUE(18),
+
+    fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
+    fontWeight:Fonts.REGULAR,
   },
   inputWithBorder: {
     flexDirection: 'row',
@@ -158,6 +193,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
   },
+
+  checkBoxCont:(value)=>({
+    width: UtilityMethods.wp(6),
+    height: UtilityMethods.wp(6),
+    
+    
+  }),
+
+  
 });
 
 export default styles;

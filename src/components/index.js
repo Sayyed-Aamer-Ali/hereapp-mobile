@@ -7,6 +7,7 @@ import Button from "./CustomizedButton";
 import OtpInput from "./OtpInput/OtpInput";
 import CountdownTimer from "./CountDownTimer/CountDownTimer";
 import Header from "./CustomHeader/Header";
+import MainLayout from "./MainLayout";
 
 
 
@@ -21,7 +22,8 @@ export {
   Button,
   OtpInput,
   CountdownTimer,
-  Header
+  Header,
+  MainLayout
   
   
 };

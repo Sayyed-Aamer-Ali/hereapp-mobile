@@ -6,6 +6,7 @@ const Routes = {
   SPLASH:"Splash",
   LOGIN:"Login",
   SIGNUP:"SignUp",
+  ROLE_SELECTION:"RoleSelection",
   HOME:"Home",
   ATTENDANCE:"Attendance",
   EDIT_PROFILE:"EditProfile",

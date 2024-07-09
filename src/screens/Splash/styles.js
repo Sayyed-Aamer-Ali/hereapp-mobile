@@ -1,4 +1,4 @@
-import { Colors } from "../../assets";
+import { Colors, Fonts } from "../../assets";
 import { CommonStyles, FontSize, UtilityMethods } from "../../utility";
 
 const { StyleSheet } = require("react-native");
@@ -11,10 +11,27 @@ const styles = StyleSheet.create({
     backgroundColor:Colors.PRIMARY
   },
   titleText:{
-    ...CommonStyles.BOLD,
-    color:Colors.WHITE,
-    marginTop:UtilityMethods.hp(5),
-    fontSize:FontSize.VALUE(20)
+   
+    color:Colors.BLACK,
+    marginTop:UtilityMethods.hp(1),
+    fontSize:FontSize.VALUE(22),
+    fontFamily:Fonts.SEMI_BOLD
+    
+  },
+  logo:{
+    width:UtilityMethods.wp(24),
+    height:UtilityMethods.wp(24),
+    fontFamily:Fonts.SEMI_BOLD
+  },
+  regText:{
+    color:Colors.BLACK,
+    fontSize:FontSize.VALUE(18),
+    fontFamily:Fonts.REGULAR,
+    bottom:0,
+    position:"absolute",
+    ...CommonStyles.MARGIN_FROM_BOTTOM_WITH_NOSH
+
+
   }
 });
 

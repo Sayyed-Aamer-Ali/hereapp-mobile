@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
 /// ====================================== Local Imported Files ======================================//
-import {Login,SignUp } from "../../screens";
+import {Login,SignUp,UserType } from "../../screens";
 import Routes from "../Routes";
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +19,7 @@ const AuthStack = () => {
     
     }}
     >
+      <Stack.Screen name={Routes.ROLE_SELECTION} component={UserType} />
       <Stack.Screen name={Routes.LOGIN} component={Login} />
       <Stack.Screen name={Routes.SIGNUP} component={SignUp} />
       </Stack.Navigator>

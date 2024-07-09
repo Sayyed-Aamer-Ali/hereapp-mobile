@@ -1,18 +1,43 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 
 import styles from './styles';
-import { Icons } from '../../../assets';
-import { CommonStyles, UtilityMethods, Validator } from '../../../utility';
-import { Button, CustomizedInput, ScreenWrapper } from '../../../components';
+import { Colors, Icons, Images } from '../../../assets';
+import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
+import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../redux/Reducers/AuthReducer';
 
-const Login = ({navigation}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({navigation,route}) => {
+
+  const userType = route.params?.selectedUser;
+  const [email, setEmail] = useState({
+    inputType:"text",
+    title:"Email",
+    value:"",
+    type:"email",
+    error:"",
+    placeholder:"Enter Email Address",
+
+  });
+  const [password, setPassword] = useState({
+    inputType:"text",
+    title:"Password",
+    value:"",
+    type:"password",
+    error:"",
+    placeholder:"Enter Password",
+  });
+
+  const [rememberMe, setRememberMe] = useState({
+    inputType:"checkbox",
+    title:"Remember Me",
+    value:false,
+    type:"checkbox",
+    error:"",
+  });
   const [error, setError] = useState({});
   const dispatch = useDispatch();
 
@@ -26,26 +51,30 @@ const Login = ({navigation}) => {
 
     let error = {}
 
-    let emailValidate = Validator("email", email);
-    let passwordValidate = Validator("password", password)
+    let emailValidate = Validator("email", email.value);
+    let passwordValidate = Validator("password", password.value)
 
-    if (email == "") {
-      error["email"] = "Email is required"
+    if (email.value == "") {
+      setEmail({...email, error:"Email is required"})
+      error["email"]="Email is required"
     }
-    if (password == "") {
-      error["password"] = "Password is required"
+    if (password.value == "") {
+      setPassword({...password, error:"Password is required"})
+      error["password"]="Password is required"
     }
     
 
     setError(error);
 
-    if(email!=""&&emailValidate)
+    if(email.value!=""&&emailValidate)
       {
+        setEmail({...email, error:emailValidate})
         error["email"]=emailValidate
       }
 
-    if(password!=""&&passwordValidate)
+    if(password.value!=""&&passwordValidate)
       {
+        setPassword({...password, error:passwordValidate})
         error["password"]=passwordValidate
       }
 
@@ -70,60 +99,76 @@ const Login = ({navigation}) => {
   }
 
   return (
-    <View style={styles.cont}>
-     <ScreenWrapper
-     
-     >
-     <View style={{alignSelf:"center"}} >
-    <Icons.Login width={UtilityMethods.wp(80)}
-     height={UtilityMethods.wp(70)}
-    />
+    <MainLayout>
+     <Header title={"Sign In"} />
 
-    </View>
+      <ScreenWrapper
+      style={styles.cont}
+      >
+        <Image style={styles.logo} source={Images.LOGO} />
 
-    <View style={styles.body}>
-    <CustomizedInput
+        <View style={styles.inPutCont}>
+
+         <CustomizedInput
+          fieldInfo={email}
+          onChange={(text) => {
+            setEmail({...email, value:text, error:""})
+          }}
+        />
+        <CustomizedInput
+          fieldInfo={password}
+          onChange={(text) => {
+            setPassword({...password, value:text, error:""})
+          }}
+        />
+
+        <View style={styles.rowCont}> 
+         <View style={CommonStyles.ROW_VIEW}>
+
+          <CustomizedInput
+          fieldInfo={rememberMe}
+          onChange={(text) => {
+            
+            setRememberMe({...rememberMe, value:text})
+          }}
+        />
+
+        <Text style={styles.regText}>Remember Me</Text>
+         </View>
+
+         <Text style={[styles.regText,{
+          color:Colors.RED
+         }]}>
+            Forgot Password?
+         </Text>
+
+        </View>
+        </View>
+         <Button
+          text={"Sign In"}
+          style={{
+            marginTop:UtilityMethods.hp(4)
+          
+          }}
+          onPress={() => onPressLogin()}
+        />
+        {userType=="Student"?
+        <View style={styles.LinkedView}>
+          <Text style={[styles.regText,{
+           fontSize:FontSize.VALUE(16)          
+          }]}>Don't have an account?</Text>
+          <TouchableOpacity onPress={() => onPressDontAccount()}>
+            <Text style={[styles.regText,{
+              color:Colors.RED,
+              fontSize:FontSize.VALUE(16),
+            }]}>Register Now
+            </Text>
+          </TouchableOpacity>
+        </View>
+        :null}
+        </ScreenWrapper>
    
-     type={"email"}
-      value={email}
-      placeholder={"Email"}
-      onChangeText={(text) => {
-        setEmail(text);
-        setError({...error,email:null});
-      
-      }}
-      Error={error.email?error.email:null}
-    />
-
-    <CustomizedInput
-      type={"password"}
-      value={password}
-      placeholder={"Password"}
-      onChangeText={(text) => setPassword(text)}
-      Error={error.password?error.password:null}
-
-    />
-
-     <Button
-      text={"Login"}
-      onPress={() => onPressLogin()}
-   
-
-
-    />
-    </View>
-
-     <View style={[CommonStyles.ROW_VIEW,styles.linkView]}>
-      <Text style={styles.linkText}>Don't have an account?</Text>
-      <TouchableOpacity onPress={() => onPressDontAccount()}>
-        <Text style={[styles.linkText,CommonStyles.BOLD]}>Sign Up</Text>
-      </TouchableOpacity>
-     </View>
-   
-
-     </ScreenWrapper>
-   
-    </View>
+    </MainLayout>
   );
 }
 
