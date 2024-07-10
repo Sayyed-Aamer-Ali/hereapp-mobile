@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 
 import styles from './styles';
-import { Colors, Icons, Images } from '../../../assets';
+import { Colors, Fonts, Icons, Images } from '../../../assets';
 import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
@@ -85,7 +85,8 @@ const Login = ({navigation,route}) => {
       const user = {
         email: email,
         password: password,
-        isLogin:true 
+        isLogin:true ,
+        userType:userType,
       }
       dispatch(setUser(user));
 
@@ -135,12 +136,17 @@ const Login = ({navigation,route}) => {
 
         <Text style={styles.regText}>Remember Me</Text>
          </View>
+         <TouchableOpacity
+         onPress={() => navigation.navigate(Routes.FORGET_PASSWORD)}
+         >
 
          <Text style={[styles.regText,{
-          color:Colors.RED
+          color:Colors.RED,
+          fontFamily:Fonts.MEDIUM
          }]}>
             Forgot Password?
          </Text>
+         </TouchableOpacity>
 
         </View>
         </View>
@@ -152,7 +158,7 @@ const Login = ({navigation,route}) => {
           }}
           onPress={() => onPressLogin()}
         />
-        {userType=="Student"?
+        {userType!="Instructor"?
         <View style={styles.LinkedView}>
           <Text style={[styles.regText,{
            fontSize:FontSize.VALUE(16)          

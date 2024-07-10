@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: UtilityMethods.hp(6),
-    borderColor: isInValidField ? Colors.RED : Colors.ICON_BLACK,
+    borderColor: Colors.ICON_BLACK,
     
 
     // marginTop: UtilityMethods.hp(1.5),

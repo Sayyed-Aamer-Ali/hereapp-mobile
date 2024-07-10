@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
        
-        color:Colors.BLACK,
+        color:Colors.ICON_BLACK,
         fontSize: FontSize.VALUE(18),
       
         fontFamily:Fonts.SEMI_BOLD,

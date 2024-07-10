@@ -5,14 +5,14 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 import { Colors, Icons, Images } from '../../../assets';
 import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
-import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
+import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper,ImagePicker } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../redux/Reducers/AuthReducer';
 
 const SignUp = ({navigation,route}) => {
 
-  const userType = route.params?.selectedUser;
+
   const [email, setEmail] = useState({
     inputType:"text",
     title:"Email",
@@ -22,6 +22,48 @@ const SignUp = ({navigation,route}) => {
     placeholder:"Enter Email Address",
 
   });
+
+  const [profileImage, setProfileImage] = useState({
+    inputType:"image",
+    title:"Profile Image",
+    value:"",
+    type:"image",
+    error:"",
+    placeholder:"Upload Profile Image",
+    
+  
+  });
+
+  const [fullName,setFullName] =useState({
+    inputType:"text",
+    title:"Full Name",
+    value:"",
+    type:"text",
+    error:"",
+    placeholder:"Enter Full Name",
+    leftIcon:<Icons.User/>
+  })
+
+  const [phoneNumber,setPhoneNumber] =useState({
+    inputType:"text",
+    title:"Phone",
+    value:"",
+    type:"text",
+    error:"",
+    placeholder:"Enter Phone Number",
+    leftIcon:<Icons.Phone/>
+  })
+
+  const [nedId,setNetId] =useState({
+    inputType:"text",
+    title:"NetID",
+    value:"",
+    type:"text",
+    error:"",
+    placeholder:"Enter NetID",
+    leftIcon:<Icons.Email/>,
+ 
+  })
   const [password, setPassword] = useState({
     inputType:"text",
     title:"Password",
@@ -38,12 +80,19 @@ const SignUp = ({navigation,route}) => {
     type:"checkbox",
     error:"",
   });
+  const [privacyPolicy, setPrivacyPolicy] = useState({
+    inputType:"checkbox",
+    title:"Remember Me",
+    value:false,
+    type:"checkbox",
+    error:"",
+  });
   const [error, setError] = useState({});
   const dispatch = useDispatch();
 
 
   const onPressDontAccount = () => {
-    navigation.navigate(Routes.SIGNUP);
+    navigation.navigate(Routes.LOGIN);
 
   }
 
@@ -62,6 +111,29 @@ const SignUp = ({navigation,route}) => {
       setPassword({...password, error:"Password is required"})
       error["password"]="Password is required"
     }
+    if(fullName.value=="")
+      {
+        setFullName({...fullName,error:"Name is required"})
+        error["fullName"]="Name is required"
+      }
+
+    if(phoneNumber.value=="")
+      {
+        setPhoneNumber({...phoneNumber,error:"Phone Number is required"})
+        error["phoneNumber"]="Phone Number is required"
+      }
+
+    if(nedId.value=="")
+      {
+        setNetId({...nedId,error:"NetID is required"})
+        error["nedId"]="NetID is required"
+      }
+
+    if(profileImage.value=="")
+      {
+        setProfileImage({...profileImage,error:"Profile Image is required"})
+        error["profileImage"]="Profile Image is required"
+      }
     
 
     setError(error);
@@ -82,12 +154,21 @@ const SignUp = ({navigation,route}) => {
 
     if (Object.keys(error).length == 0) {
 
-      const user = {
-        email: email,
-        password: password,
-        isLogin:true 
+
+      let user = {
+        email: email.value,
+        password: password.value,
+        fullName:fullName.value,
+        phoneNumber:phoneNumber.value,
+        netId:nedId.value,
+        profileImage:profileImage.value,
+        isLogin:true
       }
-      dispatch(setUser(user));
+       navigation.navigate(Routes.OTP_VERIFICATION,{
+        user:user
+       
+         
+      })
 
 
     }
@@ -100,20 +181,54 @@ const SignUp = ({navigation,route}) => {
 
   return (
     <MainLayout>
-     <Header title={"Sign In"} />
+     <Header title={"Sign Up"} />
 
       <ScreenWrapper
       style={styles.cont}
       >
-        <Image style={styles.logo} source={Images.LOGO} />
+          <ImagePicker
+           filedInfo={profileImage}
+           onChnage={(path)=>{
+            setProfileImage({
+              ...profileImage,value:path,
+              error:""
+            })
+           }}
+          />
 
         <View style={styles.inPutCont}>
+
+        <CustomizedInput
+          fieldInfo={fullName}
+          onChange={(text) => {
+            setFullName({...fullName, value:text, error:""})
+          }}
+        />
 
          <CustomizedInput
           fieldInfo={email}
           onChange={(text) => {
             setEmail({...email, value:text, error:""})
+
+            let ExtractId = text.split("@")
+            setNetId({...nedId, value:ExtractId[0], error:""})
+
           }}
+        />
+         <CustomizedInput
+          fieldInfo={nedId}
+          onChange={(text) => {
+            setNetId({...nedId, value:text, error:""})
+          }}
+          editable={false}
+        />
+         <CustomizedInput
+          fieldInfo={phoneNumber}
+          onChange={(text) => {
+            setPhoneNumber({...phoneNumber, value:text, error:""})
+          }}
+          keyboardType="number-pad"
+          
         />
         <CustomizedInput
           fieldInfo={password}
@@ -123,9 +238,7 @@ const SignUp = ({navigation,route}) => {
         />
 
         <View style={styles.rowCont}> 
-         <View style={CommonStyles.ROW_VIEW}>
-
-          <CustomizedInput
+        <CustomizedInput
           fieldInfo={rememberMe}
           onChange={(text) => {
             
@@ -133,16 +246,42 @@ const SignUp = ({navigation,route}) => {
           }}
         />
 
-        <Text style={styles.regText}>Remember Me</Text>
+         <View style={[CommonStyles.ROW_VIEW]}>
+
+          <Text style={styles.regText}>
+          I agree to the
+          </Text>
+          <TouchableOpacity>
+          <Text style={styles.underLineText}>
+          terms & conditions.
+          </Text>
+          </TouchableOpacity>
          </View>
 
-         <Text style={[styles.regText,{
-          color:Colors.RED
-         }]}>
-            Forgot Password?
-         </Text>
+       </View>
 
-        </View>
+       <View style={styles.rowCont}> 
+        <CustomizedInput
+          fieldInfo={privacyPolicy}
+          onChange={(text) => {
+            
+            setPrivacyPolicy({...privacyPolicy, value:text})
+          }}
+        />
+
+         <View style={[CommonStyles.ROW_VIEW]}>
+
+          <Text style={styles.regText}>
+          I agree to the
+          </Text>
+          <TouchableOpacity>
+          <Text style={styles.underLineText}>
+          privacy policy.
+          </Text>
+          </TouchableOpacity>
+         </View>
+
+       </View>
         </View>
          <Button
           text={"Sign In"}
@@ -152,20 +291,22 @@ const SignUp = ({navigation,route}) => {
           }}
           onPress={() => onPressLogin()}
         />
-        {userType=="Student"?
+       
         <View style={styles.LinkedView}>
           <Text style={[styles.regText,{
            fontSize:FontSize.VALUE(16)          
-          }]}>Don't have an account?</Text>
+          }]}>Already have an account?</Text>
           <TouchableOpacity onPress={() => onPressDontAccount()}>
             <Text style={[styles.regText,{
               color:Colors.RED,
               fontSize:FontSize.VALUE(16),
-            }]}>Register Now
+            }]}>Login Now
             </Text>
           </TouchableOpacity>
         </View>
-        :null}
+
+        
+        <View style={{height:UtilityMethods.hp(3)}}/>
         </ScreenWrapper>
    
     </MainLayout>

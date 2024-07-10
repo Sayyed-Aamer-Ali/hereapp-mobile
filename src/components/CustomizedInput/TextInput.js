@@ -74,10 +74,11 @@ const InputText = ({
                 style={[styles.input, inputStyle]}
                 secureTextEntry={fieldInfo?.type === "password" && showPassword}
                 keyboardType={fieldInfo?.type ===  "email" ? 'email-address' : props?.keyboardType}
-                placeholderTextColor={Colors.PLACEHOLDERTEXTCOLOR}
+                placeholderTextColor={Colors.PLACEHOLDER_COLOR}
                 numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
                 maxLength={props?.maxLength ? props?.maxLength : 40}
                 autoCapitalize={(fieldInfo?.type ==="email"||fieldInfo?.type ==="password") ? 'none' : props?.autoCapitalize}
+                
                 {...props}
               />
         

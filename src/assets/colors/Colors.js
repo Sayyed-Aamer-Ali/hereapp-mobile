@@ -1,11 +1,13 @@
 const Colors = {
   BLACK: "#000000",
   ICON_BLACK:"#343330",
+  CHARCOL:"#2E2E2E",
   PLACEHOLDER_COLOR: "#BFBFBF",
   WHITE: "#FFFFFF",
   GRAY:"#565656",
   LIGHT_GRAY:"#9DA6AB",
-  PRIMARY_01: "rgba(58, 106, 255, 1)",
+  MEDIUM_GRAY:"#F3F3F3",
+ 
   TransParentBackground: "rgba(0, 0, 0, 0.29)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
   PRIMARY: "#FFF203",
@@ -16,21 +18,8 @@ const Colors = {
   PLACEHOLDER: "#D0D0D0",
   EXTRA_DARK_GRAY: "#676D75",
   BORDER_COLOR: "#DEDFE0",
-  GRAY_06: "rgba(197, 197, 197, 0.3)",
-  GOLDEN: "#FFD705",
-  CLASSICIcon: "#F4B872",
-  CLASSIC1: "#BF7F4A",
-  CLASSIC2: "#FBC078",
-  SILVER_ICON1: "#9B9B9B",
-  SILVER_1: "#FCFBFC",
-  SILVER_2: "#CFD0CD",
-  PREMIUM_ICON: "#EFD126",
-  PREMIUM_1: "#E6B03E",
-  PREMIUM_2: "#ECC334",
-  SHADOW_COLOR: "rgba(0, 0, 0, 0.25)",
-  GREEN: "#1F8D60",
-  PRIMARY_GREEN: "#C9F5E3",
-
+  TABBARARINCTIVECOLOR:"#BFBFBF"
+  
 };
 
 export default Colors;

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-import { CommonStyles, UtilityMethods } from '../../utility';
-import { Colors } from '../../assets';
+import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
+import { Colors, Fonts } from '../../assets';
 
 const { wp, hp } = UtilityMethods;
 
@@ -46,6 +46,7 @@ const OtpInput = ({ numOfDigits = 4, onComplete }) => {
                     value={digit}
                     ref={inputRefs.current[index]}
                     autoFocus={index === 0}
+                    cursorColor={Colors.ICON_BLACK}
                 />
             ))}
         </View>
@@ -59,13 +60,17 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     input: {
-        ...CommonStyles.REGULAR,
+        
         borderRadius: hp(1),
-        width: wp(15),
-        height: wp(15),
+        width: wp(12),
+        height: wp(12),
         textAlign: 'center',
+        
         backgroundColor: Colors.GRAY_06,
-        color: Colors.BLACK,
+        color: Colors.ICON_BLACK,
+        borderRadius:wp(100),
+        fontFamily:Fonts.REGULAR,
+        fontSize:FontSize.VALUE(16),
     },
 });
 

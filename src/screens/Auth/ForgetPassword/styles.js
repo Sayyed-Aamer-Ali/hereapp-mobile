@@ -7,13 +7,20 @@ import { Colors, Fonts } from "../../../assets";
 
 const styles = StyleSheet.create({
   cont: {
-    flex:1,
+    
     ...CommonStyles.PADDING_HORIZONTAL,
-    paddingTop:UtilityMethods.hp(2),
+   
+
+   
  
 
     
     
+ },
+ contentContainerStyle:{
+  flexGrow: 1,
+  paddingTop:UtilityMethods.hp(5),
+
  },
   logo:{
     width:UtilityMethods.wp(24),
@@ -25,45 +32,51 @@ const styles = StyleSheet.create({
     fontSize:FontSize.VALUE(20),
     color:Colors.BLACK,
     fontFamily:Fonts.SEMI_BOLD,
-    marginTop:UtilityMethods.hp(5),
+  
    
   },
-  
+
 
   inPutCont:{
-    marginTop:UtilityMethods.hp(2),
-    rowGap:UtilityMethods.hp(2)
+    marginTop:UtilityMethods.hp(4),
+     rowGap:UtilityMethods.hp(2),
+    alignItems:'center',
   
 
   },
-  rowCont:{
-    flexDirection:'row',
-    
-    paddingHorizontal:UtilityMethods.wp(1),
-  
-  },
+ 
   regText:{
     fontSize:FontSize.VALUE(14),
-    color:Colors.ICON_BLACK,
+    color:Colors.GRAY,
     fontFamily:Fonts.REGULAR,
-    marginLeft:UtilityMethods.wp(2),
+    textAlign:'center',
+    lineHeight:UtilityMethods.hp(2.5),
+    width:"90%",
+
+   
     
   
   },
-  LinkedView:{
-    flexDirection:'row',
-    justifyContent:'center',
-    marginTop:UtilityMethods.hp(2)
-
+  optView:{
+    width:"80%",
+    marginTop:UtilityMethods.hp(2),
   },
-  underLineText:{
-    fontSize:FontSize.VALUE(14),
-    color:Colors.BLACK,
-    fontFamily:Fonts.MEDIUM,
-    textDecorationLine:"underline",
-    marginLeft:UtilityMethods.wp(1)
+  countCant:{
+    marginTop:UtilityMethods.hp(4),
     
+  
+  },
+  boldText:{
+    fontSize:FontSize.VALUE(16),
+    color:Colors.BLACK,
+    fontFamily:Fonts.SEMI_BOLD,
+    textAlign:'center',
+    lineHeight:UtilityMethods.hp(2.5),
+    marginTop:UtilityMethods.hp(4)
+  
   }
+  
+ 
 });
 
 export default styles;
