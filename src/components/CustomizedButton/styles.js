@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   buttonText:{
     color:Colors.PRIMARY,
-    fontSize: FontSize.VALUE(20),
+    fontSize: FontSize.VALUE(18),
     fontFamily: Fonts.SEMI_BOLD
     
   },
