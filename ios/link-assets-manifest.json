@@ -7,19 +7,19 @@
     },
     {
       "path": "src/assets/fonts/Heavy.ttf",
-      "sha1": "3f8e401d808f6ce84b542266726514ac8be73171"
+      "sha1": "81dfe8f5d3bf83efa58d98ba0df20936698c871f"
     },
     {
       "path": "src/assets/fonts/Medium.ttf",
-      "sha1": "3c6a09fcc6a454924c81af7dff94fc6d399ed79b"
+      "sha1": "81f19d74e25dc797b0b63fb691da3fc14ecb2285"
     },
     {
       "path": "src/assets/fonts/Regular.ttf",
-      "sha1": "56c5c0d38bde4c1f1549dda43db37b09c608aad3"
+      "sha1": "04dc80c69c4c3845ed7c27ee275cda075d0bd959"
     },
     {
       "path": "src/assets/fonts/SemiBold.ttf",
-      "sha1": "62442a18a9fe9457c1afeabf683d263a691b7798"
+      "sha1": "b05db52575de5dab7544a76d36743f862c6bd44a"
     }
   ]
 }

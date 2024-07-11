@@ -8,11 +8,10 @@ import { Colors } from "../../../assets";
 const styles = StyleSheet.create({
   cont: {
  
-    paddingTop:UtilityMethods.hp(10),
-   
- 
+ ...CommonStyles.CONTAINER,
+    // backgroundColor:Colors.RED,
 
-  },
+    },
   titleText:{
     ...CommonStyles.BOLD,
     color:Colors.BLACK,
@@ -32,6 +31,32 @@ const styles = StyleSheet.create({
     color:Colors.BLACK,
     fontSize:FontSize.VALUE(14),
     marginLeft:UtilityMethods.wp(1)
+  },
+  headerText:{
+    ...CommonStyles.SEMI_BOLD,
+    color:Colors.BLACK,
+    fontSize:FontSize.VALUE(18),
+    
+  
+  
+
+
+  },
+
+  regText:{
+    ...CommonStyles.REGULAR,
+    color:Colors.BLACK,
+    fontSize:FontSize.VALUE(16),
+    marginTop:UtilityMethods.hp(1)
+  
+  },
+  headerCont:{
+    ...CommonStyles.PADDING_HORIZONTAL
+
+  },
+  listStyle:{
+    marginTop:UtilityMethods.hp(2),
+
   }
 });
 

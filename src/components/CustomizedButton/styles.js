@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../../assets";
+import { Colors, Fonts } from "../../assets";
 import { CommonStyles, FontSize, UtilityMethods } from "../../utility";
 
 
@@ -7,9 +7,10 @@ import { CommonStyles, FontSize, UtilityMethods } from "../../utility";
 const styles = StyleSheet.create({
 
   mainContainer:{
-    backgroundColor: Colors.PRIMARY,
-    height: UtilityMethods.hp(7),
-    borderRadius: UtilityMethods.hp(3),
+    width:"100%",
+    backgroundColor: Colors.BLACK,
+    height: UtilityMethods.hp(6),
+    borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -20,16 +21,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
    
   },
-  buttonText: (disabled) => ({
-    color: disabled ? Colors.PRIMARY : Colors.WHITE,
-    fontSize: FontSize.VALUE(17),
-    ...CommonStyles.MEDIUM,
-  }),
+  buttonText:{
+    color:Colors.PRIMARY,
+    fontSize: FontSize.VALUE(18),
+    fontFamily: Fonts.SEMI_BOLD
+    
+  },
   buttonWithIcon: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    width:"100%"
   },
+  iconView:{
+    position:"absolute",
+    right:0,
+    marginRight:UtilityMethods.wp(2)
+  }
 });
 
 export default styles;

@@ -2,24 +2,63 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors } from '../../assets';
-import { useNavigation } from '@react-navigation/native';
+import { Colors, Fonts, Icons } from '../../assets';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-const Header = ({title}) => {
+const Header = ({title,showBackButton=true,onPressLeft,leftIcon,rightcontent,DrawerHeader=false}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.headerCont}> 
-      <TouchableOpacity style={CommonStyles.ROW_VIEW}
-      
+    <View style={CommonStyles.ROW_VIEW}>
+ 
+      {DrawerHeader &&
+      <TouchableOpacity style={styles.icon}
+      onPress={()=>
+        navigation.dispatch(DrawerActions.openDrawer())
+      }
+      >
+        <Icons.List/>
+      </TouchableOpacity>
+      }
+       
+    {leftIcon &&
+    <TouchableOpacity
+    style={styles.icon}
+    onPress={onPressLeft}
+    >
+      {leftIcon}
+    </TouchableOpacity>
+    }
+    {showBackButton &&
+    <TouchableOpacity 
+      style={styles.icon}
       onPress={()=>navigation.goBack()}
       >
-        <Icon name="chevron-back" size={25} color={
-          Colors.BLACK
+        <Icon name="arrow-back" size={25} color={
+          Colors.ICON_BLACK
         }/>
-        <Text style={styles.headerText}>
+       
+      </TouchableOpacity>
+    }
+
+      <Text style={styles.headerText}>
           {title}
         </Text>
-      </TouchableOpacity>
+    </View>
+
+    {rightcontent &&
+    <View>
+      {rightcontent}
+
+      </View>
+    }
+
+   {DrawerHeader &&
+   <TouchableOpacity>
+      <Icons.Notifications/>
+   </TouchableOpacity>
+    }
+     
     </View>
   );
 }
@@ -30,24 +69,26 @@ const styles = StyleSheet.create({
 
     headerCont: {
         width: "100%",
-        height: UtilityMethods.hasNotch() ?UtilityMethods.hp(13):UtilityMethods.hp(8),
-      
-        flexDirection: "row",
-        alignItems:"flex-end",
+        height: UtilityMethods.hp(8),
+         flexDirection: "row",
+        alignItems:"flex-start",
         justifyContent:"space-between",
-        paddingHorizontal:UtilityMethods.wp(5),
-        borderBottomWidth:1,
-        borderBottomColor:Colors.GRAY_06,
-        paddingBottom:UtilityMethods.hp(2),
+        ...CommonStyles.PADDING_HORIZONTAL
+         
 
 
       
     },
+    icon:{
+      width:UtilityMethods.wp(12),
+
+    },
     headerText: {
-        ...CommonStyles.MEDIUM,
-        color:Colors.BLACK,
-        fontSize: FontSize.VALUE(20),
-        marginLeft:UtilityMethods.wp(1),
+       
+        color:Colors.ICON_BLACK,
+        fontSize: FontSize.VALUE(18),
+      
+        fontFamily:Fonts.SEMI_BOLD,
     }
 
 });

@@ -1,37 +1,68 @@
 import { StyleSheet } from "react-native";
 import { CommonStyles, FontSize, UtilityMethods } from "../../../utility";
-import { Colors } from "../../../assets";
+import { Colors, Fonts } from "../../../assets";
 
 
 
 
 const styles = StyleSheet.create({
   cont: {
-    ...CommonStyles.CONTAINER,
-    paddingTop:UtilityMethods.hp(10),
-    paddingHorizontal:UtilityMethods.wp(10),
+    flex:1,
+    ...CommonStyles.PADDING_HORIZONTAL,
+    paddingTop:UtilityMethods.hp(2),
  
 
+    
+    
+ },
+  logo:{
+    width:UtilityMethods.wp(24),
+    height:UtilityMethods.wp(24),
+    resizeMode:'contain',
+    alignSelf:'center'
   },
-  titleText:{
-    ...CommonStyles.BOLD,
+  mainText:{
+    fontSize:FontSize.VALUE(20),
     color:Colors.BLACK,
-    // marginTop:UtilityMethods.hp(5),
-    fontSize:FontSize.VALUE(20)
+    fontFamily:Fonts.SEMI_BOLD,
+    marginTop:UtilityMethods.hp(5),
+   
   },
-  linkView:{
-    marginTop:"auto",
-    alignItems:"center",
-    ...CommonStyles.MARGIN_FROM_BOTTOM_WITH_NOSH,
-    alignSelf:"center",
+  
 
+  inPutCont:{
+    marginTop:UtilityMethods.hp(2),
+    rowGap:UtilityMethods.hp(2)
+  
 
   },
-  linkText:{
-    ...CommonStyles.REGULAR,
-    color:Colors.BLACK,
+  rowCont:{
+    flexDirection:'row',
+    
+    paddingHorizontal:UtilityMethods.wp(1),
+  
+  },
+  regText:{
     fontSize:FontSize.VALUE(14),
+    color:Colors.ICON_BLACK,
+    fontFamily:Fonts.REGULAR,
+    marginLeft:UtilityMethods.wp(2),
+    
+  
+  },
+  LinkedView:{
+    flexDirection:'row',
+    justifyContent:'center',
+    marginTop:UtilityMethods.hp(2)
+
+  },
+  underLineText:{
+    fontSize:FontSize.VALUE(14),
+    color:Colors.BLACK,
+    fontFamily:Fonts.MEDIUM,
+    textDecorationLine:"underline",
     marginLeft:UtilityMethods.wp(1)
+    
   }
 });
 

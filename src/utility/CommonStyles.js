@@ -17,16 +17,21 @@ const CommonStyles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: UtilityMethods.wp(5),
   },
+
+  PADDING_HORIZONTAL: {
+    paddingHorizontal: UtilityMethods.wp(5),
+
+  },
   SEMI_BOLD: {
-    fontWeight: Platform.OS == "ios" ? "600" : null,
+   
     fontFamily: Fonts.SEMI_BOLD,
   },
   BOLD: {
-    fontWeight: Platform.OS == "ios" ? "800" : null,
+    
     fontFamily: Fonts.BOLD,
   },
   MEDIUM: {
-    fontWeight: Platform.OS == "ios" ? "500" : null,
+  
     fontFamily: Fonts.MEDIUM,
   },
   REGULAR: {

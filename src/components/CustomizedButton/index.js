@@ -15,21 +15,17 @@ const returnLoadingComponent = () => {
 
 const returnNormalView = (text, textStyle, Icon, customButton, disabled) => {
   return (
-    <>
-      {customButton ? (
-        <ImageBackground>
-          <View style={styles.buttonWithIcon}>
-            {Icon}
-            <Text style={[styles.buttonText, textStyle]}>{text}</Text>
-          </View>
-        </ImageBackground>
-      ) : (
-        <View style={styles.buttonWithIcon}>
+    
+       <View style={styles.buttonWithIcon}>
+          
+          <Text style={[styles.buttonText, textStyle]}>{text}</Text>
+          <View style={styles.iconView}>
           {Icon}
-          <Text style={[styles.buttonText(disabled), textStyle]}>{text}</Text>
+          </View>
+         
         </View>
-      )}
-    </>
+      
+  
   );
 };
  const Button = ({

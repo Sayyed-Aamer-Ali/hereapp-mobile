@@ -1,59 +1,46 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Button } from '../../../components';
+import { Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../redux/Reducers/AuthReducer';
-import { CommonStyles } from '../../../utility';
+import { ClassDetailBox, CustomFlatList, Header, MainLayout } from '../../../components';
 import styles from './styles';
-import Routes from '../../../navigation/Routes';
+import { MyClasses } from '../../../Data/DummyData';
+
+
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
 
   return (
-    <View style={[CommonStyles.BODY,styles.cont]}>
+     <MainLayout>
+<View style={styles.cont}>
+        <Header title="Home" 
+        showBackButton={false}
+        DrawerHeader={true}
+        
+        />
+        <CustomFlatList
+         listStyle={styles.listStyle}
+        ListHeaderComponent={
+          <View style={styles.headerCont}>
+            <Text style={styles.headerText}>My Classes</Text>
+            <Text style={styles.regText}>
+            for Thursday, 20th Feb 2024
+            </Text>
+          </View>
+        }
+        data={MyClasses}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ClassDetailBox item={item} />
+        )}
+        
 
-      <Text style={styles.titleText}>
-        Welcome Alex
-      </Text>
-
-      <Button 
-      text={"Logout"}
-      onPress={()=>{
-        dispatch(setUser(null))
-      }}
-      style={styles.button}
-
-      />
-
-      <Button 
-      text={"Mark Attendance"}
-      onPress={()=>{
-        navigation.navigate(Routes.ATTENDANCE)
-      }}
-      style={styles.button}
-
-      />
+         />
+      </View>
+     </MainLayout>
       
-      <Button 
-      text={"Edit Profile"}
-      onPress={()=>{
-        navigation.navigate(Routes.EDIT_PROFILE)
-      }}
-      style={styles.button}
 
-      />
-       <Button 
-      text={"Excuse Attendance"}
-      onPress={()=>{
-        navigation.navigate(Routes.EXCUSE_ATTENDANCE)
-      }}
-      style={styles.button}
-
-      />
    
-   
-    </View>
   );
 }
 

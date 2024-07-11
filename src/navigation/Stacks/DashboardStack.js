@@ -2,15 +2,16 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 /// ====================================== Local Imported Files ======================================//
-import { useDispatch } from 'react-redux';
-import {Home,Attendance,EditProfile,ExcuseAttandence} from '../../screens';
+import { useDispatch,useSelector } from 'react-redux';
+import {StudentStack,InstructorStack} from "./index"
 import Routes from '../Routes';
-
 
 const Stack = createNativeStackNavigator();
 
 const DashboardStack = () => {
-  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+
+  
    return (
     <Stack.Navigator
     screenOptions={{
@@ -18,10 +19,12 @@ const DashboardStack = () => {
     }}
     
     >
-      <Stack.Screen name={Routes.HOME} component={Home} />
-      <Stack.Screen name={Routes.ATTENDANCE} component={Attendance} />
-      <Stack.Screen name={Routes.EDIT_PROFILE} component={EditProfile} />
-      <Stack.Screen name={Routes.EXCUSE_ATTENDANCE} component={ExcuseAttandence} />
+      {user?.userType == "Student" ? (
+        <Stack.Screen name={Routes.StudentStack} component={StudentStack} />
+      ) : (
+        <Stack.Screen name={Routes.InstructorStack}component={InstructorStack} />
+      )}
+     
       
       </Stack.Navigator>
   );
