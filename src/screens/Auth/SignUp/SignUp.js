@@ -161,7 +161,8 @@ const SignUp = ({navigation,route}) => {
         fullName:fullName.value,
         phoneNumber:phoneNumber.value,
         netId:nedId.value,
-        profileImage:profileImage.value,
+        userType:"Student",
+        ProfileImage:Constants.DummyPicture,
         isLogin:true
       }
        navigation.navigate(Routes.OTP_VERIFICATION,{

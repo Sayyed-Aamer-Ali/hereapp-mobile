@@ -10,7 +10,7 @@ export const Validator = (type, value, confirmPasswordValue = "") => {
         !value.match("^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$") ||
         value.includes("..")
       ) {
-        return "Invalid Email";
+        return "Please enter a valid email address";
       }
       return "";
 

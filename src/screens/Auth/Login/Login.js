@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Platform } from 'react-native';
 
 
 import styles from './styles';
 import { Colors, Fonts, Icons, Images } from '../../../assets';
-import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
+import { CommonStyles, Constants, FontSize, UtilityMethods, Validator } from '../../../utility';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
@@ -85,8 +85,10 @@ const Login = ({navigation,route}) => {
       const user = {
         email: email,
         password: password,
+        fullName:"John Doe",
         isLogin:true ,
         userType:userType,
+        ProfileImage:Constants.DummyPicture
       }
       dispatch(setUser(user));
 
@@ -142,7 +144,8 @@ const Login = ({navigation,route}) => {
 
          <Text style={[styles.regText,{
           color:Colors.RED,
-          fontFamily:Fonts.MEDIUM
+          fontFamily:Fonts.MEDIUM,
+          marginTop:Platform.OS=="android"?UtilityMethods.hp(0.7):0,
          }]}>
             Forgot Password?
          </Text>

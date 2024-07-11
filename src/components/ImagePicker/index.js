@@ -29,7 +29,7 @@ const ImagePicker = ({ filedInfo,onChnage}) => {
         
         const openCamera = () => {
             UtilityMethods.selectImage("camera", (response) => {
-              console.log(response)
+              
               onChnage(response?.path)
         
              

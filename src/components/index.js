@@ -9,6 +9,7 @@ import CountdownTimer from "./CountDownTimer/CountDownTimer";
 import Header from "./CustomHeader/Header";
 import MainLayout from "./MainLayout";
 import ImagePicker from "./ImagePicker";
+import ClassDetailBox from "./ClassDetailBox/ClassDetailBox";
 
 
 
@@ -25,7 +26,8 @@ export {
   CountdownTimer,
   Header,
   MainLayout,
-  ImagePicker
+  ImagePicker,
+  ClassDetailBox
   
   
 };

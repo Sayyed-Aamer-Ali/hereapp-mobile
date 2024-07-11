@@ -7,8 +7,10 @@ const Colors = {
   GRAY:"#565656",
   LIGHT_GRAY:"#9DA6AB",
   MEDIUM_GRAY:"#F3F3F3",
+  BORDER_COLOR:"#EEEEEE",
+  MILK:"#fffef4",
  
-  TransParentBackground: "rgba(0, 0, 0, 0.29)",
+  TransParentBackground: "rgba(0, 0, 0, 0.5)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
   PRIMARY: "#FFF203",
   SECONDARY: "#C8E3FF",
@@ -17,7 +19,7 @@ const Colors = {
   DARK_GRAY: "#747474",
   PLACEHOLDER: "#D0D0D0",
   EXTRA_DARK_GRAY: "#676D75",
-  BORDER_COLOR: "#DEDFE0",
+
   TABBARARINCTIVECOLOR:"#BFBFBF"
   
 };

@@ -23,6 +23,7 @@ import { FlatList } from "react-native-gesture-handler";
   return (
     <FlatList
       data={data}
+     
       keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       style={[{ flex: 1 }, listStyle]}
       showsVerticalScrollIndicator={false}

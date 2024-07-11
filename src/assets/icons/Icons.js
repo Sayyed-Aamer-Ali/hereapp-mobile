@@ -16,6 +16,14 @@ import UserUnfilled from "./UserUnfilled.svg"
 import ClockCounterFilled from "./ClockCounterClockwiseFilledsvg.svg"
 import HouseUnfilled from "./HouseLineUnfilled.svg"
 import UserFilled from "./UserFilled.svg"
+import TermsConditions from "./Terms&Conditions.svg"
+import PrivacyPolicy from "./PrivacyPolicy.svg"
+import Notifications from "./Notification.svg"
+import Home from "./Home.svg"
+import SignOut from "./SignOut.svg"
+import ExcusedAttandance from "./ExcusedAttandance.svg"
+import List from "./List.svg"
+import Right from "./Right.svg"
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -35,7 +43,17 @@ export default Icons = {
     UserUnfilled:UserUnfilled,
     ClockCounterFilled:ClockCounterFilled,
     HouseUnfilled:HouseUnfilled,
-    UserFilled:UserFilled
+    UserFilled:UserFilled,
+    TermsConditions:TermsConditions,
+    PrivacyPolicy:PrivacyPolicy,
+    Notifications:Notifications,
+    Home:Home,
+    SignOut:SignOut,
+    ExcusedAttandance:ExcusedAttandance,
+    List:List,
+    Right:Right,
+    
+
 
 
 }

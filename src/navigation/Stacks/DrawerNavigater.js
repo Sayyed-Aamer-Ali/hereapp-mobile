@@ -3,22 +3,27 @@ import { Platform, StyleSheet } from "react-native";
 import Routes from "../Routes";
 import BottomTab from "./BottomTab";
 import { Colors } from "../../assets";
+import SliderScreen from "../../screens/Dashboard/SliderScreen.js/SliderScreen";
+import { UtilityMethods } from "../../utility";
+import { MainLayout } from "../../components";
+
 
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator
-      //drawerContent={(props) => <CustomDrawer {...props} />}
+  
+<Drawer.Navigator
+    drawerContent={(props) => <SliderScreen {...props} />}
       screenOptions={{
         headerShown: false,
         drawerActiveBackgroundColor: "transparent",
         drawerInactiveBackgroundColor: "transparent",
-        // drawerActiveTintColor: Colors.PRIMARY,
-        // drawerInactiveTintColor: Colors.GRAY,
+       
         drawerHideStatusBarOnOpen: Platform.OS === "ios" ? true : false,
-        // overlayColor: "transparent",
+       
+       
         drawerStyle: styles.drawerStyle,
         sceneContainerStyle: styles.sceneStyle,
         gestureEnabled: true,
@@ -30,6 +35,8 @@ const DrawerNavigator = () => {
       
 
     </Drawer.Navigator>
+   
+    
   );
 };
 
@@ -38,7 +45,13 @@ const styles = StyleSheet.create({
   drawerStyle: {
     flex: 1,
     backgroundColor: Colors.WHITE,
-    width: "70%",
+    width: "80%",
+    borderTopEndRadius:UtilityMethods.wp(6),
+    borderBottomEndRadius:UtilityMethods.wp(6),
+    marginTop:Platform.OS === "ios" ? 0 : UtilityMethods.hp(5),
+   
+   
+
   },
   sceneStyle: {
     backgroundColor: Colors.WHITE,

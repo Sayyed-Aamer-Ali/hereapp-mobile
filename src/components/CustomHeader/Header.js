@@ -2,14 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors, Fonts } from '../../assets';
-import { useNavigation } from '@react-navigation/native';
+import { Colors, Fonts, Icons } from '../../assets';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-const Header = ({title}) => {
+const Header = ({title,showBackButton=true,onPressLeft,leftIcon,rightcontent,DrawerHeader=false}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.headerCont}> 
     <View style={CommonStyles.ROW_VIEW}>
+ 
+      {DrawerHeader &&
+      <TouchableOpacity style={styles.icon}
+      onPress={()=>
+        navigation.dispatch(DrawerActions.openDrawer())
+      }
+      >
+        <Icons.List/>
+      </TouchableOpacity>
+      }
+       
+    {leftIcon &&
+    <TouchableOpacity
+    style={styles.icon}
+    onPress={onPressLeft}
+    >
+      {leftIcon}
+    </TouchableOpacity>
+    }
+    {showBackButton &&
     <TouchableOpacity 
       style={styles.icon}
       onPress={()=>navigation.goBack()}
@@ -19,11 +39,25 @@ const Header = ({title}) => {
         }/>
        
       </TouchableOpacity>
+    }
 
       <Text style={styles.headerText}>
           {title}
         </Text>
     </View>
+
+    {rightcontent &&
+    <View>
+      {rightcontent}
+
+      </View>
+    }
+
+   {DrawerHeader &&
+   <TouchableOpacity>
+      <Icons.Notifications/>
+   </TouchableOpacity>
+    }
      
     </View>
   );
@@ -37,7 +71,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: UtilityMethods.hp(8),
          flexDirection: "row",
-        alignItems:"center",
+        alignItems:"flex-start",
         justifyContent:"space-between",
         ...CommonStyles.PADDING_HORIZONTAL
          

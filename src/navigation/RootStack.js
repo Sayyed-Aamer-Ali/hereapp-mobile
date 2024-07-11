@@ -20,7 +20,7 @@ const RootStack = () => {
     // This will run only once on component mount
     const timer = setTimeout(() => {
       setInitialLoading(false); // End the initial loading state after 30 seconds
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

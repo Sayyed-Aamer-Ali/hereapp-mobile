@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home, Profile, History } from '../../screens';
 import Routes from '../Routes';
@@ -81,15 +81,26 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     borderTopLeftRadius: UtilityMethods.wp(5),
     borderTopRightRadius: UtilityMethods.wp(5),
+    height:UtilityMethods.hp(8),
+    backgroundColor: Colors.WHITE,
+    shadowColor: Platform.OS == "ios" ? Colors.TransParentBackground : Colors.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    borderTopWidth:0
+   
     
 
   },
   textCont:{
     alignItems: 'center',
-    height:UtilityMethods.hp(6),
+    // height:UtilityMethods.hp(4),
    
     justifyContent: 'space-between',
-    marginTop: UtilityMethods.hp(2),
+    marginTop: Platform.OS == "ios" ? UtilityMethods.hp(2) : 0,
   
   },
 
