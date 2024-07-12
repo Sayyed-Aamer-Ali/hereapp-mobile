@@ -1,3 +1,4 @@
+import { InstructorHomeScreen } from "../screens";
 
 
 const Routes = {
@@ -21,7 +22,10 @@ const Routes = {
   PROFILE:"Profile",
   BOTTOM_TAB:"BottomTab",
   DRAWER_NAVIGATOR:"DrawerNavigator",
+  CHANGE_PASSWORD:'CHANGE_PASSWORD',  
 
+
+  INSTRUCTOR_HOME_SCREEN:'INSTRUCTOR_HOME_SCREEN',
   
 };
 export default Routes;

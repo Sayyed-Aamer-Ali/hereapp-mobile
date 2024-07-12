@@ -45,7 +45,7 @@ return (
                     Time Slot
               </Text>
             </View>   
-            <View style={{marginRight:UtilityMethods.wp(2.5)}}>
+            <View style={{marginRight:UtilityMethods.wp(4.5)}}>
              <Text style={styles.titleText}>
                 {item.date}
              </Text>
@@ -55,7 +55,7 @@ return (
             </View>  
        </View>
       </View>
-      <Button text={"Mark Attendence"} 
+      <Button text={"Mark Attendance"} 
         Icon={
           <Icons.Right/>
         }
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FontSize.VALUE(14),
-    fontFamily: Fonts.SEMI_BOLD,
+    fontFamily: Fonts.MEDIUM,
     color: Colors.GRAY,
   },
   body:{
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   titleText:{
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.MEDIUM,
-    color: Colors.ICON_BLACK,
+    color: Colors.GRAY,
   },
   desText:{
     fontSize: FontSize.VALUE(14),

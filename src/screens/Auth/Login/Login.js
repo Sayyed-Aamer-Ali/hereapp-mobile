@@ -8,7 +8,7 @@ import { CommonStyles, Constants, FontSize, UtilityMethods, Validator } from '..
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../redux/Reducers/AuthReducer';
+import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
 
 const Login = ({navigation,route}) => {
 
@@ -83,13 +83,18 @@ const Login = ({navigation,route}) => {
     if (Object.keys(error).length == 0) {
 
       const user = {
-        email: email,
-        password: password,
+        email: email.value,
+        password: password.value,
         fullName:"John Doe",
         isLogin:true ,
         userType:userType,
-        ProfileImage:Constants.DummyPicture
+        ProfileImage:Constants.DummyPicture,
+        phoneNumber:'450 765 5989',
+        netId:'new_user',
+        address:'21 Street North, Ontario, Canada',
+        postalCode:'89000',
       }
+      dispatch(setToken("DUMMY_TOKEN"));
       dispatch(setUser(user));
 
 

@@ -10,10 +10,6 @@ const styles = StyleSheet.create({
     flex:1,
     ...CommonStyles.PADDING_HORIZONTAL,
     paddingTop:UtilityMethods.hp(2),
- 
-
-    
-    
  },
   logo:{
     width:UtilityMethods.wp(24),

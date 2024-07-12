@@ -163,7 +163,8 @@ const SignUp = ({navigation,route}) => {
         netId:nedId.value,
         userType:"Student",
         ProfileImage:Constants.DummyPicture,
-        isLogin:true
+        isLogin:true,
+        postalCode:'89000',
       }
        navigation.navigate(Routes.OTP_VERIFICATION,{
         user:user

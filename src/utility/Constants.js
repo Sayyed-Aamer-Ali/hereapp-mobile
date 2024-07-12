@@ -23,22 +23,25 @@ const Constants = {
       id:2,
       name:'Notifications',
       icon:<Icons.Notifications/>,
+      route:'Home'
     },
     {
       id:7,
       name:'Excused Attendance',
       icon:<Icons.ExcusedAttandance/>,
-
+      route:'Home'
     },
     {
       id:3,
       name:'Terms & Conditions',
       icon:<Icons.TermsConditions/>,
+      route:'Home'
     },
     {
       id:4,
       name:'Privacy Policy',
       icon:<Icons.PrivacyPolicy/>,
+      route:'Home'
     },
     
   ]

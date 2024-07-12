@@ -78,10 +78,7 @@ iconCont:{
   height:UtilityMethods.hp(7),
   justifyContent:"center",
   alignItems:"center",
-  
-
-
-
+  marginLeft:UtilityMethods.wp(2)
 },
 itemText:{
   fontSize:FontSize.VALUE(18),

@@ -16,6 +16,12 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
  import ExcuseAttandence from "./Dashboard/ExcuseAttandenc/ExcuseAttandence";
  import History from "./Dashboard/History/History";
  import Profile from "./Dashboard/Profile/Profile";
+ import ChangePassword from "./Dashboard/ChangePassword/ChangePassword";
+
+
+
+  /// Dashboard Screens///
+  import InstructorHomeScreen from "./InstructorDashboard/InstructorHomeScreen/InstructorHomeScreen"
 
 
 export {
@@ -31,6 +37,6 @@ export {
   ForgetPassword,
   History,
   Profile,
-  
-
+  InstructorHomeScreen,
+  ChangePassword,
 };

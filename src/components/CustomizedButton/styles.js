@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   buttonText:{
     color:Colors.PRIMARY,
-    fontSize: FontSize.VALUE(18),
+    fontSize: FontSize.VALUE(16),
     fontFamily: Fonts.SEMI_BOLD
     
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   iconView:{
     position:"absolute",
     right:0,
-    marginRight:UtilityMethods.wp(2)
+    marginRight:UtilityMethods.wp(4)
   }
 });
 

@@ -10,6 +10,7 @@ const authSlice = createSlice({
     routesDetail: null,
     routesListing: null,
     totalNotification: null,
+    token:null,
   },
   reducers: {
     setToken: (state, action) => {
@@ -25,6 +26,7 @@ const authSlice = createSlice({
       state.recentSearches = null;
       state.totalNotification = null;
       state.routesListing = null;
+      state.token = null
     },
     setSkipButtonPress: (state, action) => {
       state.skipButtonPress = action.payload;

@@ -30,7 +30,7 @@ const CustomizedInput = ({
         
         />;
       default:
-        return <InputText {...props} fieldInfo={value} />;
+        return <InputText {...props} fieldInfo={fieldInfo} />;
     }
   };
   

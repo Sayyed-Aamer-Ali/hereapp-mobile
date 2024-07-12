@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Images } from '../../../assets';
 import { AlertWithTwoButtons, Button, CountdownTimer, Header, MainLayout, OtpInput, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
-import { setUser } from '../../../redux/Reducers/AuthReducer';
+import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
 import { UtilityMethods, Validator } from '../../../utility';
 import styles from './styles';
 import AlertService from '../../../services/AlertService';
@@ -35,6 +35,7 @@ let user = route?.params?.user;
  
     }
     else{
+      dispatch(setToken("DUMMY_TOKEN"));
       dispatch(setUser(user))
     }
   }

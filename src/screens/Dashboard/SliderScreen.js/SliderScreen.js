@@ -1,13 +1,14 @@
 import React from 'react';
-import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { DrawerActions } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Icons } from '../../../assets';
-import { setUser } from '../../../redux/Reducers/AuthReducer';
+import { resetAuth, setUser } from '../../../redux/Reducers/AuthReducer';
 import { Constants } from '../../../utility';
 import styles from './styles';
+import Routes from '../../../navigation/Routes';
 
 
 const SliderScreen = ({navigation}) => {
@@ -16,14 +17,28 @@ const SliderScreen = ({navigation}) => {
   let user = useSelector(state => state.auth.user);
 
 
+  const logout = () => {
+    Alert.alert("Warning", "Are you sure you want to logout",[
+      {
+        text:'Yes',
+        onPress:() => onPressLogout()
+      },
+      {
+        text:'No'
+      }
+    ])
+  }
   const onPressLogout = () => {
+    
     navigation.dispatch(DrawerActions.closeDrawer())
     setTimeout(() => {
-      dispatch(setUser(null))
+      dispatch(resetAuth())
     }
     , 500);
-   
+  }
 
+  const handleNavigation = (path) =>{
+    navigation.navigate(path)
   }
 
 
@@ -31,7 +46,7 @@ const SliderScreen = ({navigation}) => {
     <View style={styles.cont}>
       <View style={styles.headerCont}>
 
-       <Pressable style={styles.ImageCont}>
+       <Pressable style={styles.ImageCont} onPress={()=>handleNavigation(Routes.PROFILE)}>
         <Image style={styles.imageView} source={{
           uri: user?.ProfileImage
         }}/>
@@ -49,10 +64,7 @@ const SliderScreen = ({navigation}) => {
           keyExtractor={(item,index) => index.toString()}
           renderItem={({item,index}) => (
             <TouchableOpacity style={styles.itemCont}
-              onPress={() => {
-                // navigation.navigate(item.screen)
-              }}
-            >
+              onPress={() => handleNavigation(item.route)}>
               <View style={styles.iconCont}>
               {item.icon}
               </View>
@@ -63,9 +75,7 @@ const SliderScreen = ({navigation}) => {
 
         <TouchableOpacity
          style={styles.logoutCont}
-         onPress={() => {
-          onPressLogout()
-         }}
+         onPress={logout}
         >
 
 <View style={styles.iconCont}>

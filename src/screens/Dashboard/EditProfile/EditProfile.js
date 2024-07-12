@@ -1,199 +1,161 @@
 import React, { useState } from 'react';
-import { ImageBackground, Text, View ,
-
-  TouchableOpacity,
-  Alert
-} from 'react-native';
-import { AlertWithTwoButtons, Button, CustomizedInput, Header, ScreenWrapper ,} from '../../../components';
-import Icon from 'react-native-vector-icons/AntDesign';
-import Routes from '../../../navigation/Routes';
-import { CommonStyles, Constants, UtilityMethods, Validator } from '../../../utility';
+import { Alert, View } from 'react-native';
 import styles from './styles';
-import { useSelector } from 'react-redux';
+import { Colors, Icons } from '../../../assets';
+import { UtilityMethods, Validator } from '../../../utility';
+import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper, ImagePicker } from '../../../components';
+import Routes from '../../../navigation/Routes';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../../redux/Reducers/AuthReducer';
 
-import { Colors } from '../../../assets';
-import AlertService from '../../../services/AlertService';
-
-const EditProfile = ({navigation}) => {
-
+const EditProfile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
-  const [image, setImage] = useState(user?.profilePicture??Constants.letImagePlaceholder);
-  const [email, setEmail] = useState(user?.email);
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-  const [newPassword, setNewPassword] = useState();
-  const [error, setError] = useState();
 
-  const onPressCamera = () => {
-   Alert.alert("Choose Image","Select Image from",[
-      {text:"Camera",onPress:()=>{
-        openCamera()
+  const [fullName, setFullName] = useState({
+    inputType: "text",
+    title: "Full Name",
+    value: user.fullName,
+    type: "text",
+    error: "",
+    placeholder: "Enter Full Name",
+    leftIcon: <Icons.User />
+  });
 
-      }},
-      {text:"Gallery",onPress:()=>{
-        openGallery()
-      }},
-      {text:"Cancel",onPress:()=>{}}
-    ])
-    
- 
+  const [phoneNumber, setPhoneNumber] = useState({
+    inputType: "text",
+    title: "Phone",
+    value: user.phoneNumber,
+    type: "text",
+    error: "",
+    placeholder: "Enter Phone Number",
+    leftIcon: <Icons.Phone />
+  });
 
-  }
+  const [address, setAddress] = useState({
+    inputType: "text",
+    title: "Address",
+    value: user.address,
+    type: "text",
+    error: "",
+    placeholder: "Enter Full Address",
+    leftIcon: <Icons.User />
+  });
 
-  const openCamera = () => {
-    UtilityMethods.selectImage("camera", (response) => {
-      console.log(response)
-      setImage(response?.path)
+  const [profileImage, setProfileImage] = useState({
+    inputType: "image",
+    title: "Profile Image",
+    value: user?.ProfileImage ?? '',
+    type: "image",
+    error: "",
+    placeholder: "Upload Profile Image"
+  });
 
-     
-
-
-  },false
-)
-}
-
-
-  const openGallery= () => {
-    UtilityMethods.selectImage("gallery", (response) => {
-      setImage(response.path)
-    },false
-    )
-
-  }
-
-  const handlePassword = (text,type) => {
-
-
-    if(type=="password"){
-      setPassword(text)
-      setError({...error,password:null})
-    }else if(type=="newPassword"){
-      setNewPassword(text)
-      setError({...error,newPassword:null})
-    }else if(type=="confirmPassword"){
-      setConfirmPassword(text)
-      setError({...error,confirmPassword:null})
-    }
-  }
+  const [error, setError] = useState({});
+  const dispatch = useDispatch();
 
   const onPressUpdate = () => {
-    const newError = {}
+    let error = {};
 
-    const passwordValidte =Validator("password",password);
-    const newPasswordValidte =Validator("password",newPassword);
-    const confirmPasswordValidte =Validator("confirmPassword",newPassword, confirmPassword); ;
-
-    if(passwordValidte &&password!="" ){
-      newError["password"]=passwordValidte
-
-    }
-    if(newPasswordValidte &&newPassword!="" ){
-      newError["newPassword"]=newPasswordValidte
-
-    }
-    if(confirmPasswordValidte &&confirmPassword!="" ){
-      newError["confirmPassword"]=confirmPasswordValidte
-
+    if (fullName.value === "") {
+      setFullName({ ...fullName, error: "Name is required" });
+      error["fullName"] = "Name is required";
     }
 
-    setError(newError)
-
-
-
-    
-
-    if(Object.keys(newError)){
-      AlertService.toastPrompt("profile updated successfully")
-      navigation.goBack()
+    if (phoneNumber.value === "") {
+      setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
+      error["phoneNumber"] = "Phone Number is required";
     }
 
-  
-  
+    if (address.value === "") {
+      setAddress({ ...address, error: "Address is required" });
+      error["address"] = "Address is required";
+    }
 
-    
+    if (profileImage.value === "") {
+      setProfileImage({ ...profileImage, error: "Profile Image is required" });
+      error["profileImage"] = "Profile Image is required";
+    }
 
+    setError(error);
 
-  }
+    if (Object.keys(error).length === 0) {
+      let updatedUser = {
+        ...user,
+        fullName: fullName.value,
+        phoneNumber: phoneNumber.value,
+        address: address.value,
+        ProfileImage: profileImage.value,
+      };
 
+      // Dispatch updated user information here
+      dispatch(setUser(updatedUser));
 
+      Alert.alert("Success", "Profile update successfully",
+        [
+          {
+            text:'Ok',
+            onPress: () => navigation.goBack()
+          }
+        ]
+      )
+
+    }
+  };
 
   return (
-    <View style={CommonStyles.CONTAINER}>
-    <Header
-     title={"Edit Profile"}
-    />
-    <ScreenWrapper style={[CommonStyles.BODY,styles.cont]}>
+    <MainLayout>
+      <Header title={"Edit Profile"} />
+      <ScreenWrapper style={styles.cont}>
+        <ImagePicker
+          filedInfo={profileImage}
+          onChange={(path) => {
+            setProfileImage({
+              ...profileImage, value: path,
+              error: ""
+            });
+          }}
+        />
+        <View style={styles.inPutCont}>
+          <CustomizedInput
+            fieldInfo={fullName}
+            onChange={(text) => {
+              setFullName({ ...fullName, value: text, error: "" });
+            }}
+          />
+          <CustomizedInput
+            fieldInfo={phoneNumber}
+            onChange={(text) => {
+              setPhoneNumber({ ...phoneNumber, value: text, error: "" });
+            }}
+            keyboardType="number-pad"
+          />
+          <CustomizedInput
+            fieldInfo={address}
+            onChange={(text) => {
+              setAddress({ ...address, value: text, error: "" });
+            }}
+          />
+        </View>
+        
 
-      <ImageBackground  style={styles.roundView}
-       source={{uri:image}}
-      >
- 
+        <View style={styles.buttonContainer}>
 
-
-      </ImageBackground>
-      <TouchableOpacity 
-     style={styles.roundEditView}
-     onPress={onPressCamera}
-     >
-        <Icon name="camerao" size={20} color={Colors.WHITE}/>
-
-     </TouchableOpacity>
-
-  <View style={styles.inputView}>
-     <CustomizedInput
-      placeholder={"Email"}
-      value={email}
-      onChangeText={(text)=>setEmail(text)}
-      editable={false}
-      />
-      <CustomizedInput
-      placeholder={"Current Password"}
-      value={password}
-      type={"password"}
-      onChangeText={(text)=>handlePassword(text,"password")}
-   
-      Error={error?.password?error.password:null}
-      />
-
-      <CustomizedInput
-      placeholder={"New Password"}
-      value={newPassword}
-      onChangeText={(text)=>
-        handlePassword(text,"newPassword")
-      }
-      type={"password"}
-   
-      Error={error?.newPassword?error.newPassword:null}
-      />
-      <CustomizedInput
-      placeholder={"Confirm Password"}
-      value={confirmPassword}
-      onChangeText={(text)=>
-        handlePassword(text,"confirmPassword")
-      }
-      type={"password"}
-      Error={error?.confirmPassword?error.confirmPassword:null}
-      />
-      <Button 
-       text={"Update"}
-       onPress={()=>{
-        onPressUpdate()
-       }}
-       style={styles.button}
-      />
-
-  </View>
-
-
-      
-
-
-
-
-    
-   
-    </ScreenWrapper>
-    </View>
+        <Button
+          text={"Save Changes"}
+          style={{
+            marginTop: UtilityMethods.hp(4)
+          }}
+          onPress={() => onPressUpdate()}
+        />
+          <Button
+            text={"Discard"}
+            style={styles.changePassowrd}
+            textStyle={styles.changePassowrdText}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </ScreenWrapper>
+    </MainLayout>
   );
 }
 

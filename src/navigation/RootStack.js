@@ -12,6 +12,7 @@ const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
   const user = useSelector(state => state.auth.user);
+  const token = useSelector(state => state.auth.token);
 
   const [initialLoading, setInitialLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState(Routes.SPLASH);
@@ -28,9 +29,9 @@ const RootStack = () => {
   useEffect(() => {
     // This will run on initial mount and whenever `user` or `initialLoading` changes
     if (!initialLoading) {
-      setInitialRoute(user ? Routes.DASHBOARD_STACK : Routes.AUTH_STACK);
+      setInitialRoute((token && user) ? Routes.DASHBOARD_STACK : Routes.AUTH_STACK);
     }
-  }, [user, initialLoading]); // Depend on `user` and `initialLoading`
+  }, [token,initialLoading]); // Depend on `user` and `initialLoading`
 
 
  

@@ -85,9 +85,9 @@ const ImagePicker = ({ filedInfo,onChnage}) => {
 </View>
 <View style={styles.titleCont}>
         <Text style={[styles.TitleStyle]}>
-            Profile Picture
+            {filedInfo?.title}
         </Text>
-        <Text style={[styles.hashText]}>*</Text>
+        {!filedInfo?.atEdit && <Text style={[styles.hashText]}>*</Text>}
 
        
         </View>

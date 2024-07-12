@@ -24,6 +24,7 @@ import SignOut from "./SignOut.svg"
 import ExcusedAttandance from "./ExcusedAttandance.svg"
 import List from "./List.svg"
 import Right from "./Right.svg"
+import logoutIcon2 from "./logoutIcon2.svg"
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -52,10 +53,7 @@ export default Icons = {
     ExcusedAttandance:ExcusedAttandance,
     List:List,
     Right:Right,
-    
-
-
-
+    logoutIcon2,    
 }
 
 

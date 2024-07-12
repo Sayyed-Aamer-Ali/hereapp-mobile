@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import Routes from "../Routes";
 import BottomTab from "./BottomTab";
 import { Colors } from "../../assets";
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderTopEndRadius:UtilityMethods.wp(6),
     borderBottomEndRadius:UtilityMethods.wp(6),
-    marginTop:Platform.OS === "ios" ? 0 : UtilityMethods.hp(5),
+    marginTop:Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
    
    
 
