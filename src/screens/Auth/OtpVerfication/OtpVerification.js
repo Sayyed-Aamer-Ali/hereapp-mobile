@@ -50,7 +50,6 @@ let user = route?.params?.user;
         setResetCounter(true)
       },
       onPressButtonSecond: () => {
-        console.log("Cancel Pressed")
       }
     });
 
@@ -67,7 +66,6 @@ let user = route?.params?.user;
         setResetCounter(true)
       },
       onPressButtonSecond: () => {
-        console.log("Cancel Pressed")
       }
     });
 

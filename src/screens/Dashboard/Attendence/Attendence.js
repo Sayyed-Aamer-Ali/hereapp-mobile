@@ -30,7 +30,6 @@ const Attendance = ({navigation}) => {
         navigation.goBack();
       },
       onPressButtonSecond: () => {
-        console.log("Cancel Pressed")
       }
     });
 
@@ -50,7 +49,6 @@ const Attendance = ({navigation}) => {
       </Text>
       <View style={styles.bodyView}>
      <OtpInput onComplete={(otp) => {
-        console.log("OTP", otp)
       }
       } />
     

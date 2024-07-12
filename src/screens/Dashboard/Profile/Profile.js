@@ -26,9 +26,6 @@ const Profile = ({ navigation }) => {
     atEdit: true
   });
 
-
-  console.log(user)
-
   const handleProfileAPI = (path) => {
     dispatch(setUser({ ...user, ProfileImage: path }));
   }

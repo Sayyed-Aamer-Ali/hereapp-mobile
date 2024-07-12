@@ -38,7 +38,6 @@ class UtilityMethodsClass {
    */
   hasOnlyLetters(str) {
     let result = /^[\p{L} ,.'-]+$/u.test(str);
-    //console.log(result);
     return result;
   }
 

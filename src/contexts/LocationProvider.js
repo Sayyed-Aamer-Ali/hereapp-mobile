@@ -11,12 +11,9 @@ const LocationProvider = ({ children }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const allowLocation = () => {
-    console.log('allowLocation');
     return new Promise((resolve, reject) => {
-      // //console.log("info", info);
       Geolocation.getCurrentPosition(
         (info) => {
-          // //console.log(info);
           const data = {
             ...user,
             location: {
@@ -31,7 +28,6 @@ const LocationProvider = ({ children }) => {
           });
         },
         (err) => {
-          // //console.log("err", err);
           setIsLocationAllowed(false);
           resolve({
             success: false,
