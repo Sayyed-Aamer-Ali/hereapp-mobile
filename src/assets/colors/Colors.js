@@ -9,7 +9,8 @@ const Colors = {
   MEDIUM_GRAY:"#F3F3F3",
   BORDER_COLOR:"#EEEEEE",
   MILK:"#fffef4",
- 
+  parotGreen: "#5B8441",
+
   TransParentBackground: "rgba(0, 0, 0, 0.5)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
   PRIMARY: "#FFF203",

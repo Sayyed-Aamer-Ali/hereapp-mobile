@@ -9,9 +9,10 @@ import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../.
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
+import { useToast } from "react-native-toast-notifications";
 
 const Login = ({navigation,route}) => {
-
+  const toast = useToast();
   const userType = route.params?.selectedUser;
   const [email, setEmail] = useState({
     inputType:"text",
@@ -96,7 +97,9 @@ const Login = ({navigation,route}) => {
       }
       dispatch(setToken("DUMMY_TOKEN"));
       dispatch(setUser(user));
-
+      toast.show("Login successfully...",{
+        type:'success',
+      });
 
     }
 

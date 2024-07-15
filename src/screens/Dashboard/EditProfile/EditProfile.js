@@ -90,7 +90,7 @@ const EditProfile = ({ navigation }) => {
       // Dispatch updated user information here
       dispatch(setUser(updatedUser));
 
-      Alert.alert("Success", "Profile update successfully",
+      Alert.alert("Success", "Profile updated successfully...",
         [
           {
             text:'Ok',

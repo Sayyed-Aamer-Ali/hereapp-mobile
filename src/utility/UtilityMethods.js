@@ -296,17 +296,17 @@ class UtilityMethodsClass {
         callback(image);
       }).catch((error) => {
 
-          AlertWithTwoButtons({
-            title: 'Permission Denied',
-            subtitle: 'Please allow camera permission from settings',
-            btnTitleFirst: 'Cancel',
-            btnTitleSecond: 'Open Settings',
-            onPressButtonFirst: () => { },
-            onPressButtonSecond: () => { 
-              Linking.openSettings();
-            }
+          // AlertWithTwoButtons({
+          //   title: 'Permission Denied',
+          //   subtitle: 'Please allow camera permission from settings',
+          //   btnTitleFirst: 'Cancel',
+          //   btnTitleSecond: 'Open Settings',
+          //   onPressButtonFirst: () => { },
+          //   onPressButtonSecond: () => { 
+          //     Linking.openSettings();
+          //   }
 
-          })
+          // })
         
       }
       );
@@ -324,17 +324,17 @@ class UtilityMethodsClass {
         callback(images);
       }).catch((error) => {
        
-          AlertWithTwoButtons({
-            title: 'Permission Denied',
-            subtitle: 'Please allow gallery permission from settings',
-            btnTitleFirst: 'Cancel',
-            btnTitleSecond: 'Open Settings',
-            onPressButtonFirst: () => { },
-            onPressButtonSecond: () => { 
-              Linking.openSettings();
-            }
+          // AlertWithTwoButtons({
+          //   title: 'Permission Denied',
+          //   subtitle: 'Please allow gallery permission from settings',
+          //   btnTitleFirst: 'Cancel',
+          //   btnTitleSecond: 'Open Settings',
+          //   onPressButtonFirst: () => { },
+          //   onPressButtonSecond: () => { 
+          //     Linking.openSettings();
+          //   }
 
-          })
+          // })
       }
       );
     }

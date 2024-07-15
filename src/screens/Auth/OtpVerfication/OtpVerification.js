@@ -10,9 +10,10 @@ import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
 import { UtilityMethods, Validator } from '../../../utility';
 import styles from './styles';
 import AlertService from '../../../services/AlertService';
+import { useToast } from "react-native-toast-notifications";
 
 const OtpVerification = ({navigation,route}) => {
-
+  const toast = useToast();
 let user = route?.params?.user; 
   
   const dispatch = useDispatch();
@@ -35,6 +36,9 @@ let user = route?.params?.user;
  
     }
     else{
+      toast.show("Signup successfylly...",{
+        type:'success',
+      });
       dispatch(setToken("DUMMY_TOKEN"));
       dispatch(setUser(user))
     }

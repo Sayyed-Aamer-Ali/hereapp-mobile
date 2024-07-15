@@ -13,6 +13,7 @@ import { StatusBar } from 'react-native';
 //================================ Local Imported Files ======================================//
 
 import RootStack from './navigation/RootStack';
+import { Colors } from './assets';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -26,7 +27,7 @@ const App = () => {
   return (
     <ToastProvider
     offsetTop={40}
-   
+    successColor={Colors.parotGreen}
   >
     <Provider store={store}>
     
