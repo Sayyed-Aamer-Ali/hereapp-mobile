@@ -5,7 +5,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors, Fonts, Icons } from '../../assets';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-const Header = ({ title, showBackButton = true, onPressLeft, leftIcon, rightcontent, DrawerHeader = false, isLogout = false,logoutOnPress }) => {
+const Header = ({ 
+  title, 
+  showBackButton = true, 
+  onPressLeft, 
+  leftIcon, 
+  rightcontent, 
+  DrawerHeader = false, 
+  isLogout = false, 
+  logoutOnPress,
+  rightIcons=true
+}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.headerCont}>
@@ -54,13 +64,14 @@ const Header = ({ title, showBackButton = true, onPressLeft, leftIcon, rightcont
       }
 
       <View style={styles.rightIcons}>
-        <TouchableOpacity>
-          <Icons.Notifications />
-        </TouchableOpacity>
-        {isLogout && 
-        <TouchableOpacity onPress={logoutOnPress}>
-          <Icons.logoutIcon2 />
-        </TouchableOpacity>}
+        {rightIcons &&
+          <TouchableOpacity>
+            <Icons.Notifications />
+          </TouchableOpacity>}
+        {isLogout &&
+          <TouchableOpacity onPress={logoutOnPress}>
+            <Icons.logoutIcon2 />
+          </TouchableOpacity>}
       </View>
 
     </View>
@@ -94,10 +105,10 @@ const styles = StyleSheet.create({
 
     fontFamily: Fonts.SEMI_BOLD,
   },
-  rightIcons:{
-    flexDirection:"row",
-    alignItems:'center',
-    columnGap:UtilityMethods.wp(4)
+  rightIcons: {
+    flexDirection: "row",
+    alignItems: 'center',
+    columnGap: UtilityMethods.wp(4)
   }
 
 });

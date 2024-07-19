@@ -48,7 +48,7 @@ const SliderScreen = ({navigation}) => {
 
        <Pressable style={styles.ImageCont} onPress={()=>handleNavigation(Routes.PROFILE)}>
         <Image style={styles.imageView} source={{
-          uri: user?.ProfileImage
+          uri: user?.ProfileImage || Constants.letImagePlaceholder
         }}/>
 
        </Pressable>

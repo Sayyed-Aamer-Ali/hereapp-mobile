@@ -10,9 +10,12 @@ import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
 import { useToast } from "react-native-toast-notifications";
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const Login = ({navigation,route}) => {
   const toast = useToast();
+  const [loader, setLoader] = useState(false)
   const userType = route.params?.selectedUser;
   const [email, setEmail] = useState({
     inputType:"text",
@@ -86,32 +89,48 @@ const Login = ({navigation,route}) => {
       const user = {
         email: email.value,
         password: password.value,
-        fullName:"John Doe",
-        isLogin:true ,
-        userType:userType,
-        ProfileImage:Constants.DummyPicture,
-        phoneNumber:'450 765 5989',
-        netId:'new_user',
-        address:'21 Street North, Ontario, Canada',
-        postalCode:'89000',
+        // fullName:"John Doe",
+        // isLogin:true ,
+        // userType:userType,
+        // ProfileImage:Constants.DummyPicture,
+        // phoneNumber:'450 765 5989',
+        // netId:'new_user',
+        // address:'21 Street North, Ontario, Canada',
+        // postalCode:'89000',
       }
-      dispatch(setToken("DUMMY_TOKEN"));
-      dispatch(setUser(user));
-      toast.show("Login successfully...",{
-        type:'success',
-      });
+      // dispatch(setToken("DUMMY_TOKEN"));
+      // dispatch(setUser(user));
+      // toast.show("Login successfully...",{
+      //   type:'success',
+      // });
+
+      loginAPICall(user)
 
     }
-
-    
-
-   
-
   }
 
+  const loginAPICall = async (data) =>{
+    try {
+      setLoader(true)
+      let response = await axiosWrapper('POST', API_URLS.LOGIN_URL,data, null,false, 'json', true);
+      if(response){
+        dispatch(setToken(response?.data.token));
+        dispatch(setUser({...response?.data.user,role:userType==='Student' ? 'STUDENT':response?.data?.user?.role}));
+      }
+    } catch (error) {
+      
+    }finally{
+      setLoader(false)
+    }
+  }
+
+
   return (
-    <MainLayout>
-     <Header title={"Sign In"} />
+    <MainLayout loader={loader}>
+     <Header 
+      title={"Sign In"} 
+      rightIcons={false}
+      />
 
       <ScreenWrapper
       style={styles.cont}
@@ -147,8 +166,7 @@ const Login = ({navigation,route}) => {
         <Text style={styles.regText}>Remember Me</Text>
          </View>
          <TouchableOpacity
-         onPress={() => navigation.navigate(Routes.FORGET_PASSWORD)}
-         >
+         onPress={() => navigation.navigate(Routes.FORGET_PASSWORD)}>
 
          <Text style={[styles.regText,{
           color:Colors.RED,

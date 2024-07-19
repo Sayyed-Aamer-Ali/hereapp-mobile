@@ -22,7 +22,7 @@ const InputText = ({
   const [show, setShow] = useState(false);
 
 
-  const USPhoneNumberMask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   return (
     <View style={[styles.mainCont, style]}>
@@ -32,11 +32,10 @@ const InputText = ({
           <Text style={[styles.hashText, titleStyle]}>*</Text>
         </View>
 
-
       )}
       <View
         style={{
-          height: fieldInfo?.title ? UtilityMethods.hp(1.5) : null,
+          height: fieldInfo?.title ? UtilityMethods.hp(1) : null,
         }}
       />
       <View style={[styles.container(

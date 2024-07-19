@@ -6,12 +6,11 @@ import { Images } from '../../../assets';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import { UtilityMethods, Validator } from '../../../utility';
 import styles from './styles';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const ForgetPassword = ({navigation,route}) => {
-
-let user = route?.params?.user; 
-  
-   
+   const [loader, setLoader] = useState(false)
 const [email, setEmail] = useState({
   inputType:"text",
   title:"Email",
@@ -21,6 +20,7 @@ const [email, setEmail] = useState({
   placeholder:"Enter Email Address",
 
 });
+
 
 
 const onPressResetPassword = () => {
@@ -39,27 +39,35 @@ const onPressResetPassword = () => {
       setEmail({...email, error:emailValidate})
       error["email"]=emailValidate
     }
-
     if(Object.keys(error).length==0)
     {
-       navigation.goBack()
+      verifyEmailAPICall()
     }
-    
-
-  
-
 }
 
 
+const verifyEmailAPICall = async () =>{
+  try {
+    setLoader(true)
 
+    const data = { email: email.value };
+    let response = await axiosWrapper('POST', API_URLS.VERIFY_EMAIL, data, null,false, 'json', true);
+    if(response){
+      navigation.goBack()
+    }
+  } catch (error) {
+    
+  }finally{
+    setLoader(false)
+  }
+}
 
-
-
-
- 
   return (
-    <MainLayout>
-     <Header title={"Forgot Password"} />
+    <MainLayout loader={loader} >
+     <Header 
+      title={"Forgot Password"} 
+      rightIcons={false}
+      />
 
       <ScreenWrapper
       style={styles.cont}
@@ -77,10 +85,6 @@ const onPressResetPassword = () => {
          {"Please enter your registered Email address to send a Password Reset Link"}
        
          </Text>
-         
-          
-          
-        
         </View>
 
       

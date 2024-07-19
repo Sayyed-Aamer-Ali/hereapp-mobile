@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-
-
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
-import { Colors, Icons, Images } from '../../../assets';
-import { CommonStyles, Constants, FontSize, UtilityMethods, Validator } from '../../../utility';
-import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper, ImagePicker } from '../../../components';
+import { Colors, Icons } from '../../../assets';
+import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
+import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../redux/Reducers/AuthReducer';
 import { useToast } from "react-native-toast-notifications";
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
-const SignUp = ({ navigation, route }) => {
+const SignUp = ({ navigation }) => {
   const toast = useToast();
-
+  const [loader, setLoader] = useState(false)
   const [email, setEmail] = useState({
     inputType: "text",
     title: "Email",
@@ -21,29 +20,27 @@ const SignUp = ({ navigation, route }) => {
     type: "email",
     error: "",
     placeholder: "Enter Email Address",
-
   });
 
-  const [profileImage, setProfileImage] = useState({
-    inputType: "image",
-    title: "Profile Image",
-    value: "",
-    type: "image",
-    error: "",
-    placeholder: "Upload Profile Image",
-
-
-  });
-
-  const [fullName, setFullName] = useState({
+  const [firstName, setFirstName] = useState({
     inputType: "text",
-    title: "Full Name",
+    title: "First Name",
     value: "",
     type: "text",
     error: "",
-    placeholder: "Enter Full Name",
+    placeholder: "Enter First Name",
     leftIcon: <Icons.User />
-  })
+  });
+
+  const [lastName, setLastName] = useState({
+    inputType: "text",
+    title: "Last Name",
+    value: "",
+    type: "text",
+    error: "",
+    placeholder: "Enter Last Name",
+    leftIcon: <Icons.User />
+  });
 
   const [phoneNumber, setPhoneNumber] = useState({
     inputType: "text",
@@ -53,18 +50,28 @@ const SignUp = ({ navigation, route }) => {
     error: "",
     placeholder: "Enter Phone Number",
     leftIcon: <Icons.Phone />
-  })
+  });
 
-  const [nedId, setNetId] = useState({
+  const [netId, setNetId] = useState({
     inputType: "text",
     title: "NetID",
     value: "",
     type: "text",
     error: "",
     placeholder: "Enter NetID",
-    leftIcon: <Icons.Email />,
+    leftIcon: <Icons.nedID width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+  });
 
-  })
+  const [schoolName, setSchoolName] = useState({
+    inputType: "text",
+    title: "School Name",
+    value: "",
+    type: "text",
+    error: "",
+    placeholder: "Enter School Name",
+    leftIcon: <Icons.graduationCap  width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+  });
+
   const [password, setPassword] = useState({
     inputType: "text",
     title: "Password",
@@ -81,166 +88,164 @@ const SignUp = ({ navigation, route }) => {
     type: "checkbox",
     error: "",
   });
+
   const [privacyPolicy, setPrivacyPolicy] = useState({
     inputType: "checkbox",
-    title: "Remember Me",
+    title: "Privacy Policy",
     value: false,
     type: "checkbox",
     error: "",
   });
+
   const [error, setError] = useState({});
   const dispatch = useDispatch();
 
-
-  const onPressDontAccount = () => {
-    navigation.navigate(Routes.LOGIN);
-
-  }
-
   const validatePhone = (phone) => {
-    const regex = /^\(\d{3}\)\s\d{3}-\d{4}$/    //   /^[+]*[0-9\s]*$/;
-    return regex.test(phone) && phone.replace(/\s+/g, '').length >= 10;
+    const regex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
+    return regex.test(phone);
   };
 
-  const onPressLogin = () => {
-
-    let error = {}
+  const onPressSignUp = () => {
+    let error = {};
 
     let emailValidate = Validator("email", email.value);
-    let passwordValidate = Validator("password", password.value)
+    let passwordValidate = Validator("password", password.value);
 
-    if (email.value == "") {
-      setEmail({ ...email, error: "Email is required" })
-      error["email"] = "Email is required"
+    if (email.value === "") {
+      setEmail({ ...email, error: "Email is required" });
+      error["email"] = "Email is required";
     }
-    if (password.value == "") {
-      setPassword({ ...password, error: "Password is required" })
-      error["password"] = "Password is required"
+    if (password.value === "") {
+      setPassword({ ...password, error: "Password is required" });
+      error["password"] = "Password is required";
     }
-    if (fullName.value == "") {
-      setFullName({ ...fullName, error: "Name is required" })
-      error["fullName"] = "Name is required"
+    if (firstName.value === "") {
+      setFirstName({ ...firstName, error: "First Name is required" });
+      error["firstName"] = "First Name is required";
     }
-
-    if (phoneNumber.value == "") {
-      setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" })
-      error["phoneNumber"] = "Phone Number is required"
+    if (lastName.value === "") {
+      setLastName({ ...lastName, error: "Last Name is required" });
+      error["lastName"] = "Last Name is required";
     }
-    else if (!validatePhone(phoneNumber.value)) {
-      setPhoneNumber({ ...phoneNumber, error: "Phone Number is not correct" })
-      error["phoneNumber"] = "Phone Number is not correct"
+    if (phoneNumber.value === "") {
+      setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
+      error["phoneNumber"] = "Phone Number is required";
+    } 
+    else if (
+      // !validatePhone(phoneNumber.value)
+      phoneNumber.value.length < 10
+    ) {
+      setPhoneNumber({ ...phoneNumber, error: "Phone Number is not correct" });
+      error["phoneNumber"] = "Phone Number is not correct";
     }
-
-    if (nedId.value == "") {
-      setNetId({ ...nedId, error: "NetID is required" })
-      error["nedId"] = "NetID is required"
+    if (netId.value === "") {
+      setNetId({ ...netId, error: "NetID is required" });
+      error["netId"] = "NetID is required";
     }
-
-    if (profileImage.value == "") {
-      setProfileImage({ ...profileImage, error: "Profile Image is required" })
-      error["profileImage"] = "Profile Image is required"
-    }
-
-
-    setError(error);
-
-    if (email.value != "" && emailValidate) {
-      setEmail({ ...email, error: emailValidate })
-      error["email"] = emailValidate
-    }
-
-    if (password.value != "" && passwordValidate) {
-      setPassword({ ...password, error: passwordValidate })
-      error["password"] = passwordValidate
+    if (schoolName.value === "") {
+      setSchoolName({ ...schoolName, error: "School Name is required" });
+      error["schoolName"] = "School Name is required";
     }
 
     setError(error);
 
-    if (Object.keys(error).length == 0) {
+    if (email.value !== "" && emailValidate) {
+      setEmail({ ...email, error: emailValidate });
+      error["email"] = emailValidate;
+    }
+    if (password.value !== "" && passwordValidate) {
+      setPassword({ ...password, error: passwordValidate });
+      error["password"] = passwordValidate;
+    }
 
+    setError(error);
 
+    if (Object.keys(error).length === 0) {
       let user = {
         email: email.value,
         password: password.value,
-        fullName: fullName.value,
-        phoneNumber: phoneNumber.value,
-        netId: nedId.value,
-        userType: "Student",
-        ProfileImage: profileImage.value,
-        isLogin: true,
-        postalCode: '89000',
-      }
-      toast.show("OTP sent to you email...", {
-        type: 'success',
-      });
-      navigation.navigate(Routes.OTP_VERIFICATION, {
-        user: user
-      })
+        firstName: firstName.value,
+        lastName: lastName.value,
+        phoneNumber: `+${phoneNumber.value}`,
+        netID: netId.value,
+        schoolName: schoolName.value,
 
+        // role: "STUDENT",
+        // isLogin: true,
+      };
+
+      registerAPICall(user)
 
     }
+  };
 
+  const registerAPICall = async (data) =>{
+    try {
+      setLoader(true)
+      let response = await axiosWrapper("POST", API_URLS.REGISTER_URL, data, null, false, 'json', true);
+      if(response){
+        navigation.navigate(Routes.OTP_VERIFICATION, {
+          user: response.data
+        });
+      }
 
-
-
-
+    } catch (error) {
+    }finally{
+      setLoader(false)
+    }
   }
 
   return (
-    <MainLayout>
-      <Header title={"Sign Up"} />
-
-      <ScreenWrapper
-        style={styles.cont}
-      >
-        <ImagePicker
-          filedInfo={profileImage}
-          onChnage={(path) => {
-            setProfileImage({
-              ...profileImage, value: path,
-              error: ""
-            })
-          }}
-        />
-
+    <MainLayout loader={loader}>
+      <Header title={"Sign Up"} rightIcons={false} />
+      <ScreenWrapper style={styles.cont}>
         <View style={styles.inPutCont}>
-
           <CustomizedInput
-            fieldInfo={fullName}
+            fieldInfo={firstName}
             onChange={(text) => {
-              setFullName({ ...fullName, value: text, error: "" })
+              setFirstName({ ...firstName, value: text, error: "" });
             }}
           />
-
+          <CustomizedInput
+            fieldInfo={lastName}
+            onChange={(text) => {
+              setLastName({ ...lastName, value: text, error: "" });
+            }}
+          />
           <CustomizedInput
             fieldInfo={email}
             onChange={(text) => {
-              setEmail({ ...email, value: text, error: "" })
-
-              let ExtractId = text.split("@")
-              setNetId({ ...nedId, value: ExtractId[0], error: "" })
-
+              setEmail({ ...email, value: text, error: "" });
+              let ExtractId = text.split("@");
+              setNetId({ ...netId, value: ExtractId[0], error: "" });
             }}
           />
           <CustomizedInput
-            fieldInfo={nedId}
+            fieldInfo={netId}
             onChange={(text) => {
-              setNetId({ ...nedId, value: text, error: "" })
+              setNetId({ ...netId, value: text, error: "" });
             }}
             editable={false}
           />
+         
           <CustomizedInput
             fieldInfo={phoneNumber}
-            onChange={(text) => {
-              setPhoneNumber({ ...phoneNumber, value: text, error: "" })
+            onChange={(text,unmasked) => {
+              setPhoneNumber({ ...phoneNumber, value: unmasked, error: "" });
             }}
             keyboardType="number-pad"
             isPhoneNumber={true}
           />
+           <CustomizedInput
+            fieldInfo={schoolName}
+            onChange={(text) => {
+              setSchoolName({ ...schoolName, value: text, error: "" });
+            }}
+          />
           <CustomizedInput
             fieldInfo={password}
             onChange={(text) => {
-              setPassword({ ...password, value: text, error: "" })
+              setPassword({ ...password, value: text, error: "" });
             }}
           />
 
@@ -248,74 +253,49 @@ const SignUp = ({ navigation, route }) => {
             <CustomizedInput
               fieldInfo={rememberMe}
               onChange={(text) => {
-
-                setRememberMe({ ...rememberMe, value: text })
+                setRememberMe({ ...rememberMe, value: text });
               }}
             />
-
             <View style={[CommonStyles.ROW_VIEW]}>
-
-              <Text style={styles.regText}>
-                I agree to the
-              </Text>
+              <Text style={styles.regText}>I agree to the</Text>
               <TouchableOpacity>
-                <Text style={styles.underLineText}>
-                  terms & conditions.
-                </Text>
+                <Text style={styles.underLineText}>terms & conditions.</Text>
               </TouchableOpacity>
             </View>
-
           </View>
 
           <View style={styles.rowCont}>
             <CustomizedInput
               fieldInfo={privacyPolicy}
               onChange={(text) => {
-
-                setPrivacyPolicy({ ...privacyPolicy, value: text })
+                setPrivacyPolicy({ ...privacyPolicy, value: text });
               }}
             />
-
             <View style={[CommonStyles.ROW_VIEW]}>
-
-              <Text style={styles.regText}>
-                I agree to the
-              </Text>
+              <Text style={styles.regText}>I agree to the</Text>
               <TouchableOpacity>
-                <Text style={styles.underLineText}>
-                  privacy policy.
-                </Text>
+                <Text style={styles.underLineText}>privacy policy.</Text>
               </TouchableOpacity>
             </View>
-
           </View>
         </View>
         <Button
-          text={"Sign In"}
-          style={{
-            marginTop: UtilityMethods.hp(4)
-
-          }}
-          onPress={() => onPressLogin()}
+          text={"Sign Up"}
+          style={{ marginTop: UtilityMethods.hp(4) }}
+          onPress={() => onPressSignUp()}
         />
-
         <View style={styles.LinkedView}>
-          <Text style={[styles.regText, {
-            fontSize: FontSize.VALUE(16)
-          }]}>Already have an account?</Text>
+          <Text style={[styles.regText, { fontSize: FontSize.VALUE(16) }]}>
+            Already have an account?
+          </Text>
           <TouchableOpacity onPress={() => onPressDontAccount()}>
-            <Text style={[styles.regText, {
-              color: Colors.RED,
-              fontSize: FontSize.VALUE(16),
-            }]}>Login Now
+            <Text style={[styles.regText, { color: Colors.RED, fontSize: FontSize.VALUE(16) }]}>
+              Login Now
             </Text>
           </TouchableOpacity>
         </View>
-
-
         <View style={{ height: UtilityMethods.hp(3) }} />
       </ScreenWrapper>
-
     </MainLayout>
   );
 }

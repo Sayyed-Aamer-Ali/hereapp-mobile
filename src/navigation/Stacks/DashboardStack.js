@@ -19,7 +19,7 @@ const DashboardStack = () => {
     }}
     
     >
-      {user?.userType == "Student" ? (
+      {user?.role == "STUDENT" ? (
         <Stack.Screen name={Routes.StudentStack} component={StudentStack} />
       ) : (
         <Stack.Screen name={Routes.InstructorStack}component={InstructorStack} />

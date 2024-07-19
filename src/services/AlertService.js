@@ -2,7 +2,7 @@ import { Alert, Platform, ToastAndroid } from 'react-native';
 import { Toast } from "react-native-toast-notifications";
 
 class alertService {
-  toastPrompt = (msg, msg1, type = 'success') => {
+  toastPrompt = (msg, type = 'success') => {
     
     if (type === 'error')
       Toast.show(msg, { duration: 2000, type: "danger",placement: "top", });

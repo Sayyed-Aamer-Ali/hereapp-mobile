@@ -1,5 +1,6 @@
 import { Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { Colors } from '../../assets'
+import { LoaderModal } from '../LoaderModal'
 
 
 
@@ -14,7 +15,7 @@ const MainLayout = ({
 }) => {
   return (
     <View style={styles.container}>
-        {/* <LoaderModal loading={loader} /> */}
+        <LoaderModal loading={loader} />
     
       <StatusBar translucent backgroundColor={statusbarBackgrund} barStyle={'dark-content'} />
       <SafeAreaView style={{flex: 0, backgroundColor: statusbarBackgrund}} />

@@ -47,6 +47,8 @@ const OtpInput = ({ numOfDigits = 4, onComplete }) => {
                     ref={inputRefs.current[index]}
                     autoFocus={index === 0}
                     cursorColor={Colors.ICON_BLACK}
+                    selectionColor={Colors.BLACK}
+                    
                 />
             ))}
         </View>
@@ -66,11 +68,14 @@ const styles = StyleSheet.create({
         height: wp(12),
         textAlign: 'center',
         
-        backgroundColor: Colors.GRAY_06,
+        backgroundColor: Colors.GRAY_OTP,
         color: Colors.ICON_BLACK,
         borderRadius:wp(100),
         fontFamily:Fonts.REGULAR,
         fontSize:FontSize.VALUE(16),
+        borderColor:Colors.PLACEHOLDER_COLOR,
+        borderWidth:1
+
     },
 });
 

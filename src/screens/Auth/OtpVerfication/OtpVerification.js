@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 
@@ -11,14 +11,17 @@ import { UtilityMethods, Validator } from '../../../utility';
 import styles from './styles';
 import AlertService from '../../../services/AlertService';
 import { useToast } from "react-native-toast-notifications";
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const OtpVerification = ({navigation,route}) => {
   const toast = useToast();
-let user = route?.params?.user; 
+  let user = route?.params?.user; 
   
   const dispatch = useDispatch();
    
- const [resetCounter, setResetCounter] = useState(false);
+ const [resetCounter, setResetCounter] = useState(true);
+ const [expiredPress, setExpiredPress] = useState(true);
 
  const [otp, setOtp] = useState({
     value:"",
@@ -26,21 +29,49 @@ let user = route?.params?.user;
     
   });
 
+  useEffect(() => {
 
+  }, []);
 
+  const getOTP = async () => {
+    try {
+      if (!user || !user.email) {
+        return;
+      }
+      const data = { email: user.email };
+      const response = await axiosWrapper('POST', API_URLS.SEND_OTP, data, null, false, 'json', true);
+      
+
+    } catch (error) {
+    }
+  };
+
+  const verifyOTP = async () =>{
+    try {
+      let data = {
+        email: user.email,
+        otp:otp.value
+      }
+      let response = await axiosWrapper('POST',API_URLS.VERIFY_OTP,data,null,false,'json',true);
+
+    } catch (error) {
+      
+    }
+  }
 
   const onPressVerify = () => {
 
     if(otp.value.length < 5){
-      AlertService.toastPrompt("Please enter OTP","","error")
+      AlertService.toastPrompt("Please enter OTP","error")
  
     }
     else{
       toast.show("Signup successfylly...",{
         type:'success',
       });
-      dispatch(setToken("DUMMY_TOKEN"));
-      dispatch(setUser(user))
+      verifyOTP()
+      // dispatch(setToken("DUMMY_TOKEN"));
+      // dispatch(setUser(user))
     }
   }
 
@@ -52,6 +83,7 @@ let user = route?.params?.user;
       btnTitleSecond: "Cancel",
       onPressButtonFirst: () => {
         setResetCounter(true)
+        setExpiredPress(true)
       },
       onPressButtonSecond: () => {
       }
@@ -68,8 +100,10 @@ let user = route?.params?.user;
       btnTitleSecond: "No",
       onPressButtonFirst: () => {
         setResetCounter(true)
+        getOTP()
       },
       onPressButtonSecond: () => {
+
       }
     });
 
@@ -78,7 +112,10 @@ let user = route?.params?.user;
 
   return (
     <MainLayout>
-     <Header title={"Sign In"} />
+     <Header 
+      title={"Sign In"} 
+      rightIcons={false}
+      />
 
       <ScreenWrapper
       style={styles.cont}
@@ -106,7 +143,7 @@ let user = route?.params?.user;
             value:otp,
             error:""
          })
-        
+         
       }
       } />
        <CountdownTimer
@@ -114,15 +151,12 @@ let user = route?.params?.user;
         reset={resetCounter}
         counterStarted={() => {
           setResetCounter(false)
+          setExpiredPress(false)
         }}
+        expiredPress={expiredPress}
         contStyle={styles.countCant}
-      setonCounterFinished={(isFinished) => {
-     
+        setonCounterFinished={(isFinished) => {
          showAlert()
-       
-
-
-
       }
       } />
          </View>

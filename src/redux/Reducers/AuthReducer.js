@@ -26,7 +26,6 @@ const authSlice = createSlice({
       state.recentSearches = null;
       state.totalNotification = null;
       state.routesListing = null;
-      state.token = null
     },
     setSkipButtonPress: (state, action) => {
       state.skipButtonPress = action.payload;

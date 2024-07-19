@@ -363,7 +363,7 @@ class UtilityMethodsClass {
         callback(position);
       },
       (error) => {
-       AlertService.toastPrompt("Please Allow Your Location","","error");
+       AlertService.toastPrompt("Please Allow Your Location","error");
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );

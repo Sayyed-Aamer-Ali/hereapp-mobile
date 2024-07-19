@@ -10,6 +10,7 @@ const Colors = {
   BORDER_COLOR:"#EEEEEE",
   MILK:"#fffef4",
   parotGreen: "#5B8441",
+  GRAY_OTP:'#FBFBFB',
 
   TransParentBackground: "rgba(0, 0, 0, 0.5)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",

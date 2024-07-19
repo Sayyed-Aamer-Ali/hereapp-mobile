@@ -29,7 +29,7 @@ const RootStack = () => {
   useEffect(() => {
     // This will run on initial mount and whenever `user` or `initialLoading` changes
     if (!initialLoading) {
-      setInitialRoute((token && user) ? Routes.DASHBOARD_STACK : Routes.AUTH_STACK);
+      setInitialRoute((token) ? Routes.DASHBOARD_STACK : Routes.AUTH_STACK);
     }
   }, [token,initialLoading]); // Depend on `user` and `initialLoading`
 
