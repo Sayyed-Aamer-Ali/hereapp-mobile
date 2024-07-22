@@ -1,52 +1,60 @@
 import { StyleSheet } from "react-native";
-import { CommonStyles, FontSize, UtilityMethods } from "../../../utility";
-import { Colors } from "../../../assets";
+import {  FontSize, UtilityMethods } from "../../../utility";
+import { Colors, Fonts } from "../../../assets";
 
 
 
 
 const styles = StyleSheet.create({
-  cont: {
- 
-    paddingTop:UtilityMethods.hp(10),
-   
- 
 
+  contentContainerStyle:{
+    paddingHorizontal:UtilityMethods.wp(6),
+    paddingVertical:UtilityMethods.hp(2)
   },
-  titleText:{
-    ...CommonStyles.BOLD,
+  title:{
     color:Colors.BLACK,
-    // marginTop:UtilityMethods.hp(5),
-    fontSize:FontSize.VALUE(20),
-    textAlign:"center"
-  },
-  button:{
-  
-    marginTop:UtilityMethods.hp(5),
-    backgroundColor:Colors.SECONDARY1,
-    width:UtilityMethods.wp(90),
-
-
-  },
-  linkText:{
-    ...CommonStyles.REGULAR,
-    color:Colors.BLACK,
-    fontSize:FontSize.VALUE(14),
-    marginLeft:UtilityMethods.wp(1)
+    fontFamily: Fonts.REGULAR,
+    fontSize:FontSize.VALUE(14)
   },
   otpContainer:{
- 
-    width:UtilityMethods.wp(90),
-    alignSelf:"center",
-    backgroundColor:Colors.RED,
-  
+    marginVertical:UtilityMethods.hp(4),
+  },
+  error:{
+    fontSize:FontSize.VALUE(16),
+    color:Colors.BLACK,
+    marginTop:UtilityMethods.hp(1.5),
+    marginBottom:UtilityMethods.hp(2)
+  },
+  container: {
+    paddingVertical: UtilityMethods.hp(2),
 
   },
-  bodyView:{
-    flex:1,
-   paddingTop:UtilityMethods.hp(20),
-    alignItems:"center"
-  }
+  noteTitle: {
+    fontSize: FontSize.VALUE(16),
+    fontFamily: Fonts.BOLD,
+    color: Colors.BLACK,
+  },
+  noteBody: {
+    flexDirection: 'row',
+    marginTop: UtilityMethods.hp(1),
+    alignItems: 'flex-start',
+  },
+  bulletPoint: {
+    fontSize: FontSize.VALUE(14),
+    marginRight: UtilityMethods.wp(2),
+    color: Colors.BLACK,
+  },
+  noteText: {
+    fontSize: FontSize.VALUE(14),
+    fontFamily: Fonts.REGULAR,
+    color: Colors.GRAY,
+    flexWrap: 'wrap',
+  },
+  highlightText: {
+    fontSize: FontSize.VALUE(14),
+    fontFamily: Fonts.BOLD,
+    color: Colors.RED,
+  },
 });
 
 export default styles;

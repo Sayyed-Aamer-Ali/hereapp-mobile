@@ -6,9 +6,9 @@ import EyeOpen from "./EyeOpen.svg";
 import EyeClose from "./EyeClosed.svg";
 import UnChecked from "./UnChecked.svg";
 import Checked from "./Checked.svg";
-import Upload from  "./Upload.svg";
+import Upload from "./Upload.svg";
 import PencilLine from "./pencilLine.svg"
-import Phone  from "./Phone.svg"
+import Phone from "./Phone.svg"
 import User from "./User.svg"
 import HouseFilled from "./HouseFilled.svg"
 import ClockCounterUnfilled from "./ClockCounterClockwiseUnfilled.svg"
@@ -27,6 +27,8 @@ import Right from "./Right.svg"
 import logoutIcon2 from "./logoutIcon2.svg"
 import nedID from './nedId.svg'
 import graduationCap from './graduationCap.svg'
+import UpArrow from './UpArrow.svg'
+import DownArrow from './DownArrow.svg'
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -37,27 +39,29 @@ export default Icons = {
     EyeClose: EyeClose,
     UnChecked: UnChecked,
     Checked: Checked,
-    Upload:Upload,
-    PencilLine:PencilLine,
-    Phone:Phone,
-    User:User,
-    HouseFilled:HouseFilled,
-    ClockCounterUnfilled:ClockCounterUnfilled,
-    UserUnfilled:UserUnfilled,
-    ClockCounterFilled:ClockCounterFilled,
-    HouseUnfilled:HouseUnfilled,
-    UserFilled:UserFilled,
-    TermsConditions:TermsConditions,
-    PrivacyPolicy:PrivacyPolicy,
-    Notifications:Notifications,
-    Home:Home,
-    SignOut:SignOut,
-    ExcusedAttandance:ExcusedAttandance,
-    List:List,
-    Right:Right,
-    logoutIcon2,   
-    nedID, 
+    Upload: Upload,
+    PencilLine: PencilLine,
+    Phone: Phone,
+    User: User,
+    HouseFilled: HouseFilled,
+    ClockCounterUnfilled: ClockCounterUnfilled,
+    UserUnfilled: UserUnfilled,
+    ClockCounterFilled: ClockCounterFilled,
+    HouseUnfilled: HouseUnfilled,
+    UserFilled: UserFilled,
+    TermsConditions: TermsConditions,
+    PrivacyPolicy: PrivacyPolicy,
+    Notifications: Notifications,
+    Home: Home,
+    SignOut: SignOut,
+    ExcusedAttandance: ExcusedAttandance,
+    List: List,
+    Right: Right,
+    logoutIcon2,
+    nedID,
     graduationCap,
+    UpArrow,
+    DownArrow,
 }
 
 

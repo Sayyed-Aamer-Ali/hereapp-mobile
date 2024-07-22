@@ -10,6 +10,10 @@ import Header from "./CustomHeader/Header";
 import MainLayout from "./MainLayout";
 import ImagePicker from "./ImagePicker";
 import ClassDetailBox from "./ClassDetailBox/ClassDetailBox";
+import EmptyComponent from "./EmptyComponent";
+import ModifiedOTPInput from "./ModifiedOTPInput";
+import ClassDetail from "./ClassDetail";
+import SuccessModal from "./SuccessModal";
 
 
 
@@ -27,7 +31,9 @@ export {
   Header,
   MainLayout,
   ImagePicker,
-  ClassDetailBox
-  
-  
+  ClassDetailBox,
+  EmptyComponent,
+  ModifiedOTPInput,
+  ClassDetail,
+  SuccessModal,
 };

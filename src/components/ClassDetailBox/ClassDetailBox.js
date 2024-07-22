@@ -6,7 +6,7 @@ import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 
 
-const ClassDetailBox = ({ item }) => {
+const ClassDetailBox = ({ item, onPress }) => {
 
 return (
     <ShadowCard cardStyle={styles.contStyle}
@@ -59,6 +59,7 @@ return (
         Icon={
           <Icons.Right/>
         }
+        onPress={onPress}
        />
     </ShadowCard>
   )

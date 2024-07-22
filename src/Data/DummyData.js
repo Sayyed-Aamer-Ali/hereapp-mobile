@@ -13,6 +13,8 @@ export const UserTypes=[
 
 ]
 
+
+
 export const MyClasses=[
 
   {
@@ -70,3 +72,10 @@ export const MyClasses=[
 
 ]
 
+
+
+export const attendanceData = [
+  { id: '1', status: 'Present', className: 'ABCD', dateTime: 'Thu 4:30 PM, Mar 23, 2024' },
+  { id: '2', status: 'Absent', className: 'XYZ', dateTime: 'Fri 10:00 AM, Mar 24, 2024' },
+  // Add more data as needed
+];

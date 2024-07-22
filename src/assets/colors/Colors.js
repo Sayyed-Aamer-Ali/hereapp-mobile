@@ -11,6 +11,7 @@ const Colors = {
   MILK:"#fffef4",
   parotGreen: "#5B8441",
   GRAY_OTP:'#FBFBFB',
+  BOX_HEADER:'#F6F6F6',
 
   TransParentBackground: "rgba(0, 0, 0, 0.5)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
