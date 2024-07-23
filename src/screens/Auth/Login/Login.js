@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, Platform } from 'react-native';
-
-
 import styles from './styles';
 import { Colors, Fonts, Icons, Images } from '../../../assets';
 import { CommonStyles, Constants, FontSize, UtilityMethods, Validator } from '../../../utility';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
-import { useDispatch } from 'react-redux';
-import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken, setUser, setRememberMeCreds, clearRememberMeCreds } from '../../../redux/Reducers/AuthReducer';
 import { useToast } from "react-native-toast-notifications";
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import AlertService from '../../../services/AlertService';
+
 
 const Login = ({navigation,route}) => {
   const toast = useToast();
   const [loader, setLoader] = useState(false)
   const userType = route.params?.selectedUser;
+  const passwordRef = useRef(null);
+  
+  const { email: savedEmail, password: savedPassword, rememberMe: savedRememberMe } = useSelector(state => state.auth.rememberMeCreds);
+
   const [email, setEmail] = useState({
     inputType:"text",
     title:"Email",
-    value:"",
+    value:savedEmail || "",
     type:"email",
     error:"",
     placeholder:"Enter Email Address",
@@ -29,7 +33,7 @@ const Login = ({navigation,route}) => {
   const [password, setPassword] = useState({
     inputType:"text",
     title:"Password",
-    value:"",
+    value: savedPassword || "",
     type:"password",
     error:"",
     placeholder:"Enter Password",
@@ -38,7 +42,7 @@ const Login = ({navigation,route}) => {
   const [rememberMe, setRememberMe] = useState({
     inputType:"checkbox",
     title:"Remember Me",
-    value:false,
+    value: savedRememberMe || true,
     type:"checkbox",
     error:"",
   });
@@ -89,22 +93,10 @@ const Login = ({navigation,route}) => {
       const user = {
         email: email.value,
         password: password.value,
-        // fullName:"John Doe",
-        // isLogin:true ,
-        // userType:userType,
-        // ProfileImage:Constants.DummyPicture,
-        // phoneNumber:'450 765 5989',
-        // netId:'new_user',
-        // address:'21 Street North, Ontario, Canada',
-        // postalCode:'89000',
       }
-      // dispatch(setToken("DUMMY_TOKEN"));
-      // dispatch(setUser(user));
-      // toast.show("Login successfully...",{
-      //   type:'success',
-      // });
 
-      loginAPICall(user)
+      // loginAPICall(user)
+      loginAPICall({...user, isMobile:true})
 
     }
   }
@@ -112,13 +104,35 @@ const Login = ({navigation,route}) => {
   const loginAPICall = async (data) =>{
     try {
       setLoader(true)
-      let response = await axiosWrapper('POST', API_URLS.LOGIN_URL,data, null,false, 'json', true);
+      let response = await axiosWrapper('POST', API_URLS.LOGIN_URL,data, null,false, 'json', false);
       if(response){
-        dispatch(setToken(response?.data.token));
-        dispatch(setUser({...response?.data.user,role:userType==='Student' ? 'STUDENT':response?.data?.user?.role}));
+        if (rememberMe.value) {
+          dispatch(setRememberMeCreds({ email: email.value, password: password.value, rememberMe: true }));
+        } else {
+          dispatch(clearRememberMeCreds());
+        }
+        if(response?.data?.user?.isVerified){
+          dispatch(setToken(response?.data.token));
+          dispatch(setUser(response?.data.user));
+        }
+        else{
+          navigation.navigate(Routes.OTP_VERIFICATION, {
+            user:data,
+            successMessage:'user logged in successfully'
+          });
+        }
+        
+        
       }
     } catch (error) {
-      
+      let msg = error
+        if(msg === 'Please verify your account!'){
+          navigation.navigate(Routes.OTP_VERIFICATION, {
+          user: { email:email.value, password:password.value }
+        });
+        return 
+        }
+        AlertService.toastPrompt(msg,'error')
     }finally{
       setLoader(false)
     }
@@ -142,13 +156,15 @@ const Login = ({navigation,route}) => {
          <CustomizedInput
           fieldInfo={email}
           onChange={(text) => {
-            setEmail({...email, value:text, error:""})
+            setEmail({...email, value:text.replace(/\s/g, ''), error:""})
           }}
+          onSubmitEditing={()=>passwordRef.current?.focus()}
         />
         <CustomizedInput
+          ref={passwordRef}
           fieldInfo={password}
           onChange={(text) => {
-            setPassword({...password, value:text, error:""})
+            setPassword({...password, value:text.replace(/\s/g, ''), error:""})
           }}
         />
 
@@ -157,10 +173,7 @@ const Login = ({navigation,route}) => {
 
           <CustomizedInput
           fieldInfo={rememberMe}
-          onChange={(text) => {
-            
-            setRememberMe({...rememberMe, value:text})
-          }}
+          onChange={(text) => {setRememberMe({...rememberMe, value:text})}}
         />
 
         <Text style={styles.regText}>Remember Me</Text>
@@ -196,7 +209,7 @@ const Login = ({navigation,route}) => {
             <Text style={[styles.regText,{
               color:Colors.RED,
               fontSize:FontSize.VALUE(16),
-            }]}>Register Now
+            }]}>Sign Up
             </Text>
           </TouchableOpacity>
         </View>

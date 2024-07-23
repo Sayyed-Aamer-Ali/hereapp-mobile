@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 
 import { useDispatch } from 'react-redux';
-import { Images } from '../../../assets';
+import { Colors, Images } from '../../../assets';
 import { AlertWithTwoButtons, Button, CountdownTimer, Header, MainLayout, OtpInput, ScreenWrapper } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { setToken, setUser } from '../../../redux/Reducers/AuthReducer';
@@ -14,19 +14,25 @@ import { useToast } from "react-native-toast-notifications";
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 
-const OtpVerification = ({navigation,route}) => {
+const OtpVerification = ({ navigation, route }) => {
   const toast = useToast();
-  let user = route?.params?.user; 
-  
-  const dispatch = useDispatch();
-   
- const [resetCounter, setResetCounter] = useState(true);
- const [expiredPress, setExpiredPress] = useState(true);
+  let user = route?.params?.user;
+  let successMessage = route?.params?.successMessage
 
- const [otp, setOtp] = useState({
-    value:"",
-    error:"",
-    
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [loader, setLoader] = useState(false)
+  const dispatch = useDispatch();
+
+  const [resetCounter, setResetCounter] = useState(true);
+  const [expiredPress, setExpiredPress] = useState(true);
+  const [showReset, setShowReset] = useState(false);
+  const [otpReset, setOtpReset] = useState(false);
+
+
+  const [otp, setOtp] = useState({
+    value: "",
+    error: "",
+
   });
 
   useEffect(() => {
@@ -40,39 +46,66 @@ const OtpVerification = ({navigation,route}) => {
       }
       const data = { email: user.email };
       const response = await axiosWrapper('POST', API_URLS.SEND_OTP, data, null, false, 'json', true);
-      
+
 
     } catch (error) {
     }
   };
 
-  const verifyOTP = async () =>{
+  const verifyOTP = async () => {
     try {
       let data = {
         email: user.email,
-        otp:otp.value
+        otp: otp.value
       }
-      let response = await axiosWrapper('POST',API_URLS.VERIFY_OTP,data,null,false,'json',true);
-
+      let response = await axiosWrapper('POST', API_URLS.VERIFY_OTP, data, null, false, 'json', true);
+      if(response){
+        dispatch(setToken(response?.data.token));
+        dispatch(setUser(response?.data.user));
+      }
     } catch (error) {
-      
+
     }
   }
 
-  const onPressVerify = () => {
+  const verifyOTPDummy = () =>{
+    if(otp.value === '12345'){
+      loginAPICallForDummy({email:user.email, password:user.password, isMobile:true})
+    }else{
+      AlertService.toastPrompt("Invalid OTP", 'error')
+    }
+  }
 
-    if(otp.value.length < 5){
-      AlertService.toastPrompt("Please enter OTP","error")
- 
+  const loginAPICallForDummy = async (data) =>{
+    try{
+      setLoader(true)
+      let response = await axiosWrapper('POST', API_URLS.LOGIN_URL, data, null,false, 'json', false);
+      if(response){
+        dispatch(setToken(response?.data.token));
+        dispatch(setUser(response?.data.user));
+        AlertService.toastPrompt(successMessage, 'success')
+      }
+    }catch(error){
+    }finally{
+      setLoader(false)
     }
-    else{
-      toast.show("Signup successfylly...",{
-        type:'success',
-      });
-      verifyOTP()
-      // dispatch(setToken("DUMMY_TOKEN"));
-      // dispatch(setUser(user))
+  }
+
+
+  const onPressVerify = () => {
+    if (isButtonDisabled) return;
+    setIsButtonDisabled(true); 
+
+    if (otp.value.length < 5) {
+      AlertService.toastPrompt("Please enter OTP", "error")
     }
+    else {
+      // verifyOTP()
+      verifyOTPDummy()
+    }
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 3000);
   }
 
   const showAlert = () => {
@@ -99,6 +132,12 @@ const OtpVerification = ({navigation,route}) => {
       btnTitleFirst: "Yes",
       btnTitleSecond: "No",
       onPressButtonFirst: () => {
+        setOtp({
+          ...otp,
+          value: "",
+          error: ""
+        })
+        setOtpReset(true);
         setResetCounter(true)
         getOTP()
       },
@@ -111,84 +150,86 @@ const OtpVerification = ({navigation,route}) => {
   }
 
   return (
-    <MainLayout>
-     <Header 
-      title={"Sign In"} 
-      rightIcons={false}
+    <MainLayout loader={loader}>
+      <Header
+        title={"Email verification"}
+        rightIcons={false}
       />
 
       <ScreenWrapper
-      style={styles.cont}
-      contentContainerStyle={styles.contentContainerStyle}
+        style={styles.cont}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         <Image style={styles.logo} source={Images.LOGO} />
-
         <View style={styles.inPutCont}>
-       
-         <Text style={styles.mainText}>
-          Email Verification
-         </Text>
 
-         <Text style={styles.regText}>
-         {"We have sent you an OTP on your email, please enter in these fields to get verified"}
-       
-         </Text>
-         <View style={styles.optView}>
+          <Text style={styles.mainText}>
+            Email Verification
+          </Text>
 
-         <OtpInput
-          numOfDigits={5}
-         onComplete={(otp) => {
-         setOtp({
-            ...otp,
-            value:otp,
-            error:""
-         })
-         
-      }
-      } />
-       <CountdownTimer
-        countDownTime={180}
-        reset={resetCounter}
-        counterStarted={() => {
-          setResetCounter(false)
-          setExpiredPress(false)
-        }}
-        expiredPress={expiredPress}
-        contStyle={styles.countCant}
-        setonCounterFinished={(isFinished) => {
-         showAlert()
-      }
-      } />
-         </View>
-        
+          <Text style={styles.regText}>
+            {"We have sent you an OTP on your email, please enter in these fields to get verified."}
+
+          </Text>
+          <View style={styles.optView}>
+
+            <OtpInput
+              numOfDigits={5}
+              onComplete={(otp) => {
+                setOtp({
+                  ...otp,
+                  value: otp,
+                  error: ""
+                })}} 
+                reset={otpReset}
+                />
+            <CountdownTimer
+              countDownTime={60}
+              reset={resetCounter}
+              counterStarted={() => {
+                setResetCounter(false)
+                setExpiredPress(false)
+              }}
+              expiredPress={expiredPress}
+              contStyle={styles.countCant}
+              setonCounterFinished={(isFinished) => {
+                // showAlert()
+                // setExpiredPress(true)
+                setShowReset(true)
+              }
+              } />
+          </View>
+
         </View>
 
 
-         <Button
+        <Button
           text={"Verify"}
           style={{
-            marginTop:UtilityMethods.hp(4)
-          
+            marginTop: UtilityMethods.hp(4),
           }}
           onPress={() => {
             onPressVerify()
           }}
-       
+
         />
 
-        <TouchableOpacity
-        onPress={() => {
-          showResendAlert()
-        }}
+      {showReset &&  
+      <TouchableOpacity
+          onPress={() => {
+            showResendAlert()
+          }}
+          
         >
-        <Text style={styles.boldText}>
+          <Text style={styles.boldText}>
 
-        Resend OTP
-        </Text>
+            Resend OTP
+          </Text>
         </TouchableOpacity>
-      
-        </ScreenWrapper>
-   
+        }
+
+      </ScreenWrapper>
+
     </MainLayout>
   );
 }

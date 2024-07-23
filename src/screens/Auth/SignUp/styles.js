@@ -63,7 +63,13 @@ const styles = StyleSheet.create({
     textDecorationLine:"underline",
     marginLeft:UtilityMethods.wp(1)
     
-  }
+  },
+  errorText: {
+    fontSize: FontSize.VALUE(14),
+    color: Colors.RED,
+    marginLeft: UtilityMethods.wp(1),
+    fontWeight:Fonts.REGULAR,
+  },
 });
 
 export default styles;

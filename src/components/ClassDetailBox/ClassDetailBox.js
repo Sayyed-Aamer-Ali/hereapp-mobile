@@ -6,11 +6,15 @@ import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 
 
-const ClassDetailBox = ({ item, onPress }) => {
+const ClassDetailBox = ({ 
+  item, 
+  onPress, 
+  buttonText = "Mark Attendance"
+ }) => {
 
-return (
+  return (
     <ShadowCard cardStyle={styles.contStyle}
-    activeOpacity={1}
+      activeOpacity={1}
     >
       <View style={styles.header}>
         <Text style={styles.title}>
@@ -18,49 +22,49 @@ return (
         </Text>
       </View>
       <View style={styles.body}>
-       <View style={[CommonStyles.ROW_VIEW,{justifyContent:"space-between"}]}>
-          <View>
-             <Text style={styles.titleText}>
-                {item.classInstructor}
-             </Text>
-              <Text style={styles.desText}>
-                   Class Instructor
-              </Text>
-            </View>   
-            <View>
-             <Text style={styles.titleText}>
-                {item.classSection}
-             </Text>
-              <Text style={styles.desText}>
-                   Class Section
-              </Text>
-            </View>  
-       </View>
-       <View style={[CommonStyles.ROW_VIEW,{justifyContent:"space-between"}]}>
-          <View>
-             <Text style={styles.titleText}>
-                {item.timeSLot}
-             </Text>
-              <Text style={styles.desText}>
-                    Time Slot
-              </Text>
-            </View>   
-            <View style={{marginRight:UtilityMethods.wp(4.5)}}>
-             <Text style={styles.titleText}>
-                {item.date}
-             </Text>
-              <Text style={styles.desText}>
-                    Date
-              </Text>
-            </View>  
-       </View>
+        <View style={[CommonStyles.ROW_VIEW,styles.itemsContainer]}>
+          <View style={styles.item1}>
+            <Text style={styles.titleText}>
+              {item.classInstructor || item.enrolledStudents}
+            </Text>
+            <Text style={styles.desText}>
+            {item.classInstructor ? 'Class Instructor' : "Enrolled Students"} 
+            </Text>
+          </View>
+          <View style={styles.item2}>
+            <Text style={styles.titleText}>
+              {item.classSection}
+            </Text>
+            <Text style={styles.desText}>
+              Class Section
+            </Text>
+          </View>
+
+          <View style={styles.item1}>
+            <Text style={styles.titleText}>
+              {item.timeSLot}
+            </Text>
+            <Text style={styles.desText}>
+              Time Slot
+            </Text>
+          </View>
+          <View style={styles.item2}>
+            <Text style={styles.titleText}>
+              {item.date}
+            </Text>
+            <Text style={styles.desText}>
+              Date
+            </Text>
+          </View>
+
+        </View>
       </View>
-      <Button text={"Mark Attendance"} 
+      <Button text={buttonText}
         Icon={
-          <Icons.Right/>
+          <Icons.Right />
         }
         onPress={onPress}
-       />
+      />
     </ShadowCard>
   )
 }
@@ -73,35 +77,47 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.WHITE,
     alignSelf: 'center',
     borderRadius: 8,
-    marginTop:UtilityMethods.hp(2),
-    paddingHorizontal:UtilityMethods.wp(4),
+    marginTop: UtilityMethods.hp(2),
+    paddingHorizontal: UtilityMethods.wp(4),
 
   },
+  itemsContainer:{
+    justifyContent: "space-between", 
+    flexWrap: 'wrap',
+    rowGap:UtilityMethods.hp(1),
+  },
+  item1:{
+    width:'60%',
+  },
+  item2:{
+    width:'40%',
+  },
   header: {
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: 'center',
     height: UtilityMethods.hp(4),
     borderBottomWidth: 1,
     borderBottomColor: Colors.BORDER_COLOR,
-  
+
   },
   title: {
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.MEDIUM,
     color: Colors.GRAY,
   },
-  body:{
-    width:UtilityMethods.wp(70),
-    
-    paddingVertical:UtilityMethods.hp(1.5),
-    rowGap:UtilityMethods.hp(1),
+  body: {
+    width: '100%',
+
+    paddingVertical: UtilityMethods.hp(1.5),
+    rowGap: UtilityMethods.hp(1),
   },
-  titleText:{
+  titleText: {
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.MEDIUM,
     color: Colors.GRAY,
+    marginBottom:UtilityMethods.hp(0.5),
   },
-  desText:{
+  desText: {
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.REGULAR,
     color: Colors.LIGHT_GRAY,

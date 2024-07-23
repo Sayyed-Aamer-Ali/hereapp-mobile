@@ -247,7 +247,7 @@ const ChangePassword = ({ navigation }) => {
     if (Object.keys(error).length === 0) {
       let updatedUser = {
         ...user,
-        password: newPassword.value,
+        password: newPassword?.value?.trim(),
       };
 
       // Dispatch updated user information here

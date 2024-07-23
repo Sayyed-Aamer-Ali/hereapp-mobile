@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import { Colors, Icons } from '../../../assets';
@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useToast } from "react-native-toast-notifications";
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import AlertService from '../../../services/AlertService';
 
 const SignUp = ({ navigation }) => {
   const toast = useToast();
@@ -21,6 +22,11 @@ const SignUp = ({ navigation }) => {
     error: "",
     placeholder: "Enter Email Address",
   });
+  const lastNameRef = useRef();
+  const emailRef = useRef();
+  const phoneRef = useRef();
+  const schoolNameRef = useRef();
+  const passwordRef = useRef();
 
   const [firstName, setFirstName] = useState({
     inputType: "text",
@@ -84,7 +90,7 @@ const SignUp = ({ navigation }) => {
   const [rememberMe, setRememberMe] = useState({
     inputType: "checkbox",
     title: "Remember Me",
-    value: false,
+    value: true,
     type: "checkbox",
     error: "",
   });
@@ -92,7 +98,7 @@ const SignUp = ({ navigation }) => {
   const [privacyPolicy, setPrivacyPolicy] = useState({
     inputType: "checkbox",
     title: "Privacy Policy",
-    value: false,
+    value: true,
     type: "checkbox",
     error: "",
   });
@@ -111,40 +117,47 @@ const SignUp = ({ navigation }) => {
     let emailValidate = Validator("email", email.value);
     let passwordValidate = Validator("password", password.value);
 
-    if (email.value === "") {
+    if (email.value?.trim() === "") {
       setEmail({ ...email, error: "Email is required" });
       error["email"] = "Email is required";
     }
-    if (password.value === "") {
+    if (password.value?.trim() === "") {
       setPassword({ ...password, error: "Password is required" });
       error["password"] = "Password is required";
     }
-    if (firstName.value === "") {
+    if (firstName.value?.trim()  === "") {
       setFirstName({ ...firstName, error: "First Name is required" });
       error["firstName"] = "First Name is required";
     }
-    if (lastName.value === "") {
+    if (lastName.value?.trim() === "") {
       setLastName({ ...lastName, error: "Last Name is required" });
       error["lastName"] = "Last Name is required";
     }
-    if (phoneNumber.value === "") {
+    if (phoneNumber.value?.trim() === "") {
       setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
       error["phoneNumber"] = "Phone Number is required";
     } 
     else if (
       // !validatePhone(phoneNumber.value)
-      phoneNumber.value.length < 10
+      phoneNumber.value?.trim().length < 10
     ) {
       setPhoneNumber({ ...phoneNumber, error: "Phone Number is not correct" });
       error["phoneNumber"] = "Phone Number is not correct";
     }
-    if (netId.value === "") {
+    if (netId.value?.trim() === "") {
       setNetId({ ...netId, error: "NetID is required" });
       error["netId"] = "NetID is required";
     }
-    if (schoolName.value === "") {
+    if (schoolName.value?.trim() === "") {
       setSchoolName({ ...schoolName, error: "School Name is required" });
       error["schoolName"] = "School Name is required";
+    }
+    if (!rememberMe.value) {
+      return AlertService.toastPrompt('You must agree to the terms and conditions','error')
+    }
+
+    if (!privacyPolicy.value) {
+      return AlertService.toastPrompt('You must agree to the privacy policy','error')
     }
 
     setError(error);
@@ -163,14 +176,13 @@ const SignUp = ({ navigation }) => {
     if (Object.keys(error).length === 0) {
       let user = {
         email: email.value,
-        password: password.value,
+        password: password?.value?.trim(),
         firstName: firstName.value,
         lastName: lastName.value,
         phoneNumber: `+${phoneNumber.value}`,
         netID: netId.value,
         schoolName: schoolName.value,
-
-        // role: "STUDENT",
+        role: "STUDENT",
         // isLogin: true,
       };
 
@@ -182,14 +194,16 @@ const SignUp = ({ navigation }) => {
   const registerAPICall = async (data) =>{
     try {
       setLoader(true)
-      let response = await axiosWrapper("POST", API_URLS.REGISTER_URL, data, null, false, 'json', true);
+      let response = await axiosWrapper("POST", API_URLS.REGISTER_URL, data, null, false, 'json', false);
       if(response){
         navigation.navigate(Routes.OTP_VERIFICATION, {
-          user: response.data
+          user: {...response.data,password:password?.value?.trim()},
+          successMessage:'user registered successfully'
         });
       }
 
     } catch (error) {
+      AlertService.toastPrompt(error, 'error')
     }finally{
       setLoader(false)
     }
@@ -205,20 +219,25 @@ const SignUp = ({ navigation }) => {
             onChange={(text) => {
               setFirstName({ ...firstName, value: text, error: "" });
             }}
+            onSubmitEditing={()=>lastNameRef.current?.focus()}
           />
           <CustomizedInput
+            ref={lastNameRef}
             fieldInfo={lastName}
             onChange={(text) => {
               setLastName({ ...lastName, value: text, error: "" });
             }}
+            onSubmitEditing={()=>emailRef.current?.focus()}
           />
           <CustomizedInput
+          ref={emailRef}
             fieldInfo={email}
             onChange={(text) => {
-              setEmail({ ...email, value: text, error: "" });
+              setEmail({ ...email, value: text.replace(/\s/g, ''), error: "" });
               let ExtractId = text.split("@");
               setNetId({ ...netId, value: ExtractId[0], error: "" });
             }}
+            onSubmitEditing={()=>phoneRef.current?.focus()}
           />
           <CustomizedInput
             fieldInfo={netId}
@@ -229,23 +248,28 @@ const SignUp = ({ navigation }) => {
           />
          
           <CustomizedInput
+            ref={phoneRef}
             fieldInfo={phoneNumber}
             onChange={(text,unmasked) => {
               setPhoneNumber({ ...phoneNumber, value: unmasked, error: "" });
             }}
             keyboardType="number-pad"
             isPhoneNumber={true}
+            onSubmitEditing={()=>schoolNameRef.current?.focus()}
           />
            <CustomizedInput
+            ref={schoolNameRef}
             fieldInfo={schoolName}
             onChange={(text) => {
               setSchoolName({ ...schoolName, value: text, error: "" });
             }}
+            onSubmitEditing={()=>passwordRef.current?.focus()}
           />
           <CustomizedInput
+            ref={passwordRef}
             fieldInfo={password}
             onChange={(text) => {
-              setPassword({ ...password, value: text, error: "" });
+              setPassword({ ...password, value: text.replace(/\s/g, ''), error: "" });
             }}
           />
 
@@ -288,7 +312,7 @@ const SignUp = ({ navigation }) => {
           <Text style={[styles.regText, { fontSize: FontSize.VALUE(16) }]}>
             Already have an account?
           </Text>
-          <TouchableOpacity onPress={() => onPressDontAccount()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={[styles.regText, { color: Colors.RED, fontSize: FontSize.VALUE(16) }]}>
               Login Now
             </Text>

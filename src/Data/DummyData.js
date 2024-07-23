@@ -74,6 +74,64 @@ export const MyClasses=[
 
 
 
+export const instructorClasses=[
+
+  {
+    id:1,
+    className:"Advanced Data Structures & Algorithm Analysis",
+    enrolledStudents:100,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+
+  },
+  {
+    id:2,
+    className:"Computer Networks",
+    enrolledStudents:90,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+  },
+  {
+    id:3,
+    className:"Calculus II",
+    enrolledStudents:20,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+
+  },
+  {
+    id:4,
+    className:"Advanced Data Structures & Algorithm Analysis",
+    enrolledStudents:80,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+
+  },
+  {
+    id:5,
+    className:"Computer Networks",
+    enrolledStudents:70,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+  },
+  {
+    id:6,
+    className:"Calculus II",
+    enrolledStudents:42,
+    classSection:"6B",
+    timeSLot:"4:30 PM to 5:45 PM",
+    date:"15/09/2021",
+
+  },
+
+]
+
+
 export const attendanceData = [
   { id: '1', status: 'Present', className: 'ABCD', dateTime: 'Thu 4:30 PM, Mar 23, 2024' },
   { id: '2', status: 'Absent', className: 'XYZ', dateTime: 'Fri 10:00 AM, Mar 24, 2024' },

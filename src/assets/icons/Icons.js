@@ -29,6 +29,7 @@ import nedID from './nedId.svg'
 import graduationCap from './graduationCap.svg'
 import UpArrow from './UpArrow.svg'
 import DownArrow from './DownArrow.svg'
+import AddressIcon from './AddressIcon.svg'
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -62,6 +63,7 @@ export default Icons = {
     graduationCap,
     UpArrow,
     DownArrow,
+    AddressIcon,
 }
 
 

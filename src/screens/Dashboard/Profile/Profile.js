@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import { Button, Header, ImagePicker, MainLayout, ScreenWrapper } from '../../../components';
 import styles from './styles';
@@ -9,11 +9,13 @@ import { Colors, Icons } from '../../../assets';
 import { setUser } from '../../../redux/Reducers/AuthReducer';
 import UserDetails from '../../../components/UserDetail';
 import Routes from '../../../navigation/Routes';
+import { useIsFocused } from '@react-navigation/native';
 
 const Profile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
-
+  const isFocused = useIsFocused()
+  
 
   const [profileImage, setProfileImage] = useState({
     inputType: "image",
@@ -25,6 +27,18 @@ const Profile = ({ navigation }) => {
     value: user?.ProfileImage ?? Constants.letImagePlaceholder,
     atEdit: true
   });
+
+  useEffect(()=>{
+    if(isFocused){
+      setProfileImage({
+        ...profileImage, 
+        value: user?.ProfileImage ||  Constants.letImagePlaceholder,
+        error: ""
+      });
+    }
+    
+  },[isFocused])
+
 
   const handleProfileAPI = (path) => {
     dispatch(setUser({ ...user, ProfileImage: path }));
@@ -39,7 +53,6 @@ const Profile = ({ navigation }) => {
       <Header title="Profile"
         showBackButton={false}
         DrawerHeader={true} />
-
 
       <ScreenWrapper style={[CommonStyles.BODY, styles.cont]}>
 

@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { View } from 'react-native';
 import InputText from './TextInput';
 import CustomDropDown from './CustomDropDown';
 import CheckBox from './CheckBox';
 
 
-const CustomizedInput = ({
+const CustomizedInput = forwardRef(({
   fieldInfo,
   onChange,
   ...props
-}) => {
+}, ref) => {
   
 
   const renderView = () => {
     switch (fieldInfo?.inputType) {
       case "text":
-        return <InputText {...props} fieldInfo={fieldInfo} 
+        return <InputText ref={ref} {...props} fieldInfo={fieldInfo} 
          onChange={onChange}
         
         />;
@@ -30,7 +30,7 @@ const CustomizedInput = ({
         
         />;
       default:
-        return <InputText {...props} fieldInfo={fieldInfo} />;
+        return <InputText ref={ref} {...props} fieldInfo={fieldInfo} />;
     }
   };
   
@@ -42,6 +42,6 @@ const CustomizedInput = ({
   </View>
   )
 
-}
+})
 
 export default CustomizedInput;

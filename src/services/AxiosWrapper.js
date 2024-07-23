@@ -47,12 +47,11 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
         
         let msg = error?.response?.data?.desc ? error?.response?.data?.desc : error?.response?.data?.error ? error?.response?.data?.error : error?.response?.data?.message ? error?.response?.data?.message
             : error?.response?.message ? error?.response?.message : error?.response?.desc ? error?.response?.desc :error?.message?error?.message: false;
-            
         if (msg && showToast) 
             {
                 AlertService.toastPrompt(msg, 'error')
             }
-        return Promise.reject(error);
+        return Promise.reject(msg);
     }
 };
 export default axiosWrapper;

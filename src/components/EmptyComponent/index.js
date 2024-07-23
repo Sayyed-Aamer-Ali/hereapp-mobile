@@ -20,7 +20,8 @@ export default EmptyComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    paddingTop: UtilityMethods.wp(24),
     alignItems: 'center',
     padding: UtilityMethods.wp(6),
   },

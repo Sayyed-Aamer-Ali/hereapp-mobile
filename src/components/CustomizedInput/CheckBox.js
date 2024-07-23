@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, TouchableOpacity,StyleSheet } from 'react-native';
+import { View, Text, Pressable, TouchableOpacity, StyleSheet } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -7,24 +7,20 @@ import { Colors, Icons } from '../../assets';
 import { UtilityMethods } from '../../utility';
 
 const CheckBox = ({
-    filedInfo,
-    onChange,
+  filedInfo,
+  onChange,
 }) => {
   return (
     <TouchableOpacity
-     onPress={() => onChange(!filedInfo?.value)}
+      onPress={() => onChange(!filedInfo?.value)}
+      style={styles.checkBox}
     >
-     {filedInfo?.value ? (
-       
-         <Icon name="checksquare" size={24} color={
+      {filedInfo?.value && (
+        <Icon name="check" size={12} color={
           Colors.BLACK
-        }/>
-      
-        ) : (
-          <Icon name="checksquareo" size={24} color={
-            Colors.BLACK
-          }/>
-        )}
+        } />
+      )}
+
     </TouchableOpacity>
   );
 }
@@ -32,12 +28,14 @@ const CheckBox = ({
 export default CheckBox;
 
 const styles = StyleSheet.create({
-  checkBox:{
-    width:UtilityMethods.wp(4),
-    height:UtilityMethods.wp(4),
-    borderRadius:1,
-    backgroundColor:Colors.BLACK,
-    justifyContent:"center",
-    alignItems:"center"
+  checkBox: {
+    width: UtilityMethods.wp(4),
+    height: UtilityMethods.wp(4),
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection:'row',
+    borderWidth: 1,
+    borderColor: Colors.BLACK,
+
   }
 })

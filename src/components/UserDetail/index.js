@@ -8,23 +8,31 @@ const UserDetails = ({ userData }) => {
     <View style={styles.container}>
       <View style={styles.row}>
         <Text style={styles.label}>Full Name:</Text>
-        <Text style={styles.value}>{userData.fullName}</Text>
+        <Text style={styles.value}>{userData.firstName || '-'} </Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>Last Name:</Text>
+        <Text style={[styles.value,]}>{userData.lastName || '-'}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>NetID:</Text>
+        <Text style={[styles.value,]}>{userData.netID || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Phone:</Text>
-        <Text style={styles.value}>{userData.phoneNumber || '-'}</Text>
+        <Text style={[styles.value,]}>{userData.phoneNumber || '-'}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>School:</Text>
+        <Text style={[styles.value,]}>{userData.schoolName || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Address:</Text>
-        <Text style={[styles.value,styles.address]}>{userData.address || '-'}</Text>
+        <Text style={[styles.value,]}>{userData.address || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Postal Code:</Text>
         <Text style={styles.value}>{userData.postalCode || '-'}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>Purpose Of Platform Use:</Text>
-        <Text style={styles.value}>{userData.platformUse || 'Education'}</Text>
       </View>
     </View>
   );
@@ -53,9 +61,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.VALUE(16),
     fontFamily: Fonts.MEDIUM,
     color: Colors.LIGHT_GRAY,
-    textAlign:'right'
-  },
-  address:{
-    width:'70%',
+    textAlign:'right',
+    maxWidth:'60%',
   },
 });

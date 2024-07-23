@@ -11,6 +11,11 @@ const authSlice = createSlice({
     routesListing: null,
     totalNotification: null,
     token:null,
+    rememberMeCreds: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
   },
   reducers: {
     setToken: (state, action) => {
@@ -18,6 +23,16 @@ const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    setRememberMeCreds: (state, action) => {
+      state.rememberMeCreds = action.payload;
+    },
+    clearRememberMeCreds: (state) => {
+      state.rememberMeCreds = {
+        email: "",
+        password: "",
+        rememberMe: false,
+      };
     },
     resetAuth: (state) => {
       state.token = null;
@@ -55,6 +70,8 @@ const authSlice = createSlice({
 export const {
   setToken,
   setUser,
+  setRememberMeCreds,
+  clearRememberMeCreds,
   resetAuth,
   setAddToCartItems,
   setRecentSearches,

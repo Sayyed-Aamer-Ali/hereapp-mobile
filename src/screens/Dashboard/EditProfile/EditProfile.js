@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import styles from './styles';
 import { Colors, Icons } from '../../../assets';
-import { UtilityMethods, Validator } from '../../../utility';
+import { Constants, UtilityMethods, Validator } from '../../../utility';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper, ImagePicker } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,21 +10,36 @@ import { setUser } from '../../../redux/Reducers/AuthReducer';
 
 const EditProfile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
-
-  const [fullName, setFullName] = useState({
+  const lastNameRef = useRef();
+  const phoneRef = useRef();
+  const schoolNameRef = useRef();
+  const addressRef = useRef();
+  const postalCodeRef = useRef();
+ 
+  const [firstName, setFirstName] = useState({
     inputType: "text",
-    title: "Full Name",
-    value: user.fullName,
+    title: "First Name",
+    value: user.firstName || "",
     type: "text",
     error: "",
-    placeholder: "Enter Full Name",
+    placeholder: "Enter First Name",
+    leftIcon: <Icons.User />
+  });
+
+  const [lastName, setLastName] = useState({
+    inputType: "text",
+    title: "Last Name",
+    value: user.lastName || "",
+    type: "text",
+    error: "",
+    placeholder: "Enter Last Name",
     leftIcon: <Icons.User />
   });
 
   const [phoneNumber, setPhoneNumber] = useState({
     inputType: "text",
     title: "Phone",
-    value: user.phoneNumber,
+    value: user.phoneNumber || '',
     type: "text",
     error: "",
     placeholder: "Enter Phone Number",
@@ -34,21 +49,54 @@ const EditProfile = ({ navigation }) => {
   const [address, setAddress] = useState({
     inputType: "text",
     title: "Address",
-    value: user.address,
+    value: user.address || '',
     type: "text",
     error: "",
     placeholder: "Enter Full Address",
-    leftIcon: <Icons.User />
+    leftIcon: <Icons.AddressIcon />
   });
+
+  const [postalCode, setPostalCode] = useState({
+    inputType: "text",
+    title: "Postal Code",
+    value: user.postalCode || "",
+    type: "text",
+    error: "",
+    placeholder: "Enter Postal Code",
+    leftIcon: <Icons.AddressIcon />
+  });
+
+  const [netId, setNetId] = useState({
+    inputType: "text",
+    title: "NetID",
+    value: user.netID || "netID",
+    type: "text",
+    error: "",
+    placeholder: "Enter NetID",
+    leftIcon: <Icons.nedID width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+  });
+
+  const [schoolName, setSchoolName] = useState({
+    inputType: "text",
+    title: "School Name",
+    value: user.schoolName || "",
+    type: "text",
+    error: "",
+    placeholder: "Enter School Name",
+    leftIcon: <Icons.graduationCap  width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+  });
+  
 
   const [profileImage, setProfileImage] = useState({
     inputType: "image",
     title: "Profile Image",
-    value: user?.ProfileImage ?? '',
+    value: user?.ProfileImage ?? Constants.letImagePlaceholder,
     type: "image",
     error: "",
-    placeholder: "Upload Profile Image"
+    placeholder: "Upload Profile Image",
   });
+
+
 
   const [error, setError] = useState({});
   const dispatch = useDispatch();
@@ -56,19 +104,43 @@ const EditProfile = ({ navigation }) => {
   const onPressUpdate = () => {
     let error = {};
 
-    if (fullName.value === "") {
-      setFullName({ ...fullName, error: "Name is required" });
-      error["fullName"] = "Name is required";
+
+    if (firstName.value === "") {
+      setFirstName({ ...firstName, error: "First Name is required" });
+      error["firstName"] = "First Name is required";
+    }
+
+    if (lastName.value === "") {
+      setLastName({ ...lastName, error: "Last Name is required" });
+      error["lastName"] = "Last Name is required";
     }
 
     if (phoneNumber.value === "") {
       setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
       error["phoneNumber"] = "Phone Number is required";
+    } else if (phoneNumber?.value?.length < 10) {
+      setPhoneNumber({ ...phoneNumber, error: "Phone Number is not correct" });
+      error["phoneNumber"] = "Phone Number is not correct";
     }
 
     if (address.value === "") {
       setAddress({ ...address, error: "Address is required" });
       error["address"] = "Address is required";
+    }
+
+    if (postalCode.value === "") {
+      setPostalCode({ ...postalCode, error: "Postal Code is required" });
+      error["postalCode"] = "Postal Code is required";
+    }
+
+    if (netId.value === "") {
+      setNetId({ ...netId, error: "NetID is required" });
+      error["netId"] = "NetID is required";
+    }
+
+    if (schoolName.value === "") {
+      setSchoolName({ ...schoolName, error: "School Name is required" });
+      error["schoolName"] = "School Name is required";
     }
 
     if (profileImage.value === "") {
@@ -81,34 +153,35 @@ const EditProfile = ({ navigation }) => {
     if (Object.keys(error).length === 0) {
       let updatedUser = {
         ...user,
-        fullName: fullName.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
         phoneNumber: phoneNumber.value,
         address: address.value,
+        postalCode: postalCode.value,
+        netID: netId.value,
+        schoolName: schoolName.value,
         ProfileImage: profileImage.value,
       };
 
-      // Dispatch updated user information here
       dispatch(setUser(updatedUser));
 
       Alert.alert("Success", "Profile updated successfully...",
         [
           {
-            text:'Ok',
+            text: 'Ok',
             onPress: () => navigation.goBack()
           }
         ]
       )
-
     }
   };
-
   return (
     <MainLayout>
       <Header title={"Edit Profile"} />
       <ScreenWrapper style={styles.cont}>
         <ImagePicker
           filedInfo={profileImage}
-          onChange={(path) => {
+          onChnage={(path) => {
             setProfileImage({
               ...profileImage, value: path,
               error: ""
@@ -116,25 +189,66 @@ const EditProfile = ({ navigation }) => {
           }}
         />
         <View style={styles.inPutCont}>
-          <CustomizedInput
-            fieldInfo={fullName}
+          
+        <CustomizedInput
+            fieldInfo={firstName}
             onChange={(text) => {
-              setFullName({ ...fullName, value: text, error: "" });
+              setFirstName({ ...firstName, value: text, error: "" });
             }}
+            onSubmitEditing={()=>lastNameRef.current?.focus()}
           />
           <CustomizedInput
-            fieldInfo={phoneNumber}
+            ref={lastNameRef}
+            fieldInfo={lastName}
             onChange={(text) => {
-              setPhoneNumber({ ...phoneNumber, value: text, error: "" });
+              setLastName({ ...lastName, value: text, error: "" });
+            }}
+            onSubmitEditing={()=>phoneRef.current?.focus()}
+          />
+          <CustomizedInput
+            ref={phoneRef}
+            fieldInfo={phoneNumber}
+            onChange={(text, unmasked) => {
+              setPhoneNumber({ ...phoneNumber, value: unmasked, error: "" });
             }}
             keyboardType="number-pad"
+            isPhoneNumber={true}
+            onSubmitEditing={()=>schoolNameRef.current?.focus()}
+          />
+           <CustomizedInput
+            fieldInfo={netId}
+            onChange={(text) => {
+              setNetId({ ...netId, value: text, error: "" });
+            }}
+            editable={false}
           />
           <CustomizedInput
+            ref={schoolNameRef}
+            fieldInfo={schoolName}
+            onChange={(text) => {
+              setSchoolName({ ...schoolName, value: text, error: "" });
+            }}
+            onSubmitEditing={()=>addressRef.current?.focus()}
+          />
+          <CustomizedInput
+            ref={addressRef}
             fieldInfo={address}
             onChange={(text) => {
               setAddress({ ...address, value: text, error: "" });
             }}
+            onSubmitEditing={()=>postalCodeRef.current?.focus()}
           />
+          <CustomizedInput
+            ref={postalCodeRef}
+            fieldInfo={postalCode}
+            onChange={(text) => {
+              setPostalCode({ ...postalCode, value: text, error: "" });
+            }}
+            keyboardType="number-pad"
+            maxLength={5}
+          />
+         
+
         </View>
         
 
@@ -160,3 +274,6 @@ const EditProfile = ({ navigation }) => {
 }
 
 export default EditProfile;
+
+
+

@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors, Icons, Images } from '../../assets';
 import { UtilityMethods } from '../../utility';
 import styles from './styles';
 import MaskInput from 'react-native-mask-input';
 
-const InputText = ({
+const InputText = forwardRef(({
   fieldInfo,
   onChange,
   InputContStyle,
@@ -14,10 +14,11 @@ const InputText = ({
   inputStyle,
   isPhoneNumber,
   style,
+  onSubmitEditing,
   ...props
-}) => {
+},ref) => {
   const [showPassword, setShowPassword] = useState(true);
-  const inputRef = useRef(null);
+ 
   const navigation = useNavigation();
   const [show, setShow] = useState(false);
 
@@ -67,7 +68,7 @@ const InputText = ({
 
           {!isPhoneNumber ?
             < TextInput
-              ref={inputRef}
+              ref={ref}
               placeholder={fieldInfo?.placeholder}
               onFocus={fieldInfo?.onFocus}
               value={fieldInfo?.value}
@@ -79,11 +80,13 @@ const InputText = ({
               numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
               maxLength={props?.maxLength ? props?.maxLength : 40}
               autoCapitalize={(fieldInfo?.type === "email" || fieldInfo?.type === "password") ? 'none' : props?.autoCapitalize}
+              returnKeyType='next'
+              onSubmitEditing={onSubmitEditing}
               {...props}
             />
             :
             <MaskInput
-              ref={inputRef}
+              ref={ref}
               placeholder={fieldInfo?.placeholder}
               onFocus={fieldInfo?.onFocus}
               value={fieldInfo?.value}
@@ -143,7 +146,7 @@ const InputText = ({
       }</Text> : null}
     </View>
   );
-};
+})
 
 
 

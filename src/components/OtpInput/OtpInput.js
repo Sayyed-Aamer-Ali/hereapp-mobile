@@ -6,10 +6,17 @@ import { Colors, Fonts } from '../../assets';
 
 const { wp, hp } = UtilityMethods;
 
-const OtpInput = ({ numOfDigits = 4, onComplete }) => {
+const OtpInput = ({ numOfDigits = 4, onComplete, reset }) => {
     const [digits, setDigits] = useState(Array(numOfDigits).fill(''));
     const inputRefs = useRef(digits.map(() => React.createRef()));
     
+    useEffect(() => {
+        if (reset) {
+            setDigits(Array(numOfDigits).fill(''));
+            inputRefs.current[0].current.focus();
+        }
+    }, [reset]);
+
 /// Handle change text ///
     const handleChangeText = (text, index) => {
         const newDigits = [...digits];
@@ -22,9 +29,9 @@ const OtpInput = ({ numOfDigits = 4, onComplete }) => {
             inputRefs.current[index - 1].current.focus();
         }
 
-        if (index === numOfDigits - 1 && text) {
+        // if (index === numOfDigits - 1 && text) {
             onComplete(newDigits.join(''));
-        }
+        // }
     };
   /// Handle backspace /// 
     const handleKeyPress = (e, index) => {
@@ -48,7 +55,7 @@ const OtpInput = ({ numOfDigits = 4, onComplete }) => {
                     autoFocus={index === 0}
                     cursorColor={Colors.ICON_BLACK}
                     selectionColor={Colors.BLACK}
-                    
+                    selectionHandleColor={Colors.BLACK}
                 />
             ))}
         </View>
