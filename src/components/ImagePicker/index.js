@@ -6,7 +6,7 @@ import { Colors, Fonts, Icons } from '../../assets';
 
 const { wp, hp } = UtilityMethods;
 
-const ImagePicker = ({ filedInfo, onChnage }) => {
+const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
 
   const onPressImage = () => {
 
@@ -33,7 +33,13 @@ const ImagePicker = ({ filedInfo, onChnage }) => {
 
   const openCamera = () => {
     UtilityMethods.selectImage("camera", (response) => {
-      onChnage(response?.path)
+      onChnage(response.path)
+      setEditImage?.({
+        // ...response,path:response.sourceURL, 
+        uri:response.sourceURL,
+        name:response.filename,
+        mime:response.mime,
+      })
     }, false
     )
   }
@@ -41,7 +47,13 @@ const ImagePicker = ({ filedInfo, onChnage }) => {
 
   const openGallery = () => {
     UtilityMethods.selectImage("gallery", (response) => {
-      onChnage(response?.path)
+      onChnage(response.path)
+      setEditImage?.({
+        // ...response, path:response.sourceURL, 
+        uri:response.sourceURL,
+        name:response.filename,
+        mime:response.mime,
+      })
     }, false
     )
   }
@@ -53,7 +65,8 @@ const ImagePicker = ({ filedInfo, onChnage }) => {
 
         {filedInfo?.value ?
           <>
-            <Image style={styles.imageView} source={{ uri: filedInfo?.value }} />
+            <Image style={styles.imageView} source={{ uri:  filedInfo?.value }} 
+            />
             <TouchableOpacity style={styles.editProfile}
               onPress={() => {
                 onPressImage()

@@ -16,9 +16,7 @@ const DashboardStack = () => {
     <Stack.Navigator
     screenOptions={{
       headerShown: false,
-    }}
-    
-    >
+    }}>
       {user?.role == "STUDENT" ? (
         <Stack.Screen name={Routes.StudentStack} component={StudentStack} />
       ) : (

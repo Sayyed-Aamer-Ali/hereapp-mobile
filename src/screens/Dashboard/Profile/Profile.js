@@ -24,7 +24,7 @@ const Profile = ({ navigation }) => {
     type: "image",
     error: "",
     placeholder: "Upload Profile Image",
-    value: user?.ProfileImage ?? Constants.letImagePlaceholder,
+    value: user?.profilePicture || Constants.letImagePlaceholder,
     atEdit: true
   });
 
@@ -32,7 +32,7 @@ const Profile = ({ navigation }) => {
     if(isFocused){
       setProfileImage({
         ...profileImage, 
-        value: user?.ProfileImage ||  Constants.letImagePlaceholder,
+        value: user?.profilePicture ||  Constants.letImagePlaceholder,
         error: ""
       });
     }

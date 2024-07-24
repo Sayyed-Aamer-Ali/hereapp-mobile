@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,35 +9,33 @@ import { resetAuth, setUser } from '../../../redux/Reducers/AuthReducer';
 import { Constants } from '../../../utility';
 import styles from './styles';
 import Routes from '../../../navigation/Routes';
+import { LogoutModal } from '../../../components';
 
 
-const SliderScreen = ({navigation}) => {
+const SliderScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-
   let user = useSelector(state => state.auth.user);
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const handleLogout = () => {
+    onPressLogout();
+    setModalVisible(false);
+  };
 
-  const logout = () => {
-    Alert.alert("Warning", "Are you sure you want to logout",[
-      {
-        text:'Yes',
-        onPress:() => onPressLogout()
-      },
-      {
-        text:'No'
-      }
-    ])
-  }
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   const onPressLogout = () => {
-    
+
     navigation.dispatch(DrawerActions.closeDrawer())
     setTimeout(() => {
       dispatch(resetAuth())
     }
-    , 500);
+      , 500);
   }
 
-  const handleNavigation = (path) =>{
+  const handleNavigation = (path) => {
     navigation.navigate(path)
   }
 
@@ -46,12 +44,12 @@ const SliderScreen = ({navigation}) => {
     <View style={styles.cont}>
       <View style={styles.headerCont}>
 
-       <Pressable style={styles.ImageCont} onPress={()=>handleNavigation(Routes.PROFILE)}>
-        <Image style={styles.imageView} source={{
-          uri: user?.ProfileImage || Constants.letImagePlaceholder
-        }}/>
+        <Pressable style={styles.ImageCont} onPress={() => handleNavigation(Routes.PROFILE)}>
+          <Image style={styles.imageView} source={{
+            uri: user?.profilePicture || Constants.letImagePlaceholder
+          }} />
 
-       </Pressable>
+        </Pressable>
 
         <Text style={styles.titleText}>{user?.fullName}</Text>
 
@@ -60,13 +58,13 @@ const SliderScreen = ({navigation}) => {
       <View style={styles.body}>
 
         <FlatList
-         data={Constants.DrawerItems}
-          keyExtractor={(item,index) => index.toString()}
-          renderItem={({item,index}) => (
+          data={Constants.DrawerItems}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
             <TouchableOpacity style={styles.itemCont}
               onPress={() => handleNavigation(item.route)}>
               <View style={styles.iconCont}>
-              {item.icon}
+                {item.icon}
               </View>
               <Text style={styles.itemText}>{item.name}</Text>
             </TouchableOpacity>
@@ -74,20 +72,25 @@ const SliderScreen = ({navigation}) => {
         />
 
         <TouchableOpacity
-         style={styles.logoutCont}
-         onPress={logout}
+          style={styles.logoutCont}
+          onPress={()=>setModalVisible(true)}
         >
 
-<View style={styles.iconCont}>
-              <Icons.SignOut/>
-              </View>
-              <Text style={styles.itemText}>
-                Logout
-              </Text>
+          <View style={styles.iconCont}>
+            <Icons.SignOut />
+          </View>
+          <Text style={styles.itemText}>
+            Logout
+          </Text>
 
         </TouchableOpacity>
-        
-        </View>
+
+      </View>
+      <LogoutModal
+        visible={modalVisible}
+        onConfirm={handleLogout}
+        onCancel={handleCancel}
+      />
 
     </View>
   );

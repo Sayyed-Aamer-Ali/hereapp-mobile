@@ -7,15 +7,21 @@ import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper, ImagePicker
 import Routes from '../../../navigation/Routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../../redux/Reducers/AuthReducer';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const EditProfile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
+  const token = useSelector(state => state.auth.token);
+
   const lastNameRef = useRef();
   const phoneRef = useRef();
   const schoolNameRef = useRef();
   const addressRef = useRef();
   const postalCodeRef = useRef();
  
+  const [loader, setLoader] = useState(false)
+  const [editImage, setEditImage] = useState(null)
   const [firstName, setFirstName] = useState({
     inputType: "text",
     title: "First Name",
@@ -90,13 +96,13 @@ const EditProfile = ({ navigation }) => {
   const [profileImage, setProfileImage] = useState({
     inputType: "image",
     title: "Profile Image",
-    value: user?.ProfileImage ?? Constants.letImagePlaceholder,
+    value: user?.profilePicture || Constants.letImagePlaceholder,
     type: "image",
     error: "",
     placeholder: "Upload Profile Image",
   });
 
-
+  
 
   const [error, setError] = useState({});
   const dispatch = useDispatch();
@@ -162,25 +168,60 @@ const EditProfile = ({ navigation }) => {
         schoolName: schoolName.value,
         ProfileImage: profileImage.value,
       };
-
-      dispatch(setUser(updatedUser));
-
-      Alert.alert("Success", "Profile updated successfully...",
-        [
-          {
-            text: 'Ok',
-            onPress: () => navigation.goBack()
-          }
-        ]
-      )
+      editUserProfile()
+      
     }
   };
+
+
+  let editUserProfile = async () =>{
+    try {
+      setLoader(true)
+      const payload = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        schoolName: schoolName.value,
+        phoneNumber: phoneNumber.value,
+        address: address.value,
+        postalCode: postalCode.value,
+    };
+    if(editImage){
+      let response = await uploadImage(editImage)
+      payload.profilePicture = response.data?.[0].path || ''
+    }
+    let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE,payload,token, false, 'json', true) 
+
+    if(response){
+      dispatch(setUser(response.data));
+      navigation.navigate(Routes.PROFILE)
+    }
+    } catch (error) {
+    }finally{
+      setLoader(false)
+    }
+  }
+
+  let uploadImage = async(file) =>{
+    try {
+      const formData = new FormData();
+      formData.append('files', file);
+      let response = axiosWrapper('POST',API_URLS.UPLOAD_IMAGE,formData, null, true) 
+      return response
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+
+
   return (
-    <MainLayout>
+    <MainLayout loader={loader}>
       <Header title={"Edit Profile"} />
       <ScreenWrapper style={styles.cont}>
         <ImagePicker
           filedInfo={profileImage}
+          editImage={editImage} 
+          setEditImage={setEditImage}
           onChnage={(path) => {
             setProfileImage({
               ...profileImage, value: path,

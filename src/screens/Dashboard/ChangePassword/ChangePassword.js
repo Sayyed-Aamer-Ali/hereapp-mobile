@@ -1,169 +1,3 @@
-// import React, { useState } from 'react';
-// import { Alert, View } from 'react-native';
-// import styles from './styles';
-// import { Colors, Icons } from '../../../assets';
-// import { UtilityMethods, Validator } from '../../../utility';
-// import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper, ImagePicker } from '../../../components';
-// import Routes from '../../../navigation/Routes';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setUser } from '../../../redux/Reducers/AuthReducer';
-
-// const ChangePassword = ({ navigation }) => {
-//   const user = useSelector(state => state.auth.user);
-
-//   const [password, setPassword] = useState({
-//     inputType:"text",
-//     title:"Old Password",
-//     value:"",
-//     type:"password",
-//     error:"",
-//     placeholder:"Enter Password",
-//   });
-
-//   const [fullName, setFullName] = useState({
-//     inputType: "text",
-//     title: "Full Name",
-//     value: user.fullName,
-//     type: "text",
-//     error: "",
-//     placeholder: "Enter Full Name",
-//     leftIcon: <Icons.User />
-//   });
-
-//   const [phoneNumber, setPhoneNumber] = useState({
-//     inputType: "text",
-//     title: "Phone",
-//     value: user.phoneNumber,
-//     type: "text",
-//     error: "",
-//     placeholder: "Enter Phone Number",
-//     leftIcon: <Icons.Phone />
-//   });
-
-//   const [address, setAddress] = useState({
-//     inputType: "text",
-//     title: "Address",
-//     value: user.address,
-//     type: "text",
-//     error: "",
-//     placeholder: "Enter Full Address",
-//     leftIcon: <Icons.User />
-//   });
-
-//   const [profileImage, setProfileImage] = useState({
-//     inputType: "image",
-//     title: "Profile Image",
-//     value: user?.ProfileImage ?? '',
-//     type: "image",
-//     error: "",
-//     placeholder: "Upload Profile Image"
-//   });
-
-//   const [error, setError] = useState({});
-//   const dispatch = useDispatch();
-
-//   const onPressLogin = () => {
-//     let error = {};
-
-//     let passwordValidate = Validator("password", password.value)
-
-//     if (password.value == "") {
-//       setPassword({...password, error:"Password is required"})
-//       error["password"]="Password is required"
-//     }
-
-//     if (fullName.value === "") {
-//       setFullName({ ...fullName, error: "Name is required" });
-//       error["fullName"] = "Name is required";
-//     }
-
-//     if (phoneNumber.value === "") {
-//       setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
-//       error["phoneNumber"] = "Phone Number is required";
-//     }
-
-//     if (address.value === "") {
-//       setAddress({ ...address, error: "Address is required" });
-//       error["address"] = "Address is required";
-//     }
-
-//     if (profileImage.value === "") {
-//       setProfileImage({ ...profileImage, error: "Profile Image is required" });
-//       error["profileImage"] = "Profile Image is required";
-//     }
-
-//     if(password.value!=""&&passwordValidate)
-//       {
-//         setPassword({...password, error:passwordValidate})
-//         error["password"]=passwordValidate
-//       }
-
-//     setError(error);
-
-//     if (Object.keys(error).length === 0) {
-//       let updatedUser = {
-//         fullName: fullName.value,
-//         phoneNumber: phoneNumber.value,
-//         address: address.value,
-//         ProfileImage: profileImage.value,
-//       };
-
-//       // Dispatch updated user information here
-//       dispatch(setUser({...user, ...updatedUser}));
-
-//       Alert.alert("Success", "Profile update successfully",
-//         [
-//           {
-//             text:'Ok',
-//             onPress: () => navigation.goBack()
-//           }
-//         ]
-//       )
-
-//     }
-//   };
-
-//   return (
-//     <MainLayout>
-//       <Header title={"Change Password"} />
-//       <ScreenWrapper style={styles.cont}>
-
-//       <CustomizedInput
-//           fieldInfo={password}
-//           onChange={(text) => {
-//             setPassword({...password, value:text, error:""})
-//           }}
-//         />
-
-        
-
-//         <View style={styles.buttonContainer}>
-
-//         <Button
-//           text={"Save Changes"}
-//           style={{
-//             marginTop: UtilityMethods.hp(4)
-//           }}
-//           onPress={() => onPressLogin()}
-//         />
-//           <Button
-//             text={"Discard"}
-//             style={styles.changePassowrd}
-//             textStyle={styles.changePassowrdText}
-//             onPress={() => navigation.goBack()}
-//           />
-//         </View>
-//       </ScreenWrapper>
-//     </MainLayout>
-//   );
-// }
-
-// export default ChangePassword;
-
-
-
-
-
 import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import styles from './styles';
@@ -172,9 +6,13 @@ import { UtilityMethods, Validator } from '../../../utility';
 import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../../redux/Reducers/AuthReducer';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const ChangePassword = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
+  const token = useSelector(state => state.auth.token);
+  const [loader, setLoader] = useState(false)
 
   const [oldPassword, setOldPassword] = useState({
     inputType: "text",
@@ -250,20 +88,31 @@ const ChangePassword = ({ navigation }) => {
         password: newPassword?.value?.trim(),
       };
 
-      // Dispatch updated user information here
-      dispatch(setUser(updatedUser));
-
-      Alert.alert("Success", "Password updated successfully", [
-        {
-          text: 'Ok',
-          onPress: () => navigation.goBack(),
-        }
-      ]);
+      changePassword()
+      
     }
   };
 
+  const changePassword = async() =>{
+    try {
+      setLoader(true)
+      let payload = {
+        oldPassword:oldPassword.value,
+        newPassword:newPassword.value
+      }
+      let response = await axiosWrapper('POST', API_URLS.CHANGE_PASSWORD,payload, token, false, 'json', true) 
+      if(response){
+        navigation.goBack()
+      }
+    } catch (error) {
+      
+    }finally{
+      setLoader(false)
+    }
+  }
+
   return (
-    <MainLayout>
+    <MainLayout loader={loader}>
       <Header title={"Change Password"} />
       <ScreenWrapper style={styles.cont}>
 
@@ -272,19 +121,19 @@ const ChangePassword = ({ navigation }) => {
         <CustomizedInput
           fieldInfo={oldPassword}
           onChange={(text) => {
-            setOldPassword({ ...oldPassword, value: text, error: "" });
+            setOldPassword({ ...oldPassword, value: text.replace(/\s/g, ''), error: "" });
           }}
         />
         <CustomizedInput
           fieldInfo={newPassword}
           onChange={(text) => {
-            setNewPassword({ ...newPassword, value: text, error: "" });
+            setNewPassword({ ...newPassword, value: text.replace(/\s/g, ''), error: "" });
           }}
         />
         <CustomizedInput
           fieldInfo={confirmPassword}
           onChange={(text) => {
-            setConfirmPassword({ ...confirmPassword, value: text, error: "" });
+            setConfirmPassword({ ...confirmPassword, value: text.replace(/\s/g, ''), error: "" });
           }}
         />
         </View>

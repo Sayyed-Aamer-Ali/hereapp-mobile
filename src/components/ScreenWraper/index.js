@@ -16,7 +16,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
   contentContainerStyle
 }) => {
   return (
-    // <KeyboardAwareScrollView style={{flex: 1}} contentOffset={{x:10,y:20}}>
     <KeyboardAwareScrollView
       style={[styles.containerMain, style]}
       keyboardShouldPersistTaps="handled"

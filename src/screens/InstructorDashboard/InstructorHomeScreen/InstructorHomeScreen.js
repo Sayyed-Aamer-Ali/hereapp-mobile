@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout } from '../../../components';
+import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout } from '../../../components';
 import styles from './styles';
 import { instructorClasses } from '../../../Data/DummyData';
 import { resetAuth } from '../../../redux/Reducers/AuthReducer';
@@ -17,34 +17,45 @@ const Home = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
 
-  useEffect(()=>{
-    getInstructorClasses()
-  },[])
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const getInstructorClasses = async() =>{
+  const handleLogout = () => {
+    setModalVisible(false);
+    dispatch(resetAuth())
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    getInstructorClasses()
+  }, [])
+
+  const getInstructorClasses = async () => {
     setLoasder(true)
-    try{
-      let response = await axiosWrapper('GET', API_URLS.GET_CLASSES,null, token ,false, 'json', false);
+    try {
+      let response = await axiosWrapper('GET', API_URLS.GET_CLASSES, null, token, false, 'json', false);
       setClasses(response.data)
-    }catch(error){
-      
-    }finally{
+    } catch (error) {
+
+    } finally {
       setLoasder(false)
     }
 
   }
 
-  const logout = () => {
-    Alert.alert("Warning", "Are you sure you want to logout",[
-      {
-        text:'Yes',
-        onPress:() => dispatch(resetAuth()) 
-      },
-      {
-        text:'No'
-      }
-    ])
-  }
+  // const logout = () => {
+  //   Alert.alert("Warning", "Are you sure you want to logout",[
+  //     {
+  //       text:'Yes',
+  //       onPress:() => dispatch(resetAuth()) 
+  //     },
+  //     {
+  //       text:'No'
+  //     }
+  //   ])
+  // }
 
 
   return (
@@ -53,7 +64,7 @@ const Home = ({ navigation }) => {
         <Header title="Home"
           showBackButton={false}
           isLogout={true}
-          logoutOnPress={logout}
+          logoutOnPress={() => setModalVisible(true)}
         />
         <CustomFlatList
           listStyle={styles.listStyle}
@@ -67,16 +78,20 @@ const Home = ({ navigation }) => {
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }
-          data={classes}
+          data={instructorClasses}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <ClassDetailBox 
-            item={item} 
-            buttonText="Take Attendance"
+            <ClassDetailBox
+              item={item}
+              buttonText="Take Attendance"
             />
           )}
+        />
 
-
+        <LogoutModal
+          visible={modalVisible}
+          onConfirm={handleLogout}
+          onCancel={handleCancel}
         />
       </View>
     </MainLayout>

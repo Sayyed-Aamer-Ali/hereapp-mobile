@@ -114,6 +114,7 @@ const Login = ({navigation,route}) => {
         if(response?.data?.user?.isVerified){
           dispatch(setToken(response?.data.token));
           dispatch(setUser(response?.data.user));
+          AlertService.toastPrompt("user logged in successfully",'success')
         }
         else{
           navigation.navigate(Routes.OTP_VERIFICATION, {
@@ -128,7 +129,8 @@ const Login = ({navigation,route}) => {
       let msg = error
         if(msg === 'Please verify your account!'){
           navigation.navigate(Routes.OTP_VERIFICATION, {
-          user: { email:email.value, password:password.value }
+          user:data,
+          successMessage:'user logged in successfully'
         });
         return 
         }

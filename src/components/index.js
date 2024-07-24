@@ -14,6 +14,7 @@ import EmptyComponent from "./EmptyComponent";
 import ModifiedOTPInput from "./ModifiedOTPInput";
 import ClassDetail from "./ClassDetail";
 import SuccessModal from "./SuccessModal";
+import LogoutModal from "./LogoutModal";
 
 
 
@@ -36,4 +37,5 @@ export {
   ModifiedOTPInput,
   ClassDetail,
   SuccessModal,
+  LogoutModal,
 };

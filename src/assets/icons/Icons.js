@@ -30,6 +30,7 @@ import graduationCap from './graduationCap.svg'
 import UpArrow from './UpArrow.svg'
 import DownArrow from './DownArrow.svg'
 import AddressIcon from './AddressIcon.svg'
+import LogoutIcon from './logout.svg'
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -64,6 +65,7 @@ export default Icons = {
     UpArrow,
     DownArrow,
     AddressIcon,
+    LogoutIcon,
 }
 
 
