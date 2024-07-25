@@ -72,6 +72,10 @@ export const MyClasses=[
 
 ]
 
+export const genders = [
+  { label: "Male", value: "MALE" },
+  { label: "Female", value: "FEMALE" },
+];
 
 
 export const instructorClasses=[
@@ -136,4 +140,46 @@ export const attendanceData = [
   { id: '1', status: 'Present', className: 'ABCD', dateTime: 'Thu 4:30 PM, Mar 23, 2024' },
   { id: '2', status: 'Absent', className: 'XYZ', dateTime: 'Fri 10:00 AM, Mar 24, 2024' },
   // Add more data as needed
+];
+
+
+
+export const attendanceListData = [
+  {
+      name: 'John Doe',
+      netId: 'XYZ',
+      status: 'Present',
+      dateTime: 'Dec 28, 2024, 8:25 PM',
+      location: 'Harvard, New York',
+  },
+  {
+      name: 'Jane Smith',
+      netId: 'ABC',
+      status: 'Absent',
+      dateTime: 'Jan 10, 2025, 10:30 AM',
+      location: 'Stanford, California',
+  },
+];
+
+
+export const notifications = [
+  { id: '1', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+  { id: '2', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+  { id: '3', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+  { id: '4', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+  { id: '5', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+  { id: '6', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
+];
+
+
+export const attemptsData = [
+  { label: '1 Time', value: '1' },
+  { label: '2 Times', value: '2' },
+  { label: '3 Times', value: '3' },
+];
+
+export const expiryData = [
+  { label: '1 Minute', value: '1' },
+  { label: '5 Minutes', value: '5' },
+  { label: '10 Minutes', value: '10' },
 ];

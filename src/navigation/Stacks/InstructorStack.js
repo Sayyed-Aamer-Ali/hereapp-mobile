@@ -5,7 +5,7 @@ import { Screen } from 'react-native-screens';
 /// ====================================== Local Imported Files ======================================//
 import { useDispatch } from 'react-redux';
 import Routes from '../Routes';
-import { InstructorHomeScreen } from '../../screens';
+import { AttendanceListScreen, AttendanceLocationScreen, InstructorAttendanceScreen, InstructorHomeScreen, } from '../../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +19,9 @@ const InstructorStack = () => {
     }}
     >
       <Stack.Screen name={Routes.INSTRUCTOR_HOME_SCREEN} component={InstructorHomeScreen} />
+      <Stack.Screen name={Routes.INSTRUCTOR_ATTENDENCE_SCREEN} component={InstructorAttendanceScreen} />
+      <Stack.Screen name={Routes.ATTENDENCE_LIST_SCREEN} component={AttendanceListScreen} />
+      <Stack.Screen name={Routes.ATTENDENCE_LOCATION_SCREEN} component={AttendanceLocationScreen} />
       
       </Stack.Navigator>
   );

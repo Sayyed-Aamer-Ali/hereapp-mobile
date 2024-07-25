@@ -10,6 +10,7 @@ import { useToast } from "react-native-toast-notifications";
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import AlertService from '../../../services/AlertService';
+import { clearRememberMeCreds } from '../../../redux/Reducers/AuthReducer';
 
 const SignUp = ({ navigation }) => {
   const toast = useToast();
@@ -196,6 +197,7 @@ const SignUp = ({ navigation }) => {
       setLoader(true)
       let response = await axiosWrapper("POST", API_URLS.REGISTER_URL, data, null, false, 'json', false);
       if(response){
+        dispatch(clearRememberMeCreds());
         navigation.navigate(Routes.OTP_VERIFICATION, {
           user: {...response.data,password:password?.value?.trim()},
           successMessage:'user registered successfully'

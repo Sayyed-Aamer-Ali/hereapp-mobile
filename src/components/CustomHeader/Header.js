@@ -4,6 +4,7 @@ import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors, Fonts, Icons } from '../../assets';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import Routes from '../../navigation/Routes';
 
 const Header = ({ 
   title, 
@@ -17,6 +18,11 @@ const Header = ({
   rightIcons=true
 }) => {
   const navigation = useNavigation();
+
+  const onPressNotificaiton = () =>{
+    navigation.navigate(Routes.NOTIFICATION_SCREEN)
+  }
+
   return (
     <View style={styles.headerCont}>
       <View style={CommonStyles.ROW_VIEW}>
@@ -65,7 +71,7 @@ const Header = ({
 
       <View style={styles.rightIcons}>
         {rightIcons &&
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressNotificaiton}>
             <Icons.Notifications />
           </TouchableOpacity>}
         {isLogout &&
@@ -102,7 +108,6 @@ const styles = StyleSheet.create({
 
     color: Colors.ICON_BLACK,
     fontSize: FontSize.VALUE(18),
-
     fontFamily: Fonts.SEMI_BOLD,
   },
   rightIcons: {

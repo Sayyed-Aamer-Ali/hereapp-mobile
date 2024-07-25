@@ -14,7 +14,6 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
       {
         text: "Camera", onPress: () => {
           openCamera()
-
         }
       },
       {
@@ -24,12 +23,7 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
       },
       { text: "Cancel", onPress: () => { } }
     ])
-
-
-
   }
-
-
 
   const openCamera = () => {
     UtilityMethods.selectImage("camera", (response) => {

@@ -10,12 +10,18 @@ import { setUser } from '../../../redux/Reducers/AuthReducer';
 import UserDetails from '../../../components/UserDetail';
 import Routes from '../../../navigation/Routes';
 import { useIsFocused } from '@react-navigation/native';
+import AlertService from '../../../services/AlertService';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
 
 const Profile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
+  const token = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
   const isFocused = useIsFocused()
-  
+  const [editImage, setEditImage] = useState(null)
+  const [loader, setLoader] = useState(null)
+
 
   const [profileImage, setProfileImage] = useState({
     inputType: "image",
@@ -28,28 +34,73 @@ const Profile = ({ navigation }) => {
     atEdit: true
   });
 
-  useEffect(()=>{
-    if(isFocused){
+  useEffect(() => {
+    if (isFocused) {
       setProfileImage({
-        ...profileImage, 
-        value: user?.profilePicture ||  Constants.letImagePlaceholder,
+        ...profileImage,
+        value: user?.profilePicture || Constants.letImagePlaceholder,
         error: ""
       });
     }
-    
-  },[isFocused])
+
+  }, [isFocused])
+
+
+  useEffect(() => {
+    if (editImage) {
+      editUserProfile(editImage)
+    }
+  }, [editImage])
 
 
   const handleProfileAPI = (path) => {
-    dispatch(setUser({ ...user, ProfileImage: path }));
+    // dispatch(setUser({ ...user, ProfileImage: path }));
   }
 
   const handleNavigation = (path) => {
     navigation.navigate(path);
   }
 
+
+
+
+  let editUserProfile = async (editImage) => {
+    try {
+      setLoader(true);
+      
+      let img = await uploadImage(editImage)
+      let payload = {
+        profilePicture : img.data?.[0]?.path || ''
+      }
+      let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', true)
+
+      if (response) {
+        dispatch(setUser(response.data));
+      }
+    } catch (error) {
+      AlertService.toastPrompt("Something went wrong...",'error')
+    } finally {
+      setLoader(false)
+    }
+  }
+
+  let uploadImage = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('files', file);
+      let response = axiosWrapper('POST', API_URLS.UPLOAD_IMAGE, formData, null, true)
+      return response
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+
+
+
+
   return (
-    <MainLayout>
+    <MainLayout loader={loader}>
       <Header title="Profile"
         showBackButton={false}
         DrawerHeader={true} />
@@ -63,8 +114,9 @@ const Profile = ({ navigation }) => {
               ...profileImage, value: path,
               error: ""
             })
-            handleProfileAPI(path)
+            // handleProfileAPI(path)
           }}
+          setEditImage={setEditImage}
         />
 
         <UserDetails userData={user} />

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout } from '../../../components';
+import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
 import styles from './styles';
-import { instructorClasses } from '../../../Data/DummyData';
+import { genders, instructorClasses } from '../../../Data/DummyData';
 import { resetAuth } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import Routes from '../../../navigation/Routes';
 
 
 
 const Home = ({ navigation }) => {
+  const [gender, setGender] = useState("MALE");
   const [loasder, setLoasder] = useState(false)
   const [classes, setClasses] = useState([])
   const dispatch = useDispatch();
@@ -45,18 +47,10 @@ const Home = ({ navigation }) => {
 
   }
 
-  // const logout = () => {
-  //   Alert.alert("Warning", "Are you sure you want to logout",[
-  //     {
-  //       text:'Yes',
-  //       onPress:() => dispatch(resetAuth()) 
-  //     },
-  //     {
-  //       text:'No'
-  //     }
-  //   ])
-  // }
 
+  const handleNavigation = (item) =>{
+    navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN,{item})
+  }
 
   return (
     <MainLayout loader={loasder}>
@@ -84,6 +78,7 @@ const Home = ({ navigation }) => {
             <ClassDetailBox
               item={item}
               buttonText="Take Attendance"
+              onPress={()=>handleNavigation(item)}
             />
           )}
         />

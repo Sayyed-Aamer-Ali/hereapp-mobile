@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     position:"absolute",
     right:0,
     marginRight:UtilityMethods.wp(4)
+  },
+  leftIconView:{
+    position:"absolute",
+    left:0,
+    marginRight:UtilityMethods.wp(4)
   }
 });
 

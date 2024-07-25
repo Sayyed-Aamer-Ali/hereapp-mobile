@@ -31,6 +31,14 @@ import UpArrow from './UpArrow.svg'
 import DownArrow from './DownArrow.svg'
 import AddressIcon from './AddressIcon.svg'
 import LogoutIcon from './logout.svg'
+import ClockIcon from './ClockIcon.svg'
+import Reload from './Reload.svg'
+import ListIcon from './ListIcons.svg'
+import NotificationIcon from './NotificationIcon.svg'
+import ArrowBack from './arrow_back.svg'
+
+
+
 
 export default Icons = {
     SplashIcon: SplashIcon,
@@ -66,6 +74,11 @@ export default Icons = {
     DownArrow,
     AddressIcon,
     LogoutIcon,
+    ClockIcon,
+    Reload,
+    ListIcon,
+    NotificationIcon,
+    ArrowBack,
 }
 
 

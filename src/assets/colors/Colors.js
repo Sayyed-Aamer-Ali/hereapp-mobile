@@ -12,7 +12,11 @@ const Colors = {
   parotGreen: "#5B8441",
   GRAY_OTP:'#FBFBFB',
   BOX_HEADER:'#F6F6F6',
-
+  LIGHT_COLOR:'#7B7B7B',
+  LINK:'#476BE3',
+  ReadNotification:'#F9F9F9',
+  UnReadNotification:'#ECECEC',
+  
   TransParentBackground: "rgba(0, 0, 0, 0.5)",
   TransParentBackground1: "rgba(0, 0, 0, 0.5)",
   PRIMARY: "#FFF203",

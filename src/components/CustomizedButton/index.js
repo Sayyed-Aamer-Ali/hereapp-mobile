@@ -13,11 +13,15 @@ const returnLoadingComponent = () => {
   return <ActivityIndicator size="small" color={Colors.WHITE} />;
 };
 
-const returnNormalView = (text, textStyle, Icon, customButton, disabled) => {
+const returnNormalView = (text, textStyle, Icon, customButton, disabled,LeftIcon) => {
   return (
     
        <View style={styles.buttonWithIcon}>
-          
+          {LeftIcon && 
+            <View style={styles.leftIconView}>
+            {LeftIcon}
+            </View>
+            }
           <Text style={[styles.buttonText, textStyle]}>{text}</Text>
           <View style={styles.iconView}>
           {Icon}
@@ -37,6 +41,7 @@ const returnNormalView = (text, textStyle, Icon, customButton, disabled) => {
   onPress,
   loading = false,
   customButton = false,
+  LeftIcon,
 }) => {
   return (
     <TouchableOpacity
@@ -48,7 +53,7 @@ const returnNormalView = (text, textStyle, Icon, customButton, disabled) => {
     >
       {loading
         ? returnLoadingComponent()
-        : returnNormalView(text, textStyle, Icon, customButton, disabled)}
+        : returnNormalView(text, textStyle, Icon, customButton, disabled,LeftIcon)}
     </TouchableOpacity>
   );
 };

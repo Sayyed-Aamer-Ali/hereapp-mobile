@@ -2,7 +2,8 @@ import { InstructorHomeScreen } from "../screens";
 
 
 const Routes = {
-   
+  NOTIFICATION_SCREEN:'NOTIFICATION_SCREEN',
+  
   // EXAMPLE: require("your path") | File
   AUTH_STACK:"AuthStack",
   DASHBOARD_STACK:"DashboardStack",
@@ -26,6 +27,9 @@ const Routes = {
 
 
   INSTRUCTOR_HOME_SCREEN:'INSTRUCTOR_HOME_SCREEN',
+  INSTRUCTOR_ATTENDENCE_SCREEN:'INSTRUCTOR_ATTENDENCE_SCREEN',
+  ATTENDENCE_LIST_SCREEN:'ATTENDENCE_LIST_SCREEN',
+  ATTENDENCE_LOCATION_SCREEN:'ATTENDENCE_LOCATION_SCREEN',
   
 };
 export default Routes;

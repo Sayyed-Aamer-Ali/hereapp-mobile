@@ -15,6 +15,10 @@ import ModifiedOTPInput from "./ModifiedOTPInput";
 import ClassDetail from "./ClassDetail";
 import SuccessModal from "./SuccessModal";
 import LogoutModal from "./LogoutModal";
+import ShowDropdown from "./ShowDropdown";
+import StudentAttendanceListCard from "./StudentAttendanceListCard";
+import NotificationCard from "./NotificationCard";
+import MapComponent from "./MapComponent";
 
 
 
@@ -38,4 +42,8 @@ export {
   ClassDetail,
   SuccessModal,
   LogoutModal,
+  ShowDropdown,
+  StudentAttendanceListCard,
+  NotificationCard,
+  MapComponent,
 };

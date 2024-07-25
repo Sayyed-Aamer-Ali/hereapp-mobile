@@ -1,4 +1,5 @@
 import Splash from "./Splash/Splash";
+import NotificationScreen from "./NotificaitonScreen/NotificationScreen"
 
 // Auth Screens///
 import Login from "./Auth/Login/Login";
@@ -22,6 +23,9 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
 
   /// Dashboard Screens///
   import InstructorHomeScreen from "./InstructorDashboard/InstructorHomeScreen/InstructorHomeScreen"
+  import InstructorAttendanceScreen from "./InstructorDashboard/InstructorAttendanceScreen/InstructorAttendanceScreen"
+  import AttendanceListScreen from "./InstructorDashboard/AttendanceListScreen/AttendanceListScreen"
+  import AttendanceLocationScreen from "./InstructorDashboard/AttendanceLocationScreen/AttendanceLocationScreen"
 
 
 export {
@@ -39,4 +43,8 @@ export {
   Profile,
   InstructorHomeScreen,
   ChangePassword,
+  InstructorAttendanceScreen,
+  AttendanceListScreen,
+  NotificationScreen,
+  AttendanceLocationScreen,
 };
