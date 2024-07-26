@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Text, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
 import styles from './styles';
@@ -7,48 +7,55 @@ import { MyClasses } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-
-
+import formatDate, { getCurrentDateInFormat } from '../../../utility/FormateDate';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [loasder, setLoasder] = useState(false)
-  const [classes, setClasses] = useState([])
+  const [loader, setLoader] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [classes, setClasses] = useState([]);
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
 
-
   useEffect(() => {
-    getInstructorClasses()
-  }, [])
+    getInstructorClasses();
+  }, []);
 
-  const getInstructorClasses = async () => {
-    setLoasder(true)
+  const getInstructorClasses = async (isRefresh=true) => {
+    if(isRefresh)
+      setLoader(true);
     try {
-      let response = await axiosWrapper('GET', API_URLS.GET_CLASSES, null, token, false, 'json', false);
-      setClasses(response.data)
+      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
+      setClasses(response.data);
     } catch (error) {
-
+      
     } finally {
-      setLoasder(false)
+      setLoader(false);
     }
-
-  }
+  };
 
   const handleAttendance = (item) => {
-    navigation.navigate(Routes.ATTENDANCE, {item})
-  }
+    navigation.navigate(Routes.ATTENDANCE, { item });
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getInstructorClasses(false).then(() => setRefreshing(false));
+  }, []);
+
 
   return (
-    <MainLayout loader={loasder}>
+    <MainLayout loader={loader}>
       <View style={styles.cont}>
         <Header title="Home"
           showBackButton={false}
           DrawerHeader={true}
-
         />
         <CustomFlatList
           listStyle={styles.listStyle}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={() => (
             <EmptyComponent />
           )}
@@ -56,19 +63,20 @@ const Home = ({ navigation }) => {
             <View style={styles.headerCont}>
               <Text style={styles.headerText}>My Classes</Text>
               <Text style={styles.regText}>
-                for Thursday, 20th Feb 2024
+                for {formatDate(new Date())}
               </Text>
             </View>
           }
-          data={MyClasses}
-          keyExtractor={(item) => item.id.toString()}
+          data={classes}
+          keyExtractor={(item) => item?._id?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
               item={item}
+              buttonText="Mark Attendance"
               onPress={() => handleAttendance(item)}
             />
-          )}/>
-
+          )}
+        />
       </View>
     </MainLayout>
   );

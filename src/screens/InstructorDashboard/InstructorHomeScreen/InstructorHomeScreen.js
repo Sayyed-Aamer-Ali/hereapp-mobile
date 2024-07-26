@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View,RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
 import styles from './styles';
@@ -8,17 +8,18 @@ import { resetAuth } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
+import { getCurrentDateInFormat } from '../../../utility/FormateDate';
 
 
 
 const Home = ({ navigation }) => {
-  const [gender, setGender] = useState("MALE");
-  const [loasder, setLoasder] = useState(false)
+ 
+  const [loader, setLoader] = useState(false)
   const [classes, setClasses] = useState([])
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
-
+  const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleLogout = () => {
@@ -34,26 +35,30 @@ const Home = ({ navigation }) => {
     getInstructorClasses()
   }, [])
 
-  const getInstructorClasses = async () => {
-    setLoasder(true)
+  const getInstructorClasses = async (isRefresh=true) => {
+    if(isRefresh)
+      setLoader(true);
     try {
-      let response = await axiosWrapper('GET', API_URLS.GET_CLASSES, null, token, false, 'json', false);
+      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
       setClasses(response.data)
     } catch (error) {
-
     } finally {
-      setLoasder(false)
+      setLoader(false)
     }
 
   }
-
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getInstructorClasses(false).then(() => setRefreshing(false));
+  }, []);
 
   const handleNavigation = (item) =>{
     navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN,{item})
   }
 
+
   return (
-    <MainLayout loader={loasder}>
+    <MainLayout loader={loader}>
       <View style={styles.cont}>
         <Header title="Home"
           showBackButton={false}
@@ -62,6 +67,9 @@ const Home = ({ navigation }) => {
         />
         <CustomFlatList
           listStyle={styles.listStyle}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={() => (
             <EmptyComponent />
           )}
@@ -72,8 +80,8 @@ const Home = ({ navigation }) => {
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }
-          data={instructorClasses}
-          keyExtractor={(item) => item.id.toString()}
+          data={classes}
+          keyExtractor={(item) => item?._id?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
               item={item}

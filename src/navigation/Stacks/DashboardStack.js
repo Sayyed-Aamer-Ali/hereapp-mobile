@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import {StudentStack,InstructorStack} from "./index"
 import Routes from '../Routes';
-import {NotificationScreen} from '../../screens';
+import {NotificationScreen, TermsAndConditions} from '../../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +23,7 @@ const DashboardStack = () => {
         <Stack.Screen name={Routes.InstructorStack}component={InstructorStack} />
       )}
         <Stack.Screen name={Routes.NOTIFICATION_SCREEN} component={NotificationScreen} />
+        <Stack.Screen name={Routes.TERMS_AND_CONDITIONS} component={TermsAndConditions} />
       </Stack.Navigator>
   );
 };

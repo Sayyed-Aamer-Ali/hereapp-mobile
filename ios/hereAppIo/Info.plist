@@ -53,6 +53,11 @@
 	<string>Here App requires to access Audio recording to record and uplod videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Here App would like to upload photos from your photo gallery</string>
+
+	 <key>NSCameraUsageDescription</key>
+    <string>Here App requires access to your camera</string>
+
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { CommonStyles, FontSize, UtilityMethods } from "../../../utility";
 import { Colors, Fonts } from "../../../assets";
 
@@ -73,6 +73,7 @@ changePassowrd:{
     backgroundColor:Colors.WHITE,
     borderColor:Colors.BLACK,
     borderWidth:1,
+    marginBottom: Platform.OS === 'ios' ? null : UtilityMethods.hp(2)
 },
 changePassowrdText:{
     color:Colors.BLACK,

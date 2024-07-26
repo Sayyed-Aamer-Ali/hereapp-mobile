@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Image, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Image, Text, TouchableOpacity, Alert, Platform } from 'react-native';
 
 import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
 import { Colors, Fonts, Icons } from '../../assets';
@@ -28,12 +28,8 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
   const openCamera = () => {
     UtilityMethods.selectImage("camera", (response) => {
       onChnage(response.path)
-      setEditImage?.({
-        // ...response,path:response.sourceURL, 
-        uri:response.sourceURL,
-        name:response.filename,
-        mime:response.mime,
-      })
+      const imageData = formateData(response)
+      setEditImage?.(imageData)
     }, false
     )
   }
@@ -42,16 +38,28 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
   const openGallery = () => {
     UtilityMethods.selectImage("gallery", (response) => {
       onChnage(response.path)
-      setEditImage?.({
-        // ...response, path:response.sourceURL, 
-        uri:response.sourceURL,
-        name:response.filename,
-        mime:response.mime,
-      })
+      const imageData = formateData(response)
+      setEditImage?.(imageData)
     }, false
     )
   }
 
+  const formateData = (response) => {
+    return Platform.OS === 'android' ? {
+      uri: response.path,
+      name: getFileName(response.path),
+      type: response.mime,
+    } :
+      {
+        uri: response.sourceURL,
+        name: response.filename,
+        type: response.mime,
+      }
+  }
+
+  const getFileName = (filePath) => {
+    return filePath.split('/').pop();
+  };
 
   return (
     <View>
@@ -59,7 +67,7 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
 
         {filedInfo?.value ?
           <>
-            <Image style={styles.imageView} source={{ uri:  filedInfo?.value }} 
+            <Image style={styles.imageView} source={{ uri: filedInfo?.value }}
             />
             <TouchableOpacity style={styles.editProfile}
               onPress={() => {

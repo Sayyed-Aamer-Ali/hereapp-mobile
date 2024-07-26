@@ -42,7 +42,7 @@ const Login = ({navigation,route}) => {
   const [rememberMe, setRememberMe] = useState({
     inputType:"checkbox",
     title:"Remember Me",
-    value: savedRememberMe || true,
+    value: savedRememberMe || false,
     type:"checkbox",
     error:"",
   });
@@ -60,7 +60,7 @@ const Login = ({navigation,route}) => {
     let error = {}
 
     let emailValidate = Validator("email", email.value);
-    let passwordValidate = Validator("password", password.value)
+    let passwordValidate = Validator("first_password", password.value)
 
     if (email.value == "") {
       setEmail({...email, error:"Email is required"})
@@ -97,7 +97,6 @@ const Login = ({navigation,route}) => {
 
       // loginAPICall(user)
       loginAPICall({...user, isMobile:true})
-
     }
   }
 
@@ -133,8 +132,10 @@ const Login = ({navigation,route}) => {
           successMessage:'user logged in successfully'
         });
         return 
-        }
-        AlertService.toastPrompt(msg,'error')
+      }
+      AlertService.toastPrompt(msg,'error')
+       
+        
     }finally{
       setLoader(false)
     }
@@ -181,8 +182,7 @@ const Login = ({navigation,route}) => {
         <Text style={styles.regText}>Remember Me</Text>
          </View>
          <TouchableOpacity
-         onPress={() => navigation.navigate(Routes.FORGET_PASSWORD)}>
-
+          onPress={() => navigation.navigate(Routes.FORGET_PASSWORD)}>
          <Text style={[styles.regText,{
           color:Colors.RED,
           fontFamily:Fonts.MEDIUM,

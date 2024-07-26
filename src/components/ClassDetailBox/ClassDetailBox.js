@@ -4,6 +4,8 @@ import { Colors, Fonts, Icons } from '../../assets'
 import { CommonStyles, FontSize, UtilityMethods } from '../../utility'
 import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
+import { useSelector } from 'react-redux'
+import { formatSchedule } from '../../utility/FormateDate'
 
 
 const ClassDetailBox = ({ 
@@ -12,37 +14,40 @@ const ClassDetailBox = ({
   buttonText = "Mark Attendance"
  }) => {
 
+  const user = useSelector(state => state.auth.user);
+
+  const { formattedDate, formattedTimeSlot } = formatSchedule(item?.schedule)
   return (
     <ShadowCard cardStyle={styles.contStyle}
       activeOpacity={1}
     >
       <View style={styles.header}>
         <Text style={styles.title}>
-          {item.className}
+          {item?.name}
         </Text>
       </View>
       <View style={styles.body}>
         <View style={[CommonStyles.ROW_VIEW,styles.itemsContainer]}>
           <View style={styles.item1}>
             <Text style={styles.titleText}>
-              {item.classInstructor || item.enrolledStudents}
+            {user?.role === 'STUDENT' ? item?.createdBy : item?.enrolledStudents?.length} 
             </Text>
             <Text style={styles.desText}>
-            {item.classInstructor ? 'Class Instructor' : "Enrolled Students"} 
+            {user?.role === 'STUDENT' ? 'Class Instructor' : "Enrolled Students"} 
             </Text>
           </View>
           <View style={styles.item2}>
             <Text style={styles.titleText}>
-              {item.classSection}
+              {item?.semester}
             </Text>
-            <Text style={styles.desText}>
-              Class Section
+            <Text style={styles?.desText}>
+              Semester
             </Text>
           </View>
 
           <View style={styles.item1}>
             <Text style={styles.titleText}>
-              {item.timeSLot}
+              {formattedTimeSlot}
             </Text>
             <Text style={styles.desText}>
               Time Slot
@@ -50,7 +55,7 @@ const ClassDetailBox = ({
           </View>
           <View style={styles.item2}>
             <Text style={styles.titleText}>
-              {item.date}
+              {formattedDate}
             </Text>
             <Text style={styles.desText}>
               Date

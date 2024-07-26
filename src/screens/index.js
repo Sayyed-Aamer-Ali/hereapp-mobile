@@ -28,6 +28,10 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
   import AttendanceLocationScreen from "./InstructorDashboard/AttendanceLocationScreen/AttendanceLocationScreen"
 
 
+  // TERMS AND CONDITIONS
+  import TermsAndConditions from "./TermsAndConditions/TermsAndConditions"
+
+
 export {
   Splash,
   UserType,
@@ -47,4 +51,5 @@ export {
   AttendanceListScreen,
   NotificationScreen,
   AttendanceLocationScreen,
+  TermsAndConditions,
 };

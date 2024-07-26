@@ -189,7 +189,7 @@ const EditProfile = ({ navigation }) => {
       let response = await uploadImage(editImage)
       payload.profilePicture = response.data?.[0].path || ''
     }
-    let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE,payload,token, false, 'json', true) 
+    let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload,token, false, 'json', true) 
 
     if(response){
       dispatch(setUser(response.data));

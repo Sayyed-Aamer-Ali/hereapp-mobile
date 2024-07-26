@@ -47,7 +47,7 @@ const ChangePassword = ({ navigation }) => {
   const onPressSaveChanges = () => {
     let error = {};
 
-    let oldPasswordValidate = Validator("password", oldPassword.value);
+    let oldPasswordValidate = Validator("first_password", oldPassword.value);
     let newPasswordValidate = Validator("password", newPassword.value);
 
     if (oldPassword.value === "") {

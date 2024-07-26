@@ -5,9 +5,14 @@ export const Validator = (type, value, confirmPasswordValue = "") => {
         return "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character"
       }
       return "";
+      case "first_password":
+      if (value?.length <= 7 || !/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/[0-9]/.test(value) || !/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+        return "Incorrect password"
+      }
+      return "";
     case "email":
       if (
-        !value.match("^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$") ||
+        !value.match("^(?=.{1,256})(?=.{1,64}@.{1,255}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") ||
         value.includes("..")
       ) {
         return `Invalid email address. i.e. john@gmail.com`;

@@ -44,9 +44,14 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
             }
         return response.data ? response.data : response;
     } catch (error) {
-        let msg = error?.response?.data?.desc ? error?.response?.data?.desc : error?.response?.data?.error ? error?.response?.data?.error : error?.response?.data?.message ? error?.response?.data?.message
-            : error?.response?.message ? error?.response?.message : error?.response?.desc ? error?.response?.desc :error?.message?error?.message: false;
-        if (msg && showToast) 
+        // let msg = error?.response?.data?.desc ? error?.response?.data?.desc : error?.response?.data?.error ? error?.response?.data?.error : error?.response?.data?.message ? error?.response?.data?.message
+        //     : error?.response?.message ? error?.response?.message : error?.response?.desc ? error?.response?.desc :error?.message?error?.message: false;
+        
+        let msg=   error?.response?.data?.validation?.body?.message ||
+            error?.response?.data?.desc ||
+            error?.response?.data?.message ||
+            error?.message;
+            if (msg && showToast) 
             {
                 AlertService.toastPrompt(msg, 'error')
             }

@@ -36,8 +36,10 @@ const SliderScreen = ({ navigation }) => {
   }
 
   const handleNavigation = (path) => {
+    navigation.dispatch(DrawerActions.closeDrawer())
     navigation.navigate(path)
   }
+
 
 
   return (

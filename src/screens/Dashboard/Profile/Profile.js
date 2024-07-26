@@ -48,7 +48,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     if (editImage) {
-      editUserProfile(editImage)
+      editUserProfile()
     }
   }, [editImage])
 
@@ -64,18 +64,18 @@ const Profile = ({ navigation }) => {
 
 
 
-  let editUserProfile = async (editImage) => {
+  let editUserProfile = async () => {
     try {
       setLoader(true);
-      
       let img = await uploadImage(editImage)
       let payload = {
-        profilePicture : img.data?.[0]?.path || ''
+        profilePicture : img?.data?.[0]?.path || ''
       }
       let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', true)
 
       if (response) {
         dispatch(setUser(response.data));
+        setEditImage(null)
       }
     } catch (error) {
       AlertService.toastPrompt("Something went wrong...",'error')

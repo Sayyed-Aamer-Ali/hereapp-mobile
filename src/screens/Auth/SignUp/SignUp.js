@@ -91,7 +91,7 @@ const SignUp = ({ navigation }) => {
   const [rememberMe, setRememberMe] = useState({
     inputType: "checkbox",
     title: "Remember Me",
-    value: true,
+    value: false,
     type: "checkbox",
     error: "",
   });
@@ -99,7 +99,7 @@ const SignUp = ({ navigation }) => {
   const [privacyPolicy, setPrivacyPolicy] = useState({
     inputType: "checkbox",
     title: "Privacy Policy",
-    value: true,
+    value: false,
     type: "checkbox",
     error: "",
   });

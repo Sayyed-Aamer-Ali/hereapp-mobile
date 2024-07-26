@@ -1,4 +1,5 @@
 import { Icons } from "../assets";
+import Routes from "../navigation/Routes";
 
 const Constants = {
   googleApiKey: "",
@@ -23,7 +24,7 @@ const Constants = {
       id:2,
       name:'Notifications',
       icon:<Icons.Notifications/>,
-      route:'Home'
+      route:Routes.NOTIFICATION_SCREEN
     },
     {
       id:7,
@@ -35,7 +36,7 @@ const Constants = {
       id:3,
       name:'Terms & Conditions',
       icon:<Icons.TermsConditions/>,
-      route:'Home'
+      route:Routes.TERMS_AND_CONDITIONS
     },
     {
       id:4,
