@@ -38,6 +38,11 @@ class DateTimeMethods {
         date.setSeconds(seconds);
         return `${moment(date).format(`${date.getHours() > 0 ? "HH:" : ""}mm:ss`)}`;
     };
+    formatDateForDatePicker = (date) => {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
+        return formattedDate.replace(/\//g, '-');
+    };
 }
 
 const DateAndTime = new DateTimeMethods();

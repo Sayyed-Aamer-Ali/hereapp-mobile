@@ -14,14 +14,17 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
  import Home from "./Dashboard/Home/Home";
  import Attendance from "./Dashboard/Attendence/Attendence";
  import EditProfile from "./Dashboard/EditProfile/EditProfile";
- import ExcuseAttandence from "./Dashboard/ExcuseAttandenc/ExcuseAttandence";
+ import ExcuseAttandence from "./Dashboard/ExcuseAttendance/ExcuseAttandence";
  import History from "./Dashboard/History/History";
  import Profile from "./Dashboard/Profile/Profile";
  import ChangePassword from "./Dashboard/ChangePassword/ChangePassword";
+ import ExcuseAttendanceSectionScreen from "./Dashboard/ExcuseAttendanceSectionScreen/ExcuseAttendanceSectionScreen";
+ import ExcuseAttendanceSuccessScreen from "./Dashboard/ExcuseAttendanceSuccessScreen/ExcuseAttendanceSuccessScreen";
+ import ExcuseAttendanceDetailScreen from "./Dashboard/ExcuseAttendanceDetailScreen/ExcuseAttendanceDetailScreen";
+ 
 
 
-
-  /// Dashboard Screens///
+  /// Instructor Dashboard Screens///
   import InstructorHomeScreen from "./InstructorDashboard/InstructorHomeScreen/InstructorHomeScreen"
   import InstructorAttendanceScreen from "./InstructorDashboard/InstructorAttendanceScreen/InstructorAttendanceScreen"
   import AttendanceListScreen from "./InstructorDashboard/AttendanceListScreen/AttendanceListScreen"
@@ -52,4 +55,7 @@ export {
   NotificationScreen,
   AttendanceLocationScreen,
   TermsAndConditions,
+  ExcuseAttendanceSectionScreen,
+  ExcuseAttendanceSuccessScreen,
+  ExcuseAttendanceDetailScreen,
 };

@@ -46,14 +46,13 @@ const OtpVerification = ({ navigation, route }) => {
       }
       const data = { email: user.email };
       const response = await axiosWrapper('POST', API_URLS.SEND_OTP, data, null, false, 'json', true);
-
-
     } catch (error) {
     }
   };
 
   const verifyOTP = async () => {
     try {
+      setLoader(true)
       let data = {
         email: user.email,
         otp: otp.value
@@ -65,6 +64,8 @@ const OtpVerification = ({ navigation, route }) => {
       }
     } catch (error) {
 
+    }finally{
+      setLoader(false)
     }
   }
 
@@ -96,12 +97,12 @@ const OtpVerification = ({ navigation, route }) => {
     if (isButtonDisabled) return;
     setIsButtonDisabled(true); 
 
-    if (otp.value.length < 5) {
+    if (otp.value.length < 4) {
       AlertService.toastPrompt("Please enter OTP", "error")
     }
     else {
-      // verifyOTP()
-      verifyOTPDummy()
+      verifyOTP()
+      // verifyOTPDummy()
     }
     setTimeout(() => {
       setIsButtonDisabled(false);
@@ -174,7 +175,7 @@ const OtpVerification = ({ navigation, route }) => {
           <View style={styles.optView}>
 
             <OtpInput
-              numOfDigits={5}
+              numOfDigits={4}
               onComplete={(otp) => {
                 setOtp({
                   ...otp,

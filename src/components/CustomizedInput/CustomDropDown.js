@@ -9,7 +9,7 @@ import styles from './styles';
 
 
 
- const CustomDropDown = ({
+const CustomDropDown = ({
   type,
   LeftIcon,
   RightIcon,
@@ -37,10 +37,10 @@ import styles from './styles';
   titleStyle,
   ...props
 }) => {
-  
 
 
- 
+
+
   return (
     <View style={[styles.mainCont, style]}>
       {props?.title && (
@@ -51,46 +51,43 @@ import styles from './styles';
           height: props?.title ? UtilityMethods.hp(1) : null,
         }}
       />
-    <View style={[styles.container(isInValidField), InputContStyle]}>
-          {LeftIcon && (
-            <>
-              <LeftIcon width={UtilityMethods.hp(15)} height={UtilityMethods.hp(15)} />
-              <View style={{ width: 10 }} />
-            </>
-          )}
-          
+      <View style={[styles.container(isInValidField), InputContStyle]}>
+        {LeftIcon && (
+          <>
+            <LeftIcon width={UtilityMethods.hp(15)} height={UtilityMethods.hp(15)} />
+            <View style={{ width: 10 }} />
+          </>
+        )}
 
-   
-          
-              <Dropdown
-                placeholder={props?.placeholder}
-                data={props?.data?props?.data:[]}
-                maxHeight={300}
-                value={props?.value}
-                onChange={props?.onChangeText}
-                style={[styles.input, inputStyle,]}
-                inputStyle={{ color: Colors.BLACK }}
-                placeholderStyle={{ color: Colors.DARK_GRAY }}
-                // containerStyle={{ width: '100%' }}
-                // dropdownStyle={{ width: '100%' }}
-                // dropDownContainerStyle={{ width: '100%' }}
-                labelField={"label"}
-                valueField={"value"}
-                renderRightIcon={() => (
-                  <MaterailIcon
-                    name="down"
-                    size={20}
-                    color={Colors.BLACK}
-                  />
-                )
-                }
-                />
-            
-   
+        <Dropdown
+          placeholder={props?.placeholder}
+          data={props?.data ? props?.data : []}
+          maxHeight={300}
+          value={props?.value}
+          onChange={props?.onChangeText}
+          style={[styles.input, inputStyle,]}
+          inputStyle={{ color: Colors.BLACK }}
+          placeholderStyle={{ color: Colors.DARK_GRAY }}
+          // containerStyle={{ width: '100%' }}
+          // dropdownStyle={{ width: '100%' }}
+          // dropDownContainerStyle={{ width: '100%' }}
+          labelField={"label"}
+          valueField={"value"}
+          renderRightIcon={() => (
+            <MaterailIcon
+              name="down"
+              size={20}
+              color={Colors.BLACK}
+            />
+          )
+          }
+        />
 
-         
-        </View>
-     
+
+
+
+      </View>
+
       {Error?.length > 0 ? <Text style={styles.ErrorText}>{Error}</Text> : null}
     </View>
   );

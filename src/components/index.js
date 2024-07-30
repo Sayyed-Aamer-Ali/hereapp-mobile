@@ -19,6 +19,11 @@ import ShowDropdown from "./ShowDropdown";
 import StudentAttendanceListCard from "./StudentAttendanceListCard";
 import NotificationCard from "./NotificationCard";
 import MapComponent from "./MapComponent";
+import ExcussedMissedClassTitle from "./ExcussedMissedClassTitle";
+import DatePickerComponent from "./DatePickerComponent";
+import ExcuseInformationSection from "./ExcuseInformationSection";
+import ReasonTextInput from "./ReasonTextInput";
+import FileUploadComponent from "./FileUploadComponent";
 
 
 
@@ -46,4 +51,9 @@ export {
   StudentAttendanceListCard,
   NotificationCard,
   MapComponent,
+  ExcussedMissedClassTitle,
+  DatePickerComponent,
+  ExcuseInformationSection,
+  ReasonTextInput,
+  FileUploadComponent,
 };

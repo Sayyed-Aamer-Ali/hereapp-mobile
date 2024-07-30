@@ -36,6 +36,12 @@ import Reload from './Reload.svg'
 import ListIcon from './ListIcons.svg'
 import NotificationIcon from './NotificationIcon.svg'
 import ArrowBack from './arrow_back.svg'
+import SearchIcon from './searchIcon.svg'
+import RightArrow from './RightArrow.svg'
+import CalendarYellow from './CalendarYellow.svg'
+import Attach from './Attach.svg'
+import Cross from './Cross.svg'
+import PDF from './pdf.svg'
 
 
 
@@ -79,6 +85,12 @@ export default Icons = {
     ListIcon,
     NotificationIcon,
     ArrowBack,
+    SearchIcon,
+    RightArrow,
+    CalendarYellow,
+    Attach,
+    Cross,
+    PDF,
 }
 
 

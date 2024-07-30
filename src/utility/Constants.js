@@ -30,7 +30,7 @@ const Constants = {
       id:7,
       name:'Excused Attendance',
       icon:<Icons.ExcusedAttandance/>,
-      route:'Home'
+      route:Routes.EXCUSE_ATTENDANCE
     },
     {
       id:3,

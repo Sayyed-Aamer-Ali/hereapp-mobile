@@ -17,6 +17,8 @@ const Routes = {
   ATTENDANCE:"Attendance",
   EDIT_PROFILE:"EditProfile",
   EXCUSE_ATTENDANCE:"ExcuseAttandence",
+  EXCUSE_ATTENDANCE_SECTION_SCREEN:"ExcuseAttendanceSectionScreen",
+  EXCUSE_ATTENDANCE_DETAIL_SCREEN:"ExcuseAttendanceDetailScreen",
   OTP_VERIFICATION:"OtpVerification",
   FORGET_PASSWORD:"ForgetPassword", 
   HISTORY:"History",

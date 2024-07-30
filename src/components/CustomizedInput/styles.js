@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     width: UtilityMethods.wp(12),
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor:"green",
     height: UtilityMethods.hp(6),
   },
 
@@ -71,8 +70,7 @@ const styles = StyleSheet.create({
     fontFamily:Fonts.REGULAR,
     textAlignVertical: 'center',
     height: UtilityMethods.hp(6),
-    // textAlignVertical:"top",
-    
+    paddingRight:UtilityMethods.wp(4)
   },
   eyeIcon: {
     width: UtilityMethods.wp(6),

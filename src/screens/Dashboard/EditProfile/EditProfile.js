@@ -185,6 +185,10 @@ const EditProfile = ({ navigation }) => {
         address: address.value,
         postalCode: postalCode.value,
     };
+    if(!phoneNumber.value.includes('+')){
+      payload.phoneNumber =  `+${phoneNumber.value}`
+    }
+
     if(editImage){
       let response = await uploadImage(editImage)
       payload.profilePicture = response.data?.[0].path || ''
@@ -237,6 +241,7 @@ const EditProfile = ({ navigation }) => {
               setFirstName({ ...firstName, value: text, error: "" });
             }}
             onSubmitEditing={()=>lastNameRef.current?.focus()}
+            maxLength={40}
           />
           <CustomizedInput
             ref={lastNameRef}
@@ -245,6 +250,7 @@ const EditProfile = ({ navigation }) => {
               setLastName({ ...lastName, value: text, error: "" });
             }}
             onSubmitEditing={()=>phoneRef.current?.focus()}
+            maxLength={40}
           />
           <CustomizedInput
             ref={phoneRef}
@@ -270,6 +276,7 @@ const EditProfile = ({ navigation }) => {
               setSchoolName({ ...schoolName, value: text, error: "" });
             }}
             onSubmitEditing={()=>addressRef.current?.focus()}
+            maxLength={80}
           />
           <CustomizedInput
             ref={addressRef}
@@ -278,6 +285,7 @@ const EditProfile = ({ navigation }) => {
               setAddress({ ...address, value: text, error: "" });
             }}
             onSubmitEditing={()=>postalCodeRef.current?.focus()}
+            maxLength={80}
           />
           <CustomizedInput
             ref={postalCodeRef}

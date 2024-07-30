@@ -13,11 +13,11 @@ const CheckBox = ({
   return (
     <TouchableOpacity
       onPress={() => onChange(!filedInfo?.value)}
-      style={styles.checkBox}
+      style={[styles.checkBox,{backgroundColor:filedInfo?.value ? Colors.BLACK : Colors.WHITE }]}
     >
       {filedInfo?.value && (
-        <Icon name="check" size={12} color={
-          Colors.BLACK
+        <Icon name="check" size={11} color={
+          Colors.WHITE
         } />
       )}
 
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     borderWidth: 1,
     borderColor: Colors.BLACK,
-
+    
   }
 })

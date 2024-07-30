@@ -95,17 +95,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     ...CommonStyles.PADDING_HORIZONTAL
-
-
-
-
   },
   icon: {
     width: UtilityMethods.wp(12),
-
   },
   headerText: {
-
     color: Colors.ICON_BLACK,
     fontSize: FontSize.VALUE(18),
     fontFamily: Fonts.SEMI_BOLD,

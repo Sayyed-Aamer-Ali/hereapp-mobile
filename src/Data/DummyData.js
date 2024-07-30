@@ -161,6 +161,93 @@ export const attendanceListData = [
   },
 ];
 
+export const dummyExcuseData = [
+  {
+    "_id": "669e3c8bc37c5c9fd452b6e2",
+    "name": "FYP",
+    "semester": 1,
+    "schedule": {
+        "date": "2024-07-25T00:00:00.000Z",
+        "startTime": "17:03",
+        "endTime": "18:03",
+        "_id": "669e3d97bc7054a17312a6e2"
+    },
+    "createdBy":"Abdul Basit",
+    "geoTracking": "disable",
+    "excusedAbsenceAllowance": 2,
+    "enrolledStudents": [
+        "669e3c4a7b6d2e298db17884",
+        "669e3c1f6304f2fb428bfa5d",
+        "669e3c37343c808d5dfe0526"
+    ],
+    "__v": 0
+},
+]
+
+
+export const particularDatesdummyExcuseData = [
+  {
+    "_id": "669e3c8bc37c5c9fd452b6e2",
+    "name": "Advanced Data Structures & Algorithm Analysis",
+    "semester": 1,
+    "schedule": {
+        "date": "2024-07-25T00:00:00.000Z",
+        "startTime": "17:03",
+        "endTime": "18:03",
+        "_id": "669e3d97bc7054a17312a6e2"
+    },
+    "createdBy":"Abdul Basit",
+    "geoTracking": "disable",
+    "excusedAbsenceAllowance": 2,
+    "enrolledStudents": [
+        "669e3c4a7b6d2e298db17884",
+        "669e3c1f6304f2fb428bfa5d",
+        "669e3c37343c808d5dfe0526"
+    ],
+    "__v": 0
+},
+{
+  "_id": "669e3c8bc37c5c9fd452b6e3",
+  "name": "FYP",
+  "semester": 1,
+  "schedule": {
+      "date": "2024-07-25T00:00:00.000Z",
+      "startTime": "17:03",
+      "endTime": "18:03",
+      "_id": "669e3d97bc7054a17312a6e2"
+  },
+  "createdBy":"Abdul Basit",
+  "geoTracking": "disable",
+  "excusedAbsenceAllowance": 2,
+  "enrolledStudents": [
+      "669e3c4a7b6d2e298db17884",
+      "669e3c1f6304f2fb428bfa5d",
+      "669e3c37343c808d5dfe0526"
+  ],
+  "__v": 0
+},
+{
+  "_id": "669e3c8bc37c5c9fd452b6e4",
+  "name": "FYP",
+  "semester": 1,
+  "schedule": {
+      "date": "2024-07-25T00:00:00.000Z",
+      "startTime": "17:03",
+      "endTime": "18:03",
+      "_id": "669e3d97bc7054a17312a6e2"
+  },
+  "createdBy":"Abdul Basit",
+  "geoTracking": "disable",
+  "excusedAbsenceAllowance": 2,
+  "enrolledStudents": [
+      "669e3c4a7b6d2e298db17884",
+      "669e3c1f6304f2fb428bfa5d",
+      "669e3c37343c808d5dfe0526"
+  ],
+  "__v": 0
+},
+]
+
 
 export const notifications = [
   { id: '1', title: 'Excused Absence', message: 'Your Excused Absence request has been approved' },
