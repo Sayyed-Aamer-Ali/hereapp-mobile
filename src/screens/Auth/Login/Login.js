@@ -92,8 +92,6 @@ const Login = ({ navigation, route }) => {
         email: email.value,
         password: password.value,
       }
-
-      // loginAPICall(user)
       loginAPICall({ ...user, isMobile:true})
     }
   }

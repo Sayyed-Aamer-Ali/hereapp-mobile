@@ -157,19 +157,7 @@ const EditProfile = ({ navigation }) => {
     setError(error);
 
     if (Object.keys(error).length === 0) {
-      let updatedUser = {
-        ...user,
-        firstName: firstName.value,
-        lastName: lastName.value,
-        phoneNumber: phoneNumber.value,
-        address: address.value,
-        postalCode: postalCode.value,
-        netID: netId.value,
-        schoolName: schoolName.value,
-        ProfileImage: profileImage.value,
-      };
       editUserProfile()
-      
     }
   };
 
