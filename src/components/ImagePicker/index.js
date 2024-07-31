@@ -68,8 +68,6 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
 
         {filedInfo?.value ?
           <>
-            {/* <Image style={styles.imageView} source={{ uri: filedInfo?.value }}
-            /> */}
             <FastImageComponent style={styles.imageView} source={{
               uri: filedInfo?.value
             }} />

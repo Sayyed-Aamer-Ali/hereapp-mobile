@@ -47,9 +47,6 @@ const SliderScreen = ({ navigation }) => {
       <View style={styles.headerCont}>
 
         <Pressable style={styles.ImageCont} onPress={() => handleNavigation(Routes.PROFILE)}>
-          {/* <Image style={styles.imageView} source={{
-            uri: user?.profilePicture || Constants.letImagePlaceholder
-          }} /> */}
           <FastImageComponent style={styles.imageView} source={{
             uri: user?.profilePicture || Constants.letImagePlaceholder
           }} />

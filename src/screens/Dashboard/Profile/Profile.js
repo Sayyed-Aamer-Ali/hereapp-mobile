@@ -111,7 +111,6 @@ const Profile = ({ navigation }) => {
               ...profileImage, value: path,
               error: ""
             })
-            // handleProfileAPI(path)
           }}
           setEditImage={setEditImage}
         />

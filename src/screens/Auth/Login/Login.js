@@ -16,7 +16,7 @@ import AlertService from '../../../services/AlertService';
 const Login = ({ navigation, route }) => {
   const toast = useToast();
   const [loader, setLoader] = useState(false)
-  const userType = route.params?.selectedUser;
+  const userType = route.params?.selectedUser || '';
   const passwordRef = useRef(null);
 
   const { email: savedEmail, password: savedPassword, rememberMe: savedRememberMe } = useSelector(state => state.auth.rememberMeCreds);
@@ -103,6 +103,12 @@ const Login = ({ navigation, route }) => {
       setLoader(true)
       let response = await axiosWrapper('POST', API_URLS.LOGIN_URL, data, null, false, 'json', false);
       if (response) {
+        if(response?.data?.user.role !== userType.toUpperCase()){
+          let vowel = userType === 'Student' ? 'a': 'an'
+          AlertService.toastPrompt(`Please select the correct role, you are not ${vowel} ${userType.toLowerCase()}`, 'error')
+          return
+        }
+
         if (rememberMe.value) {
           dispatch(setRememberMeCreds({ email: email.value, password: password.value, rememberMe: true }));
         } else {
