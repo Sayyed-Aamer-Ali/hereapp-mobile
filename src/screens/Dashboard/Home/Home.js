@@ -24,6 +24,7 @@ const Home = ({ navigation }) => {
   const getInstructorClasses = async (isRefresh=true) => {
     if(isRefresh)
       setLoader(true);
+    
     try {
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
       setClasses(response.data);

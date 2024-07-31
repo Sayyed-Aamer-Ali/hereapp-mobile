@@ -72,6 +72,10 @@ export const shouldDisableButton = (data) => {
     const endTime = new Date(data.date);
     const [endHours, endMinutes] = data.endTime.split(':').map(Number);
     endTime.setHours(endHours, endMinutes);
-  
-    return currentTime > endTime;
+
+  const startTime = new Date(data.date);
+  const [startHours, startMinutes] = data.startTime.split(':').map(Number);
+  startTime.setHours(startHours, startMinutes);
+
+    return (currentTime > endTime || currentTime < startTime);
   };

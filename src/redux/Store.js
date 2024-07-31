@@ -9,7 +9,7 @@ const config = {
   storage: AsyncStorage,
 };
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     auth: persistReducer({ ...config }, authReducer),
     temp: TempData,
@@ -21,4 +21,5 @@ export const store = configureStore({
 });
 
 export const persister = persistStore(store);
+
 export default store;

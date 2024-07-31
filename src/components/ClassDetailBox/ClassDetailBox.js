@@ -19,7 +19,7 @@ const ClassDetailBox = ({
   const { formattedDate, formattedTimeSlot } = formatSchedule(item?.schedule)
   useEffect(()=>{
     setIsButtonDisabled(shouldDisableButton(item?.schedule));
-  },[])
+  },[item])
 
   return (
     <ShadowCard cardStyle={styles.contStyle}

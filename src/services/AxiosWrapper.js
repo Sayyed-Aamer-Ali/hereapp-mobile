@@ -1,5 +1,7 @@
 import axios from 'axios';
 import AlertService from './AlertService';
+import store from '../redux/Store';
+import { resetAuth } from '../redux/Reducers/AuthReducer';
 // Add request interceptor
 // Add response interceptor
 axios.interceptors.response.use(
@@ -54,6 +56,10 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
             if (msg && showToast) 
             {
                 AlertService.toastPrompt(msg, 'error')
+            }
+            if(msg === 'Unauthorized'){
+                store.dispatch(resetAuth())
+                AlertService.toastPrompt("You are not an authorized user", 'error')
             }
         return Promise.reject(msg);
     }
