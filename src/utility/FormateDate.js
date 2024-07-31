@@ -64,3 +64,14 @@ export const getCurrentDateInFormat = () => {
     
     return `${year}-${month}-${day}T00:00:00.000Z`;
   };
+
+
+
+export const shouldDisableButton = (data) => {
+    const currentTime = new Date();
+    const endTime = new Date(data.date);
+    const [endHours, endMinutes] = data.endTime.split(':').map(Number);
+    endTime.setHours(endHours, endMinutes);
+  
+    return currentTime > endTime;
+  };

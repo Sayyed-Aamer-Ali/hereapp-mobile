@@ -9,7 +9,7 @@ import { resetAuth, setUser } from '../../../redux/Reducers/AuthReducer';
 import { Constants } from '../../../utility';
 import styles from './styles';
 import Routes from '../../../navigation/Routes';
-import { LogoutModal } from '../../../components';
+import { FastImageComponent, LogoutModal } from '../../../components';
 
 
 const SliderScreen = ({ navigation }) => {
@@ -47,14 +47,15 @@ const SliderScreen = ({ navigation }) => {
       <View style={styles.headerCont}>
 
         <Pressable style={styles.ImageCont} onPress={() => handleNavigation(Routes.PROFILE)}>
-          <Image style={styles.imageView} source={{
+          {/* <Image style={styles.imageView} source={{
+            uri: user?.profilePicture || Constants.letImagePlaceholder
+          }} /> */}
+          <FastImageComponent style={styles.imageView} source={{
             uri: user?.profilePicture || Constants.letImagePlaceholder
           }} />
 
         </Pressable>
-
-        <Text style={styles.titleText}>{user?.fullName}</Text>
-
+        <Text style={styles.titleText}>{user?.firstName} {user?.lastName}</Text>
       </View>
 
       <View style={styles.body}>

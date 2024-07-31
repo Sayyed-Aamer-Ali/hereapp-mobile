@@ -23,7 +23,8 @@ const InputText = forwardRef(({
   const [show, setShow] = useState(false);
 
 
-  const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  // const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  const USPhoneNumberMask = ['+','1',' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   return (
     <View style={[styles.mainCont, style]}>

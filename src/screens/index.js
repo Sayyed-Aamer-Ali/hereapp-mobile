@@ -33,6 +33,7 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
 
   // TERMS AND CONDITIONS
   import TermsAndConditions from "./TermsAndConditions/TermsAndConditions"
+  import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy"
 
 
 export {
@@ -58,4 +59,5 @@ export {
   ExcuseAttendanceSectionScreen,
   ExcuseAttendanceSuccessScreen,
   ExcuseAttendanceDetailScreen,
+  PrivacyPolicy,
 };

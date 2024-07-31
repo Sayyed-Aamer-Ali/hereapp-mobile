@@ -43,7 +43,6 @@ const Home = ({ navigation }) => {
     getInstructorClasses(false).then(() => setRefreshing(false));
   }, []);
 
-
   return (
     <MainLayout loader={loader}>
       <View style={styles.cont}>
@@ -57,7 +56,10 @@ const Home = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           ListEmptyComponent={() => (
-            <EmptyComponent />
+            <EmptyComponent 
+            title={'No Classes Found!'}
+            desc={'Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.'}
+            />
           )}
           ListHeaderComponent={
             <View style={styles.headerCont}>
@@ -68,7 +70,7 @@ const Home = ({ navigation }) => {
             </View>
           }
           data={classes}
-          keyExtractor={(item) => item?._id?.toString()}
+          keyExtractor={(item,index) => index?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
               item={item}

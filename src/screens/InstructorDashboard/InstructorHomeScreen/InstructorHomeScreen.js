@@ -71,17 +71,21 @@ const Home = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           ListEmptyComponent={() => (
-            <EmptyComponent />
+            <EmptyComponent 
+            title={'No Classes Found!'}
+            desc={'Sorry we cannot find any registered classes for you.'}
+          
+            />
           )}
           ListHeaderComponent={
             <View style={styles.headerCont}>
-              <Text style={styles.welcome}>Welcome {user?.fullName},</Text>
+              <Text style={styles.welcome}>Welcome {user?.firstName},</Text>
               <Text style={styles.desc}>Please select a class to mark attendance</Text>
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }
           data={classes}
-          keyExtractor={(item) => item?._id?.toString()}
+          keyExtractor={(item,index) => index?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
               item={item}

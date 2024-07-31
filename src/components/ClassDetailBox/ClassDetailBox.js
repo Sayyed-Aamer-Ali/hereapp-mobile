@@ -5,7 +5,7 @@ import { CommonStyles, FontSize, UtilityMethods } from '../../utility'
 import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 import { useSelector } from 'react-redux'
-import { formatSchedule } from '../../utility/FormateDate'
+import { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
 
 
 const ClassDetailBox = ({ 
@@ -13,10 +13,14 @@ const ClassDetailBox = ({
   onPress, 
   buttonText = "Mark Attendance"
  }) => {
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const user = useSelector(state => state.auth.user);
 
   const { formattedDate, formattedTimeSlot } = formatSchedule(item?.schedule)
+  useEffect(()=>{
+    setIsButtonDisabled(shouldDisableButton(item?.schedule));
+  },[])
+
   return (
     <ShadowCard cardStyle={styles.contStyle}
       activeOpacity={1}
@@ -30,7 +34,7 @@ const ClassDetailBox = ({
         <View style={[CommonStyles.ROW_VIEW,styles.itemsContainer]}>
           <View style={styles.item1}>
             <Text style={styles.titleText}>
-            {user?.role === 'STUDENT' ? item?.createdBy : item?.enrolledStudents?.length} 
+            {user?.role === 'STUDENT' ? `${item?.createdBy?.firstName || ''} ${item?.createdBy?.lastName || ''}` : item?.enrolledStudents?.length} 
             </Text>
             <Text style={styles.desText}>
             {user?.role === 'STUDENT' ? 'Class Instructor' : "Enrolled Students"} 
@@ -68,7 +72,9 @@ const ClassDetailBox = ({
         Icon={
           <Icons.Right />
         }
+        style={{backgroundColor:isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK, opacity:isButtonDisabled ? 0.8: 1}}
         onPress={onPress}
+        disabled={isButtonDisabled}
       />
     </ShadowCard>
   )

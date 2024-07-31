@@ -61,9 +61,6 @@ const Profile = ({ navigation }) => {
     navigation.navigate(path);
   }
 
-
-
-
   let editUserProfile = async () => {
     try {
       setLoader(true);

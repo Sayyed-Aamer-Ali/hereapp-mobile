@@ -24,6 +24,7 @@ import DatePickerComponent from "./DatePickerComponent";
 import ExcuseInformationSection from "./ExcuseInformationSection";
 import ReasonTextInput from "./ReasonTextInput";
 import FileUploadComponent from "./FileUploadComponent";
+import FastImageComponent from "./FastImageComponent";
 
 
 
@@ -56,4 +57,5 @@ export {
   ExcuseInformationSection,
   ReasonTextInput,
   FileUploadComponent,
+  FastImageComponent,
 };

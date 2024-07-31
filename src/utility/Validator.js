@@ -6,7 +6,7 @@ export const Validator = (type, value, confirmPasswordValue = "") => {
       }
       return "";
       case "first_password":
-      if (value?.length <= 7 || !/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/[0-9]/.test(value) || !/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      if (value?.trim() === '') {
         return "Incorrect password"
       }
       return "";

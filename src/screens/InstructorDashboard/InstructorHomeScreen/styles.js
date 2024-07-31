@@ -36,12 +36,13 @@ const styles = StyleSheet.create({
     ...CommonStyles.REGULAR,
     color:Colors.BLACK,
     fontSize:FontSize.VALUE(18),
+    marginBottom:UtilityMethods.hp(0.4)
   },
   desc:{
     ...CommonStyles.REGULAR,
     color:Colors.LIGHT_GRAY,
     fontSize:FontSize.VALUE(14),
-    marginBottom:UtilityMethods.hp(2)
+    marginBottom:UtilityMethods.hp(1.5)
   },
   headerText:{
     ...CommonStyles.SEMI_BOLD,

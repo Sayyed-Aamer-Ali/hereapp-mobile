@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, Image, Text, TouchableOpacity, Alert, Plat
 
 import { CommonStyles, FontSize, UtilityMethods } from '../../utility';
 import { Colors, Fonts, Icons } from '../../assets';
+import FastImageComponent from '../FastImageComponent';
 
 const { wp, hp } = UtilityMethods;
 
@@ -67,8 +68,12 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
 
         {filedInfo?.value ?
           <>
-            <Image style={styles.imageView} source={{ uri: filedInfo?.value }}
-            />
+            {/* <Image style={styles.imageView} source={{ uri: filedInfo?.value }}
+            /> */}
+            <FastImageComponent style={styles.imageView} source={{
+              uri: filedInfo?.value
+            }} />
+
             <TouchableOpacity style={styles.editProfile}
               onPress={() => {
                 onPressImage()

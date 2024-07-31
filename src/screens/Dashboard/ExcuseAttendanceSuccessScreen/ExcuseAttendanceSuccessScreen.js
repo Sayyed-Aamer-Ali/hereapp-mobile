@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { MainLayout } from '../../../components';
+import { Button, MainLayout } from '../../../components';
 import { Colors, Fonts, Images } from '../../../assets';
 import { FontSize, UtilityMethods } from '../../../utility';
 import { Header } from '../../../components';
@@ -17,15 +17,16 @@ const ExcuseAttendanceSuccessScreen = ({ navigation }) => {
 
   return (
     <MainLayout>
-      <Header title="Excused Absence" onBackPress={handleBackPress} />
+      <Header title="Excused Absence" onBackPress={handleOkayPress} />
       <View style={styles.container}>
         <Image source={Images.CHECK_MARK} style={styles.icon} />
         <Text style={styles.message}>
           An Excused Absence Request has been sent to your instructor. You’ll be notified as soon as they respond!
         </Text>
-        <TouchableOpacity style={styles.button} onPress={handleOkayPress}>
-          <Text style={styles.buttonText}>Okay</Text>
-        </TouchableOpacity>
+        <Button
+          text={"Okay"}
+          onPress={handleOkayPress}
+        />
       </View>
     </MainLayout>
   );
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: UtilityMethods.wp(4),
   },
   icon: {
-    width: UtilityMethods.wp(20),
-    height: UtilityMethods.wp(20),
+    width: UtilityMethods.wp(60),
+    height: UtilityMethods.wp(60),
     marginBottom: UtilityMethods.hp(3),
   },
   message: {

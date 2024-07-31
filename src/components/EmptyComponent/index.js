@@ -3,14 +3,14 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { Colors, Fonts, Images } from '../../assets'; 
 import { FontSize, UtilityMethods } from '../../utility'; 
 
-const EmptyComponent = () => {
+const EmptyComponent = ({title,desc}) => {
   return (
     <View style={styles.container}>
       <Image source={Images.EMPTY_IMAGE} style={styles.image} /> 
-      <Text style={styles.title}>No Classes Found!</Text>
-      <Text style={styles.description}>
-        Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.
-      </Text>
+      {title && <Text style={styles.title}>{title}</Text>}
+      {desc &&
+        <Text style={styles.description}>{desc}</Text>
+      }
     </View>
   )
 }
@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     width: UtilityMethods.wp(40), 
     height: UtilityMethods.hp(20), 
     resizeMode: 'contain',
+    marginBottom: UtilityMethods.hp(1),
+
   },
   title: {
     fontSize: FontSize.VALUE(18),
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: FontSize.VALUE(14),
+    lineHeight:FontSize.VALUE(20),
     fontFamily: Fonts.BOLD,
     color: Colors.LIGHT_GRAY,
     textAlign: 'center',

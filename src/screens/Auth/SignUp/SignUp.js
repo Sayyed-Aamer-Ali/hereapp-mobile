@@ -211,6 +211,10 @@ const SignUp = ({ navigation }) => {
     }
   }
 
+  const handleNavigation = (path) =>{
+    navigation.navigate(path)
+  }
+
   return (
     <MainLayout loader={loader}>
       <Header title={"Sign Up"} rightIcons={false} />
@@ -284,7 +288,7 @@ const SignUp = ({ navigation }) => {
             />
             <View style={[CommonStyles.ROW_VIEW]}>
               <Text style={styles.regText}>I agree to the</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>handleNavigation(Routes.TERMS_AND_CONDITIONS)}>
                 <Text style={styles.underLineText}>terms & conditions.</Text>
               </TouchableOpacity>
             </View>
@@ -299,7 +303,7 @@ const SignUp = ({ navigation }) => {
             />
             <View style={[CommonStyles.ROW_VIEW]}>
               <Text style={styles.regText}>I agree to the</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>handleNavigation(Routes.PRIVACY_POLICY)}>
                 <Text style={styles.underLineText}>privacy policy.</Text>
               </TouchableOpacity>
             </View>

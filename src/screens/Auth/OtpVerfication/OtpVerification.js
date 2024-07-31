@@ -141,6 +141,7 @@ const OtpVerification = ({ navigation, route }) => {
         setOtpReset(true);
         setResetCounter(true)
         getOTP()
+        setShowReset(false)
       },
       onPressButtonSecond: () => {
 
@@ -215,19 +216,18 @@ const OtpVerification = ({ navigation, route }) => {
 
         />
 
-      {showReset &&  
+      {/* {showReset &&   */}
       <TouchableOpacity
           onPress={() => {
             showResendAlert()
           }}
-          
-        >
-          <Text style={styles.boldText}>
-
+          disabled={!showReset}
+          >
+          <Text style={[styles.boldText,{color:showReset? Colors.BLACK:Colors.LIGHT_GRAY}]}>
             Resend OTP
           </Text>
         </TouchableOpacity>
-        }
+        {/* } */}
 
       </ScreenWrapper>
 

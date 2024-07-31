@@ -186,7 +186,7 @@ const EditProfile = ({ navigation }) => {
         postalCode: postalCode.value,
     };
     if(!phoneNumber.value.includes('+')){
-      payload.phoneNumber =  `+${phoneNumber.value}`
+      payload.phoneNumber =  `+1${phoneNumber.value}`
     }
 
     if(editImage){
@@ -293,8 +293,7 @@ const EditProfile = ({ navigation }) => {
             onChange={(text) => {
               setPostalCode({ ...postalCode, value: text, error: "" });
             }}
-            keyboardType="number-pad"
-            maxLength={5}
+            maxLength={6}
           />
          
 

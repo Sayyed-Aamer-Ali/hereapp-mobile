@@ -8,6 +8,7 @@ import { UtilityMethods, Validator } from '../../../utility';
 import styles from './styles';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import AlertService from '../../../services/AlertService';
 
 const ForgetPassword = ({navigation,route}) => {
    const [loader, setLoader] = useState(false)
@@ -51,12 +52,14 @@ const verifyEmailAPICall = async () =>{
     setLoader(true)
 
     const data = { email: email.value };
-    let response = await axiosWrapper('POST', API_URLS.VERIFY_EMAIL, data, null,false, 'json', true);
+    let response = await axiosWrapper('POST', API_URLS.VERIFY_EMAIL, data, null,false, 'json', false);
     if(response){
+      AlertService.toastPrompt('Reset link has been sent to your email','success')
       navigation.goBack()
     }
   } catch (error) {
-    
+    AlertService.toastPrompt('Something went wrong','error')
+
   }finally{
     setLoader(false)
   }

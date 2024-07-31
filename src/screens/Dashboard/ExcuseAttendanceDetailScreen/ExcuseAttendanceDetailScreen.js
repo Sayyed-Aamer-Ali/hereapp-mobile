@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, ExcuseInformationSection, FileUploadComponent, Header, MainLayout, ReasonTextInput } from '../../../components';
 import styles from './styles';
+import Routes from '../../../navigation/Routes';
 
 
 const ExcuseAttendanceDetailScreen = ({ navigation }) => {
@@ -13,7 +14,7 @@ const ExcuseAttendanceDetailScreen = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-
+    navigation.navigate(Routes.EXCUSE_ATTENDANCE_SUCCESS_SCREEN)
   };
 
   return (

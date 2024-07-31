@@ -94,7 +94,7 @@ const Login = ({ navigation, route }) => {
       }
 
       // loginAPICall(user)
-      loginAPICall({ ...user, })
+      loginAPICall({ ...user, isMobile:true})
     }
   }
 
@@ -114,10 +114,13 @@ const Login = ({ navigation, route }) => {
           AlertService.toastPrompt("user logged in successfully", 'success')
         }
         else {
-          navigation.navigate(Routes.OTP_VERIFICATION, {
-            user: data,
-            successMessage: 'user logged in successfully'
-          });
+          let response = await getOTP()
+          if(response){
+            navigation.navigate(Routes.OTP_VERIFICATION, {
+              user: data,
+              successMessage: 'user logged in successfully'
+            });
+          }
         }
 
 
@@ -128,12 +131,10 @@ const Login = ({ navigation, route }) => {
 
         let response = await getOTP()
         if (response) {
-
           navigation.navigate(Routes.OTP_VERIFICATION, {
             user: data,
             successMessage: 'user logged in successfully'
           });
-
         }
         return
       }

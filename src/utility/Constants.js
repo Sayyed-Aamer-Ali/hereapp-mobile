@@ -42,7 +42,7 @@ const Constants = {
       id:4,
       name:'Privacy Policy',
       icon:<Icons.PrivacyPolicy/>,
-      route:'Home'
+      route:Routes.PRIVACY_POLICY
     },
     
   ]

@@ -228,7 +228,7 @@ export const particularDatesdummyExcuseData = [
 },
 {
   "_id": "669e3c8bc37c5c9fd452b6e4",
-  "name": "FYP",
+  "name": "FYP final year",
   "semester": 1,
   "schedule": {
       "date": "2024-07-25T00:00:00.000Z",
@@ -270,3 +270,6 @@ export const expiryData = [
   { label: '5 Minutes', value: '5' },
   { label: '10 Minutes', value: '10' },
 ];
+
+
+export const CACHE_CLEAR_INTERVAL = 86400000;
