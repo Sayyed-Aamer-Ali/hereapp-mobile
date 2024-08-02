@@ -8,7 +8,7 @@ import { resetAuth } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
-import { getCurrentDateInFormat } from '../../../utility/FormateDate';
+import { getCurrentDateInFormat, sortClassesByDateTime, sortClassesByDayAndTime } from '../../../utility/FormateDate';
 
 
 
@@ -40,8 +40,12 @@ const Home = ({ navigation }) => {
       setLoader(true);
     try {
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-      setClasses(response.data)
+      // let classes = sortClassesByDateTime(response.data)
+      console.log(response.data)
+      let classes = sortClassesByDayAndTime(response.data)
+      setClasses(classes)
     } catch (error) {
+      console.log(error)
     } finally {
       setLoader(false)
     }

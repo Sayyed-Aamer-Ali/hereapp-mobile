@@ -16,9 +16,11 @@ const ClassDetailBox = ({
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const user = useSelector(state => state.auth.user);
 
-  const { formattedDate, formattedTimeSlot } = formatSchedule(item?.schedule)
+  const { 
+    // formattedDate, 
+    formattedTimeSlot } = formatSchedule(item?.schedule)
   useEffect(()=>{
-    setIsButtonDisabled(shouldDisableButton(item?.schedule));
+    setIsButtonDisabled(shouldDisableButton(item));
   },[item])
 
   return (
@@ -59,10 +61,10 @@ const ClassDetailBox = ({
           </View>
           <View style={styles.item2}>
             <Text style={styles.titleText}>
-              {formattedDate}
+              {item?.schedule?.day}
             </Text>
             <Text style={styles.desText}>
-              Date
+              Day
             </Text>
           </View>
 
