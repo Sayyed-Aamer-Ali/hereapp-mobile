@@ -40,12 +40,9 @@ const Home = ({ navigation }) => {
       setLoader(true);
     try {
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-      // let classes = sortClassesByDateTime(response.data)
-      console.log(response.data)
       let classes = sortClassesByDayAndTime(response.data)
       setClasses(classes)
     } catch (error) {
-      console.log(error)
     } finally {
       setLoader(false)
     }

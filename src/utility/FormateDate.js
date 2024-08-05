@@ -75,7 +75,6 @@ export const shouldDisableButton = (data) => {
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
-    console.log(currentDay,data?.schedule?.day)
     return true; 
   }
 
