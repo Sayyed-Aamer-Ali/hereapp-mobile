@@ -11,6 +11,15 @@ const styles = StyleSheet.create({
     listContentContainer: {
       paddingHorizontal: UtilityMethods.hp(2),
     },
+    imgContainer:{
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+    },
+    image:{
+      width:UtilityMethods.wp(100),
+      height:UtilityMethods.hp(20),
+    }
   });
 
 export default styles

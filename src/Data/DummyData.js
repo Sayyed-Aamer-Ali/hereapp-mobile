@@ -167,12 +167,16 @@ export const dummyExcuseData = [
     "name": "FYP",
     "semester": 1,
     "schedule": {
-        "date": "2024-07-25T00:00:00.000Z",
+        "day": "Monday",
         "startTime": "17:03",
         "endTime": "18:03",
         "_id": "669e3d97bc7054a17312a6e2"
     },
-    "createdBy":"Abdul Basit",
+    "createdBy":{
+      "_id":'121312321',
+      "firstName":"Malik",
+      "lastName":"Saad"
+    },
     "geoTracking": "disable",
     "excusedAbsenceAllowance": 2,
     "enrolledStudents": [
@@ -191,12 +195,16 @@ export const particularDatesdummyExcuseData = [
     "name": "Advanced Data Structures & Algorithm Analysis",
     "semester": 1,
     "schedule": {
-        "date": "2024-07-25T00:00:00.000Z",
+        "day": "Friday",
         "startTime": "17:03",
         "endTime": "18:03",
         "_id": "669e3d97bc7054a17312a6e2"
     },
-    "createdBy":"Abdul Basit",
+    "createdBy":{
+      "_id":'121312',
+      "firstName":"Abdul",
+      "lastName":"Basit"
+    },
     "geoTracking": "disable",
     "excusedAbsenceAllowance": 2,
     "enrolledStudents": [
@@ -211,12 +219,16 @@ export const particularDatesdummyExcuseData = [
   "name": "FYP",
   "semester": 1,
   "schedule": {
-      "date": "2024-07-25T00:00:00.000Z",
+      "day": "Wednesday",
       "startTime": "17:03",
       "endTime": "18:03",
       "_id": "669e3d97bc7054a17312a6e2"
   },
-  "createdBy":"Abdul Basit",
+  "createdBy":{
+      "_id":'121312321',
+      "firstName":"Danish",
+      "lastName":"Fayyaz"
+    },
   "geoTracking": "disable",
   "excusedAbsenceAllowance": 2,
   "enrolledStudents": [
@@ -231,12 +243,16 @@ export const particularDatesdummyExcuseData = [
   "name": "FYP final year",
   "semester": 1,
   "schedule": {
-      "date": "2024-07-25T00:00:00.000Z",
+      "day": "Tuesday",
       "startTime": "17:03",
       "endTime": "18:03",
       "_id": "669e3d97bc7054a17312a6e2"
   },
-  "createdBy":"Abdul Basit",
+  "createdBy":{
+      "_id":'121312321',
+      "firstName":"John",
+      "lastName":"Doe"
+    },
   "geoTracking": "disable",
   "excusedAbsenceAllowance": 2,
   "enrolledStudents": [

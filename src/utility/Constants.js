@@ -25,12 +25,14 @@ const Constants = {
       name:'Notifications',
       icon:<Icons.Notifications/>,
       route:Routes.NOTIFICATION_SCREEN
+      // route:'Home'
     },
     {
       id:7,
       name:'Excused Attendance',
       icon:<Icons.ExcusedAttandance/>,
       route:Routes.EXCUSE_ATTENDANCE
+      // route:'Home'
     },
     {
       id:3,

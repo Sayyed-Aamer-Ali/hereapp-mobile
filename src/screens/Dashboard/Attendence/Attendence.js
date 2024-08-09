@@ -6,6 +6,7 @@ import { CommonStyles, UtilityMethods } from '../../../utility';
 import styles from './styles';
 import { Icons, Colors } from '../../../assets'; 
 import ClassDetails from '../../../components/ClassDetail';
+import { formatSchedule } from '../../../utility/FormateDate';
 
 const MAX_ATTEMPTS = 3;
 
@@ -55,7 +56,7 @@ const Attendance = ({ navigation, route }) => {
   const handleRequestExcusedAbsence = () => {
     Alert.alert("Request Submitted", "Your request for an excused absence has been submitted.");
   };
-
+  const { formattedTimeSlot } = formatSchedule(item?.schedule)
   return (
     <MainLayout>
       <Header title={"Mark Attendance"} showBackButton={true} DrawerHeader={false} />
@@ -84,10 +85,10 @@ const Attendance = ({ navigation, route }) => {
         </Text>
 
         <ClassDetails
-          section={item.classSection}
-          instructor={item.classInstructor}
-          date={item.date}
-          timeSlot={item.timeSLot}
+          section={item.semester}
+          instructor={`${item?.createdBy?.firstName} ${item?.createdBy?.lastName}`}
+          date={item?.schedule?.day}
+          timeSlot={formattedTimeSlot}
         />
 
         <View style={styles.container}>

@@ -66,9 +66,9 @@ const BottomTab = () => {
                     />, text: "Account"})
                 )
               }}
+            />
 
             
-            />
             
         </Tab.Navigator>
     

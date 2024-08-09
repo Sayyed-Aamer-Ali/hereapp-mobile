@@ -10,6 +10,7 @@ const ReasonTextInput = ({ reason, setReason }) => {
       <TextInput
         style={styles.textInput}
         placeholder="Write your reason for absence..."
+        placeholderTextColor={Colors.LIGHT_GRAY}
         value={reason}
         onChangeText={setReason}
         multiline

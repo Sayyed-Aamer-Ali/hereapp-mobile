@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import { Header, MainLayout } from '../../../components';
 import { attendanceData } from '../../../Data/DummyData';
 import AttendanceHistoryComponent from '../../../components/AttendanceHistoryComponent';
@@ -18,9 +18,9 @@ const History = () => {
   return (
     <MainLayout>
       <Header title="Attendance History"
-          showBackButton={false}
-          DrawerHeader={true}
-        />
+        showBackButton={false}
+        DrawerHeader={true}
+      />
 
       <FlatList
         data={attendanceData}
@@ -28,6 +28,16 @@ const History = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContentContainer}
       />
+
+      {/* <View style={styles.imgContainer}>
+
+        <Image
+          source={{ uri: 'http://15.235.162.99:3556/assets/coming-soon-DrP5VIqS.png' }}
+          style={styles.image}
+          resizeMode='contain'
+        />
+
+      </View> */}
 
     </MainLayout>
   );

@@ -8,10 +8,12 @@ import { useSelector } from 'react-redux'
 import { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
 
 
+
 const ClassDetailBox = ({ 
   item, 
   onPress, 
-  buttonText = "Mark Attendance"
+  buttonText = "Mark Attendance",
+  buttonDisableRequired=true
  }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -20,8 +22,10 @@ const ClassDetailBox = ({
     // formattedDate, 
     formattedTimeSlot } = formatSchedule(item?.schedule)
   useEffect(()=>{
+    if(buttonDisableRequired)
     setIsButtonDisabled(shouldDisableButton(item));
   },[item])
+
 
   return (
     <ShadowCard cardStyle={styles.contStyle}

@@ -3,7 +3,7 @@ import { Text, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, CustomizedInput, DatePickerComponent, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
 import styles from './styles';
-import { dummyExcuseData, MyClasses } from '../../../Data/DummyData';
+import { dummyExcuseData, MyClasses, particularDatesdummyExcuseData } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
@@ -18,6 +18,7 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
   const [classes, setClasses] = useState([]);
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const [search, setSearch] = useState({
     inputType: "text",
@@ -27,6 +28,21 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
     placeholder: "Search your missed class....",
     leftIcon: <Icons.SearchIcon />
   });
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search.value);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search.value]);
+
+  const filteredParticularDates = particularDatesdummyExcuseData.filter(item =>
+    item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+  );
+
 
   return (
     <MainLayout loader={loader}>
@@ -57,15 +73,19 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
         <CustomFlatList
           listStyle={styles.listStyle}
           ListEmptyComponent={() => (
-            <EmptyComponent />
+            <EmptyComponent 
+            title={'No Classes Found!'}
+            desc={'Sorry we cannot find any registered class for you. Please contact your instructor.'}
+            />
           )}
-          data={dummyExcuseData}
+          data={filteredParticularDates}
           keyExtractor={(item) => item?._id?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
               item={item}
               buttonText="Request Excused Absence"
-              onPress={() => { }}
+              onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)} }
+              buttonDisableRequired={false}
             />
           )}
         />

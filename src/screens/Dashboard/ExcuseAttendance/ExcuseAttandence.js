@@ -89,7 +89,7 @@ const ExcuseAttandence = ({ navigation }) => {
                 item={item}
                 buttonText="Request Excused Absence"
                 onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN) }}
-
+                buttonDisableRequired={false}
               />
             )}
             renderSectionHeader={renderSectionHeader}
@@ -117,7 +117,8 @@ const ExcuseAttandence = ({ navigation }) => {
               <ClassDetailBox
                 item={item}
                 buttonText="Mark Attendance"
-                onPress={() => handleAttendance(item)}
+                onPress={() => navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)}
+                buttonDisableRequired={false}
               />
             )}
           />

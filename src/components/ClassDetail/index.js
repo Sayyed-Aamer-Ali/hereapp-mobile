@@ -19,7 +19,7 @@ const ClassDetails = ({ section, instructor, date, timeSlot }) => {
       {isOpen && (
         <View style={styles.details}>
           <View style={styles.detailRow}>
-            <Text style={styles.label}>Class Section</Text>
+            <Text style={styles.label}>Semester</Text>
             <Text style={styles.value}>{section}</Text>
           </View>
           <View style={styles.detailRow}>

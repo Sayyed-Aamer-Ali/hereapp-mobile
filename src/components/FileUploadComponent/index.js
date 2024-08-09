@@ -8,7 +8,7 @@ const FileUploadComponent = ({ file, setFile }) => {
   const handleFilePick = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.pdf],
       });
 
       setFile(pre => [...pre, result?.[0]]);
@@ -30,6 +30,7 @@ const FileUploadComponent = ({ file, setFile }) => {
       <TextInput
         style={styles.textInput}
         placeholder="Attach files to support your request"
+        placeholderTextColor={Colors.LIGHT_GRAY}
         editable={false}
       />
 
