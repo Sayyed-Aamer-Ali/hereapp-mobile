@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, View, StyleSheet, ActivityIndicator } from "react-native";
-// import colors from "../assets/config/colors";
 import { Colors } from "../assets";
 const LoaderModal = ({ loading }) => {
   return (

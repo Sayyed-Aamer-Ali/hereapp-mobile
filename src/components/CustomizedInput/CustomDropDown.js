@@ -38,9 +38,6 @@ const CustomDropDown = ({
   ...props
 }) => {
 
-
-
-
   return (
     <View style={[styles.mainCont, style]}>
       {props?.title && (
@@ -68,9 +65,6 @@ const CustomDropDown = ({
           style={[styles.input, inputStyle,]}
           inputStyle={{ color: Colors.BLACK }}
           placeholderStyle={{ color: Colors.DARK_GRAY }}
-          // containerStyle={{ width: '100%' }}
-          // dropdownStyle={{ width: '100%' }}
-          // dropDownContainerStyle={{ width: '100%' }}
           labelField={"label"}
           valueField={"value"}
           renderRightIcon={() => (

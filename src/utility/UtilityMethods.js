@@ -290,23 +290,10 @@ class UtilityMethodsClass {
         compressImageQuality: 1,
         compressImageMaxWidth: 1024,
         compressImageMaxHeight: 1024,
-        // height: 300,
-        // width: 300,
       }).then((image) => {
         callback(image);
       }).catch((error) => {
 
-          // AlertWithTwoButtons({
-          //   title: 'Permission Denied',
-          //   subtitle: 'Please allow camera permission from settings',
-          //   btnTitleFirst: 'Cancel',
-          //   btnTitleSecond: 'Open Settings',
-          //   onPressButtonFirst: () => { },
-          //   onPressButtonSecond: () => { 
-          //     Linking.openSettings();
-          //   }
-
-          // })
         
       }
       );
@@ -318,23 +305,9 @@ class UtilityMethodsClass {
         compressImageQuality: 0.2,
         compressImageMaxWidth: 1024,
         compressImageMaxHeight: 1024,
-        // height: 300,
-        // width: 300,
       }).then((images) => {
         callback(images);
       }).catch((error) => {
-       
-          // AlertWithTwoButtons({
-          //   title: 'Permission Denied',
-          //   subtitle: 'Please allow gallery permission from settings',
-          //   btnTitleFirst: 'Cancel',
-          //   btnTitleSecond: 'Open Settings',
-          //   onPressButtonFirst: () => { },
-          //   onPressButtonSecond: () => { 
-          //     Linking.openSettings();
-          //   }
-
-          // })
       }
       );
     }

@@ -20,13 +20,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
       style={[styles.containerMain, style]}
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={[{ flexGrow: 1, },contentContainerStyle]}
-      // enableOnAndroid={true}
-      // enableAutomaticScroll={true}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       bounces={false}
       extraScrollHeight={16}
-      // resetScrollToCoords={{ x: 0, y: 0 }}
       >
       {children}
     </KeyboardAwareScrollView>
@@ -36,7 +33,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: Platform.OS == "android" ? 15 : 0,
   },
   containerMain: {
     flex: 1,

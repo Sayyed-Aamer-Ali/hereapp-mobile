@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
-import { Colors, Fonts, Icons } from '../../assets'; // Assuming you have Icons defined
+import { Colors, Fonts, Icons } from '../../assets'; 
 import { UtilityMethods, FontSize } from '../../utility';
 
 const ClassDetails = ({ section, instructor, date, timeSlot }) => {
@@ -42,13 +42,7 @@ const ClassDetails = ({ section, instructor, date, timeSlot }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: Colors.WHITE,
-    // borderRadius: UtilityMethods.wp(2),
-    // shadowColor: Colors.BLACK,
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 5,
-    // elevation: 3,
+
   },
   header: {
     flexDirection: 'row',
