@@ -5,6 +5,8 @@ import { Colors, Fonts, Images } from '../../../assets';
 import { FontSize, UtilityMethods } from '../../../utility';
 import { Header } from '../../../components';
 import Routes from '../../../navigation/Routes';
+import { DrawerActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 const ExcuseAttendanceSuccessScreen = ({ navigation }) => {
   const handleBackPress = () => {
@@ -12,7 +14,10 @@ const ExcuseAttendanceSuccessScreen = ({ navigation }) => {
   };
 
   const handleOkayPress = () => {
-    navigation.navigate(Routes.HOME); 
+    navigation.dispatch(DrawerActions.closeDrawer())
+    navigation.replace(Routes.DASHBOARD_STACK)
+    // navigation.dispatch(StackActions.replace(Routes.HOME))
+    // navigation.replace(Routes.DRAWER_NAVIGATOR); 
   };
 
   return (

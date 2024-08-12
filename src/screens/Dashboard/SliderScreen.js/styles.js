@@ -7,15 +7,8 @@ import { Colors, Fonts } from "../../../assets";
 
 const styles = StyleSheet.create({
   cont: {
- 
-  
-width:"100%",
-
-height:UtilityMethods.hp(100),
- 
-
- 
-
+      width:"100%",
+      height:UtilityMethods.hp(100),
   },
   headerCont:{
     flex:0.3,

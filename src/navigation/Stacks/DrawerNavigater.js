@@ -16,14 +16,12 @@ const DrawerNavigator = () => {
   
 <Drawer.Navigator
     drawerContent={(props) => <SliderScreen {...props} />}
+      
       screenOptions={{
         headerShown: false,
         drawerActiveBackgroundColor: "transparent",
         drawerInactiveBackgroundColor: "transparent",
-       
         drawerHideStatusBarOnOpen: Platform.OS === "ios" ? true : false,
-       
-       
         drawerStyle: styles.drawerStyle,
         sceneContainerStyle: styles.sceneStyle,
         gestureEnabled: true,
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
   drawerStyle: {
     flex: 1,
     backgroundColor: Colors.WHITE,
-    width: "80%",
+    // width: "80%",
     borderTopEndRadius:UtilityMethods.wp(6),
     borderBottomEndRadius:UtilityMethods.wp(6),
     marginTop:Platform.OS === "ios" ? 0 : StatusBar.currentHeight,

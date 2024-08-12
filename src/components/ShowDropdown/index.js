@@ -15,7 +15,7 @@ const ShowDropdown = ({
   valueField = "value",
   selectedTextStyle = {},
   containerStyle,
-  maxHeight = 100,
+  maxHeight = UtilityMethods.hp(40),
   search = false,
   renderLeftIcon,
 }) => {
@@ -41,12 +41,17 @@ const ShowDropdown = ({
         setValue(item.value);
       }}
       itemTextStyle={[styles.selectedTextStyle]}
-      flatListProps={{
-        initialScrollIndex: selectedIndex >= 0 ? selectedIndex : 0,  // Scroll to the selected item
-        getItemLayout: (data, index) => (
-          { length: UtilityMethods.hp(6.2), offset: UtilityMethods.hp(6.2) * index, index }
-        ),
-      }}
+      // renderItem={({label,props})=>(
+      //   <View style={styles.item} {...props}>
+      //     <Text style={{color:Colors.BLACK}}>{label}</Text>
+      //   </View>
+      // )}
+      // flatListProps={{
+      //   initialScrollIndex: selectedIndex >= 0 ? selectedIndex : 0,  // Scroll to the selected item
+      //   getItemLayout: (data, index) => (
+      //     { length: UtilityMethods.hp(6.2), offset: UtilityMethods.hp(6.2) * index, index }
+      //   ),
+      // }}
     />
   ), [data, value, selectedTextStyle, containerStyle, maxHeight, search, selectedIndex, renderLeftIcon]);
 
@@ -89,6 +94,10 @@ const styles = StyleSheet.create({
     height: UtilityMethods.wp(5),
     tintColor: Colors.BLACK,
   },
+  item:{
+    height:UtilityMethods.hp(6.4),
+    paddingHorizontal:UtilityMethods.wp(5)
+  }
 });
 
 export default ShowDropdown;

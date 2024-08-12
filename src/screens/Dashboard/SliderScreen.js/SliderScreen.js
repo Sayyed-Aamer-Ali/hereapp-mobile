@@ -36,8 +36,12 @@ const SliderScreen = ({ navigation }) => {
   }
 
   const handleNavigation = (path) => {
+
     navigation.dispatch(DrawerActions.closeDrawer())
-    navigation.navigate(path)
+
+    setTimeout(() => {
+      navigation.navigate(path)
+    }, 200)
   }
 
 
@@ -73,7 +77,7 @@ const SliderScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.logoutCont}
-          onPress={()=>setModalVisible(true)}
+          onPress={() => setModalVisible(true)}
         >
 
           <View style={styles.iconCont}>
