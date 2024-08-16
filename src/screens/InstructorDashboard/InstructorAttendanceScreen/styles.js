@@ -34,13 +34,16 @@ const styles = StyleSheet.create({
     },
     dropdown: {
       width: '100%',
-      marginBottom: UtilityMethods.hp(2),
+      // marginBottom: UtilityMethods.hp(2),
     },
-    generateButton: {
-      backgroundColor: Colors.BLACK,
+    generateButton: (checkAttendanceMarked) => ({
+     
+      opacity:checkAttendanceMarked ? 0.5: 1,
       marginBottom: UtilityMethods.hp(2),
+     
       marginTop:'auto'
-    },
+    
+    }),
     listButton: {
       backgroundColor: Colors.WHITE,
       borderColor: Colors.BLACK,
@@ -50,6 +53,10 @@ const styles = StyleSheet.create({
     listButtonText:{
       color:Colors.BLACK
     },
+
+    generateButtonText: (checkAttendanceMarked) => ({
+      color: checkAttendanceMarked ? Colors.BLACK : Colors.PRIMARY,
+    }),
   });
   
 export default styles

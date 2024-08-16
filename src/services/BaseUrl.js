@@ -1,5 +1,5 @@
-// const BaseUrl = "http://167.114.144.249:4056/";
-const BaseUrl = "https://hereapp-api-staging.ropstam.dev/";
+const BaseUrl = "http://167.114.144.249:4056/";
+// const BaseUrl = "https://hereapp-api-staging.ropstam.dev/";
 
 export const SocketEndpoint = "SOCKETENDPOINT";
 

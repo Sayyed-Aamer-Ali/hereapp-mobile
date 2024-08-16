@@ -18,11 +18,16 @@ const ShowDropdown = ({
   maxHeight = UtilityMethods.hp(40),
   search = false,
   renderLeftIcon,
+  error
 }) => {
   
   const selectedIndex = useMemo(() => data.findIndex(item => item[valueField] === value), [data, value, valueField]);
 
   const dropdownComponent = useMemo(() => (
+
+    <>
+    
+
     <Dropdown
       style={[styles.dropdown, style]}
       placeholderStyle={styles.placeholderStyle}
@@ -41,6 +46,7 @@ const ShowDropdown = ({
         setValue(item.value);
       }}
       itemTextStyle={[styles.selectedTextStyle]}
+      
       // renderItem={({label,props})=>(
       //   <View style={styles.item} {...props}>
       //     <Text style={{color:Colors.BLACK}}>{label}</Text>
@@ -53,12 +59,20 @@ const ShowDropdown = ({
       //   ),
       // }}
     />
+
+    {error?.length > 0 ? <Text style={styles.ErrorText}>{
+      error
+    }</Text> : null}
+    </>
   ), [data, value, selectedTextStyle, containerStyle, maxHeight, search, selectedIndex, renderLeftIcon]);
 
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       {dropdownComponent}
+
+   
+
     </View>
   );
 };
@@ -97,7 +111,14 @@ const styles = StyleSheet.create({
   item:{
     height:UtilityMethods.hp(6.4),
     paddingHorizontal:UtilityMethods.wp(5)
-  }
+  },
+  ErrorText: {
+    fontSize: FontSize.VALUE(14),
+    color: Colors.RED,
+    marginLeft: UtilityMethods.wp(1),
+    fontWeight:Fonts.REGULAR,
+    marginTop:UtilityMethods.hp(1)
+  },
 });
 
 export default ShowDropdown;
