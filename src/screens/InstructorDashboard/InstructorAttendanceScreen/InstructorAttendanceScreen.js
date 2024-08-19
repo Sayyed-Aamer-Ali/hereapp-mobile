@@ -14,7 +14,6 @@ import { API_URLS } from '../../../services/apiPathList';
 const InstructorAttendenceScreen = ({ navigation, route }) => {
   const item = route.params?.item;
 
-  console.log("item", item)
 
 
   const [otp, setOtp] = useState('XXX');
