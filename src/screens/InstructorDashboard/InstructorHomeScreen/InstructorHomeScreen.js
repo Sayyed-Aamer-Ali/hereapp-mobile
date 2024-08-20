@@ -8,7 +8,8 @@ import { resetAuth } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
-import { getCurrentDateInFormat, sortClassesByDateTime, sortClassesByDayAndTime } from '../../../utility/FormateDate';
+import { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDateTime, sortClassesByDayAndTime } from '../../../utility/FormateDate';
+import { setRefreshClasses } from '../../../redux/Reducers/TempData';
 
 
 
@@ -18,6 +19,8 @@ const Home = ({ navigation }) => {
   const [classes, setClasses] = useState([])
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  let refreshClasses = useSelector(state => state.temp.refreshClasses);
+
   const token = useSelector(state => state.auth.token);
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,22 +35,89 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getInstructorClasses()
-  }, [])
+  
 
-  const getInstructorClasses = async (isRefresh=true) => {
-    if(isRefresh)
-      setLoader(true);
+        getInstructorClasses();
+      
+  }, [refreshClasses]);
+
+
+  useEffect(() => {
+    getInstructorClasses
+  }, []);
+  
+  const getInstructorClasses = async (isRefresh = true) => {
+    if (isRefresh) setLoader(true);
+  
     try {
-      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-      let classes = sortClassesByDayAndTime(response.data)
-      setClasses(classes)
-    } catch (error) {
-    } finally {
-      setLoader(false)
-    }
+      // Fetch the list of classes
+      let response = await axiosWrapper(
+        'GET',
+        `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`,
+        null,
+        token,
+        false,
+        'json',
+        false
+      );
+  
+      let classes = response.data;
 
-  }
+      if(!classes || classes.length === 0) {
+         
+
+        setClasses([]);
+        return;
+      }
+
+       classes = sortClassesByDayAndTime(classes);
+  
+      // Process each class based on shouldDisableButton logic
+      const classesWithAttendanceStatus = await Promise.all(
+        classes.map(async (classItem) => {
+          if (!shouldDisableButton(classItem)) {
+            try {
+              let data = {
+                classID: classItem?._id,
+                classScheduleID: classItem?.schedule?._id
+              }
+              const attendanceResponse = await axiosWrapper(
+                'POST',
+                API_URLS.CLASS_ATTENDANCE_STATUS,
+                data,
+                token,
+                false,
+                'json',
+                false
+              );
+               
+              // Add the attendance status to the class object
+              return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
+                attendanceResponse,
+                user?.role
+              ) };
+            } catch (error) {
+              console.error(`Error fetching attendance status for class ${classItem.id}`, error);
+              return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error
+            }
+          } else {
+            
+            // No API call, return class as is
+            return { ...classItem, attendanceStatus: null,showButtonDisabled:true };
+          }
+        })
+      );
+  
+      // Set the state with the classes that now include attendance status
+      setClasses(classesWithAttendanceStatus);
+    } catch (error) {
+      console.error('Error fetching classes', error);
+    } finally {
+     
+      setLoader(false);
+    }
+  };
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getInstructorClasses(false).then(() => setRefreshing(false));

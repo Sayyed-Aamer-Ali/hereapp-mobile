@@ -344,6 +344,43 @@ class UtilityMethodsClass {
 
   }
 
+   generateAlphanumericOtp = () => {
+    return Array.from({ length: 3 }, () => {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      return characters.charAt(Math.floor(Math.random() * characters.length));
+    }).join('');
+  };
+
+   calculateAttendanceDuration(start, end) {
+    // Parse the start and end times using moment
+    const startTime = moment(start);
+    const endTime = moment(end);
+
+    // Calculate the difference in minutes
+    const differenceInMinutes = endTime.diff(startTime, 'minutes');
+
+    return `${differenceInMinutes} Minutes`;
+}
+
+calculateTimeLeftInSeconds(start, end) {
+  // Parse the start and end times using moment
+  const startTime = moment(start);
+  const endTime = moment(end);
+  const currentTime = moment();
+
+  // Check if the current time is within the start and end time
+  if (currentTime.isBefore(startTime)) {
+      return 0; // If the current time is before the start time, return 0 seconds
+  }
+
+  // Calculate the difference in seconds between the end time and the current time
+  const timeLeftInSeconds = endTime.diff(currentTime, 'seconds');
+
+  // If the time left is negative, return 0
+  return timeLeftInSeconds > 0 ? timeLeftInSeconds : 0;
+}
+
+
 }
 
 const UtilityMethods = new UtilityMethodsClass();

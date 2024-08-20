@@ -10,15 +10,22 @@ import { attemptsData, expiryData } from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setRefreshClasses } from '../../../redux/Reducers/TempData';
 
 const InstructorAttendenceScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const item = route.params?.item;
 
+  let attendanceData=route?.params?.item?.attendanceStatus?.data
+  console.log("attendanceData",attendanceData)
+  const token = useSelector(state => state.auth.token);
+ 
 
 
   const [otp, setOtp] = useState('XXX');
   const [loader, setLoader] = useState(false);
-  const [attempts, setAttempts] = useState(null);
+  const [attempts, setAttempts] = useState("");
   const [expiryTime, setExpiryTime] = useState(null);
   const [timer, setTimer] = useState(0);
   const [codeAttempError, setCodeAttempError] = useState("");
@@ -27,42 +34,37 @@ const InstructorAttendenceScreen = ({ navigation, route }) => {
   const [checkAttendanceMarked, setCheckAttendanceMarked] = useState(false);
 
 
+
+
+
 useEffect(() => {
-  checkAttendanceStatus()
-
-}, [])
-
-
-
-  const checkAttendanceStatus = async() => {
-
-    let data = {
-      classID: item?._id,
-      classScheduleID: item?.schedule?._id
-    }
-
-    setLoader(true)
-
-    try{
-
-      let response = await axiosWrapper('POST', API_URLS.CLASS_ATTENDANCE_STATUS, data, null, false, 'json', false);
-       if(response?.message == "Attendance code already generated!"){
-        setCheckAttendanceMarked(true)
-       }
-        else{
-          setCheckAttendanceMarked(false)
-        }
-      // setCheckAttendanceMarked(response.data?.attendanceMarked)
-
-    }
-    catch(e){
-      console.log(e)
-    }
-    finally{
-      setLoader(false)
-    }
-
+  if (timer > 0) {
+    const interval = setInterval(() => {
+      setTimer(timer - 1);
+    }, 1000);
+    return () => clearInterval(interval);
   }
+}, [timer]);
+
+
+
+
+useEffect(() => {
+  if(attendanceData){
+    setCheckAttendanceMarked(true)
+    setOtp(attendanceData.attendanceCode)
+    let codeAttempts = `${attendanceData.codeAttempts} Times`
+    setAttempts(codeAttempts)
+    let codeExpiryTime = UtilityMethods.calculateAttendanceDuration(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
+    setExpiryTime(codeExpiryTime)
+    let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
+    
+     
+    startTimer(timeleft)
+    
+  }
+
+}, [attendanceData]);
 
 
 
@@ -85,31 +87,40 @@ useEffect(() => {
 
     
 
-    const newOtp = Math.floor(100 + Math.random() * 900).toString();
+    const newOtp = UtilityMethods.generateAlphanumericOtp();
     setOtp(newOtp);
 
 
     setLoader(true)
+
+    let split = expiryTime.split(" ")
+    let timer = parseInt(split[0])
+
+    let codeAttempts = parseInt(attempts.split(" ")[0])
+
  
    let data = {
     classID: item?._id,
     classScheduleID: item?.schedule?._id,
-    codeAttempts: attempts,
+    codeAttempts: codeAttempts,
     attendanceCode: newOtp,
-    codeExpiryTime: expiryTime*60
+    codeExpiryTime: timer*60
 
    }
 
 
 
-   console.log("data", data)
+   
   
 
     try{
 
-      let response = await axiosWrapper('POST', API_URLS.INSTRUCTOR_START_CLASS, data, null, false, 'json', false);
+      let response = await axiosWrapper('POST', API_URLS.INSTRUCTOR_START_CLASS, data, token, false, 'json', false);
        
       setCheckAttendanceMarked(true)
+      dispatch(setRefreshClasses("true"))
+
+    startTimer(timer*60);
 
     }
     catch(e){
@@ -120,9 +131,14 @@ useEffect(() => {
     }
   };
 
-  const startTimer = (minutes) => {
-    setTimer(minutes * 60);
+  const startTimer = (seconds) => {
+    setTimer(seconds);
   };
+
+  // Format the remaining seconds into MM:SS format
+  const formattedTime = `${Math.floor(timer / 60)
+    .toString()
+    .padStart(2, '0')} : ${(timer % 60).toString().padStart(2, '0')}`;
 
   const formatTimer = () => {
     const minutes = Math.floor(timer);
@@ -142,7 +158,7 @@ useEffect(() => {
       <ScreenWrapper style={styles.container}>
         <View style={styles.otpContainer}>
           <Text style={styles.otpText}>{otp}</Text>
-          <Text style={styles.timerText}>{formatTimer()}</Text>
+          <Text style={styles.timerText}>{formattedTime} </Text>
         </View>
         <Text style={styles.instructionText}>
           Please share this code with students to mark their attendance.
@@ -169,7 +185,8 @@ useEffect(() => {
           value={expiryTime}
           setValue={(value) => {
             setExpiryTime(value);
-            setTimer(value)
+            
+           
             setCodeExpiryError("")
           }}
           placeTxt="Code Expiry Time"

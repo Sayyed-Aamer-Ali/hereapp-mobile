@@ -22,6 +22,7 @@ const axiosConfig = {
     },
 };
 const axiosWrapper = async (method, url, data, token, isFormData = false, responseType = 'json', showToast = false) => {
+   
      try {
         const config = {
             method,
@@ -46,6 +47,8 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
             }
         return response.data ? response.data : response;
     } catch (error) {
+
+        
         // let msg = error?.response?.data?.desc ? error?.response?.data?.desc : error?.response?.data?.error ? error?.response?.data?.error : error?.response?.data?.message ? error?.response?.data?.message
         //     : error?.response?.message ? error?.response?.message : error?.response?.desc ? error?.response?.desc :error?.message?error?.message: false;
         

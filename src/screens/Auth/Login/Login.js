@@ -11,6 +11,7 @@ import { useToast } from "react-native-toast-notifications";
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import AlertService from '../../../services/AlertService';
+import { setRefreshClasses } from '../../../redux/Reducers/TempData';
 
 
 const Login = ({ navigation, route }) => {
@@ -115,6 +116,7 @@ const Login = ({ navigation, route }) => {
         if (response?.data?.user?.isVerified) {
           dispatch(setToken(response?.data.token));
           dispatch(setUser(response?.data.user));
+          
           AlertService.toastPrompt("user logged in successfully", 'success')
         }
         else {

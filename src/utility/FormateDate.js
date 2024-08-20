@@ -71,6 +71,7 @@ export const getCurrentDateInFormat = () => {
 
 
 export const shouldDisableButton = (data) => {
+
   const currentTime = moment();
   const currentDay = currentTime.format('dddd');
 
@@ -123,3 +124,18 @@ export const sortClassesByDayAndTime = (classes) => {
     return aStartTime.isAfter(bStartTime) ? 1 : -1;
   });
 };
+
+
+export const checkAttendanceStatus =  (classItem, userType) => {
+  
+  if(userType === 'STUDENT' && classItem?.message=="Attendance code not generated yet!" ){
+    return true;
+  
+  }
+  else{
+
+    return false;
+
+  }
+
+}

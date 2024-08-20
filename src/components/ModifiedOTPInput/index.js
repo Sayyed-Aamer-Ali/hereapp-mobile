@@ -6,7 +6,7 @@ import { FontSize, UtilityMethods } from '../../utility';
 
 const CELL_COUNT = 3;
 
-const ModifiedOtpInput = ({ value, setValue, style }) => {
+const ModifiedOtpInput = ({ value, setValue, style,keyboardType }) => {
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -21,7 +21,7 @@ const ModifiedOtpInput = ({ value, setValue, style }) => {
       onChangeText={setValue}
       cellCount={CELL_COUNT}
       rootStyle={styles.codeFieldRoot}
-      keyboardType="number-pad"
+      keyboardType={keyboardType?keyboardType:"number-pad"}
       textContentType="oneTimeCode"
       autoFocus
       autoComplete={Platform.select({ android: 'sms-otp', default: 'one-time-code' })}

@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Header, MainLayout, ModifiedOTPInput, OtpInput, SuccessModal } from '../../../components';
 import { CommonStyles, UtilityMethods } from '../../../utility';
 import styles from './styles';
 import { Icons, Colors } from '../../../assets'; 
 import ClassDetails from '../../../components/ClassDetail';
 import { formatSchedule } from '../../../utility/FormateDate';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
+import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
-const MAX_ATTEMPTS = 3;
+
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
+
+  let attendanceData = item?.attendanceStatus?.data
+
+  const MAX_ATTEMPTS = attendanceData?.codeAttempts;
+  const token = useSelector(state => state.auth.token);
+
+
+
   const dispatch = useDispatch();
-  const [otpInp, setOtpInp] = useState('');
+  const [otpInp, setOtpInp] = useState("");
   const [location, setLocation] = useState(null);
-  const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
+  const [loader, setLoader] = useState(false);
+  const [attemptsLeft, setAttemptsLeft] = useState(
+    attendanceData?.codeAttempts
+  );
   const [errorMessage, setErrorMessage] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const handleShowModal = () => {
@@ -34,31 +48,86 @@ const Attendance = ({ navigation, route }) => {
     });
   }, []);
 
-  const handleSubmit = () => {
-    // Simulate OTP validation
-    const isValidOTP = otpInp === '123';
+  const handleSubmit = async() => {
+   
+    if (!otpInp) {
+      setErrorMessage("Please Enter OTP");
+      return;
+    }
 
-    if (isValidOTP) {
-      // Alert.alert("Success", "OTP is correct, you've joined the class!");
-      setAttemptsLeft(MAX_ATTEMPTS);
-      setErrorMessage('');
-      handleShowModal()
-    } else {
-      setAttemptsLeft(attemptsLeft - 1);
-      if (attemptsLeft - 1 > 0) {
-        setErrorMessage(`Wrong Code, You have ${attemptsLeft - 1} Attempts Left.`);
-      } else {
-        setErrorMessage("No Attempts Left, You’ve been marked absent!");
+
+    let data={
+      scheduleID:item?.schedule?._id,
+      attendanceCode:otpInp,
+      location:{
+        
+        
+          lat: location?.coords?.latitude,
+          lng: location?.coords?.longitude
+          
+          
+          
+          
+          
+          
+          
+          
       }
     }
+
+
+     setLoader(true);
+
+       try{
+        let response = await axiosWrapper('POST', API_URLS.MARKK_ATTENDANCE, data, token, false, 'json', false);
+        dispatch(setRefreshClassesForStudent("true"));
+        
+        setErrorMessage('');
+        handleShowModal()
+      }
+      catch(e){
+        console.log("error",e)
+        let splitError = e?.split(" ");
+        let attemptsLeft = parseInt(splitError[4]); // Convert the value to an integer
+        
+        // Ensure attemptsLeft is a valid number before proceeding
+        if (!isNaN(attemptsLeft)) {
+            attemptsLeft -= 1; // Subtract 1 from the attemptsLeft
+        
+            setAttemptsLeft(attemptsLeft); // Set the updated attemptsLeft value
+            if (attemptsLeft >= 0) {
+                setErrorMessage(`Wrong Code, You have ${attemptsLeft} Attempts Left.`);
+            } else {
+                setErrorMessage("No Attempts Left, You’ve been marked absent!");
+            }
+        } else {
+            console.error("Failed to parse attemptsLeft as a number.");
+            setErrorMessage("An error occurred, please try again.");
+        }
+        
+      }
+      finally{
+    
+        setLoader(false);
+      }
+
+
+
+   
+
+   
+
+
+    
   };
 
   const handleRequestExcusedAbsence = () => {
     Alert.alert("Request Submitted", "Your request for an excused absence has been submitted.");
+    
   };
   const { formattedTimeSlot } = formatSchedule(item?.schedule)
   return (
-    <MainLayout>
+    <MainLayout loader={loader}>
       <Header title={"Mark Attendance"} showBackButton={true} DrawerHeader={false} />
 
       <ScrollView
@@ -72,6 +141,7 @@ const Attendance = ({ navigation, route }) => {
           value={otpInp}
           setValue={setOtpInp}
           style={styles.otpContainer}
+          keyboardType="email-address"
         />
 
         <Button
@@ -81,7 +151,7 @@ const Attendance = ({ navigation, route }) => {
         />
 
         <Text style={[styles.error, { color: attemptsLeft < MAX_ATTEMPTS ? Colors.RED : Colors.BLACK }]}>
-          {errorMessage || `You have total ${MAX_ATTEMPTS} Attempts`}
+          {errorMessage || `You have total ${attemptsLeft} Attempts`}
         </Text>
 
         <ClassDetails
@@ -96,7 +166,7 @@ const Attendance = ({ navigation, route }) => {
           <View style={styles.noteBody}>
             <Text style={styles.bulletPoint}>•</Text>
             <Text style={styles.noteText}>
-              You can attempt for the maximum of <Text style={styles.highlightText}>3 Times.</Text>
+              You can attempt for the maximum of <Text style={styles.highlightText}> {attemptsLeft} Times.</Text>
             </Text>
           </View>
           <View style={styles.noteBody}>
@@ -108,7 +178,7 @@ const Attendance = ({ navigation, route }) => {
           <View style={styles.noteBody}>
             <Text style={styles.bulletPoint}>•</Text>
             <Text style={styles.noteText}>
-              Your location will be recorded at the time of marking the attendance.
+             {`Your location ${item?.geoTracking=="enable"?"will be":"will not be"} recorded at the time of marking the attendance.`}
             </Text>
           </View>
         </View>

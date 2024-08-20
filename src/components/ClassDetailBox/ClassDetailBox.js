@@ -6,25 +6,75 @@ import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 import { useSelector } from 'react-redux'
 import { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
+import { useIsFocused } from '@react-navigation/native'
 
 
 
 const ClassDetailBox = ({ 
   item, 
   onPress, 
-  buttonText = "Mark Attendance",
+  buttonText = "tendance",
   buttonDisableRequired=true
  }) => {
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(null);
+  let isFocused = useIsFocused();
   const user = useSelector(state => state.auth.user);
+
+  const [timer, setTimer] = useState(null);
+
+
+ let attendanceData = item?.attendanceStatus?.data
+ 
 
   const { 
     // formattedDate, 
     formattedTimeSlot } = formatSchedule(item?.schedule)
   useEffect(()=>{
-    if(buttonDisableRequired)
-    setIsButtonDisabled(shouldDisableButton(item));
+    if(buttonDisableRequired )
+    {
+    if(item?.showButtonDisabled)
+      {
+        setIsButtonDisabled(item?.showButtonDisabled);
+      }
+      else{
+        // setIsButtonDisabled(shouldDisableButton(item));
+      }
+    }
+   
   },[item])
+
+
+  useEffect(() => {
+    if(attendanceData && isFocused){
+    
+      let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
+      
+       
+      setTimer(timeleft)
+      
+    }
+  
+  }, [attendanceData,isFocused]);
+
+
+
+  useEffect(() => {
+
+  
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer(timer - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+    else if(timer === 0){
+      
+      setIsButtonDisabled(true)
+    }
+
+  
+  }, [timer]);
 
 
   return (

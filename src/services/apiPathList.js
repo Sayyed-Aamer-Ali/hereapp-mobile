@@ -17,11 +17,12 @@ const CHANGE_PASSWORD = BaseUrl + 'api/user/verify-and-update-password'
 
 const INSTRUCTOR_START_CLASS = BaseUrl + 'api/attendance-management/start-attendance-with-code'
 const CLASS_ATTENDANCE_STATUS = BaseUrl + 'api/attendance-management/check-attendance-status'
+const MARKK_ATTENDANCE = BaseUrl + 'api/attendance-management/mark-attendance'
 
 export const API_URLS = {
     UPLOAD_IMAGE,
     REGISTER_URL, LOGIN_URL, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, VERIFY_AND_UPDATE_PASSWORD, GET_USER, // Auth APIs
     GET_CLASSES, //Class management
     EDIT_PROFILE, CHANGE_PASSWORD, // User management,
-    INSTRUCTOR_START_CLASS,CLASS_ATTENDANCE_STATUS /// Attendance management
+    INSTRUCTOR_START_CLASS,CLASS_ATTENDANCE_STATUS,MARKK_ATTENDANCE /// Attendance management
 }

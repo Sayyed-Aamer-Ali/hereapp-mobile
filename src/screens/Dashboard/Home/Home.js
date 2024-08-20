@@ -7,7 +7,7 @@ import { MyClasses } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import formatDate, { getCurrentDateInFormat } from '../../../utility/FormateDate';
+import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton } from '../../../utility/FormateDate';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -16,24 +16,91 @@ const Home = ({ navigation }) => {
   const [classes, setClasses] = useState([]);
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
+  let refresh = useSelector(state => state.temp.refreshClassesForStudent);
+
+
+
 
   useEffect(() => {
     getInstructorClasses();
-  }, []);
+  }, [refresh]);
 
-  const getInstructorClasses = async (isRefresh=true) => {
-    if(isRefresh)
-      setLoader(true);
+  // const getInstructorClasses = async (isRefresh=true) => {
+  //   if(isRefresh)
+  //     setLoader(true);
     
-    try {
-      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-      setClasses(response.data);
-    } catch (error) {
+  //   try {
+  //     let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
+  //     console.log('response', response.data);
+  //     setClasses(response.data);
+  //   } catch (error) {
       
+  //   } finally {
+  //     setLoader(false);
+  //   }
+  // };
+
+
+
+  const getInstructorClasses = async (isRefresh = true) => {
+    if (isRefresh) setLoader(true);
+  
+    try {
+      // Fetch the list of classes
+      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
+  
+      let classes = response.data;
+    
+    
+      if(!classes || classes.length === 0) {
+        setClasses([]);
+        return;
+      }
+      // Process each class based on shouldDisableButton logic
+      const classesWithAttendanceStatus = await Promise.all(
+        classes.map(async (classItem) => {
+          if (!shouldDisableButton(classItem)) {
+            try {
+              let data = {
+                classID: classItem?._id,
+                classScheduleID: classItem?.schedule?._id
+              }
+              
+              const attendanceResponse = await axiosWrapper(
+                'POST',
+                API_URLS.CLASS_ATTENDANCE_STATUS,
+                data,
+                token,
+                false,
+                'json',
+                false
+              );
+  
+              // Add the attendance status to the class object
+              return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
+                attendanceResponse,
+                user?.role
+              ) };
+            } catch (error) {
+              console.error(`Error fetching attendance status for class ${classItem.id}`, error);
+              return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error
+            }
+          } else {
+            // No API call, return class as is
+            return { ...classItem, attendanceStatus: null,showButtonDisabled:true };
+          }
+        })
+      );
+  
+      // Set the state with the classes that now include attendance status
+      setClasses(classesWithAttendanceStatus);
+    } catch (error) {
+      console.error('Error fetching classes', error);
     } finally {
       setLoader(false);
     }
   };
+  
 
   const handleAttendance = (item) => {
     navigation.navigate(Routes.ATTENDANCE, { item });
