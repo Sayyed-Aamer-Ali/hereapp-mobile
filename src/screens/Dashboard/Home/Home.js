@@ -8,6 +8,7 @@ import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton } from '../../../utility/FormateDate';
+import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -21,25 +22,28 @@ const Home = ({ navigation }) => {
 
 
 
+  
+
+
+  const handleRefreshClasses = useCallback(() => {
+    if (refresh) {
+      console.log('refresh', refresh);
+      getInstructorClasses(); // Call the function here
+    }
+  }, [refresh, getInstructorClasses])
+
+ 
+
+
   useEffect(() => {
-    getInstructorClasses();
-  }, [refresh]);
+   
+    getInstructorClasses()
+  }, []);
 
-  // const getInstructorClasses = async (isRefresh=true) => {
-  //   if(isRefresh)
-  //     setLoader(true);
-    
-  //   try {
-  //     let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-  //     console.log('response', response.data);
-  //     setClasses(response.data);
-  //   } catch (error) {
-      
-  //   } finally {
-  //     setLoader(false);
-  //   }
-  // };
 
+  useEffect(() => {
+    handleRefreshClasses();
+  }, [handleRefreshClasses]);
 
 
   const getInstructorClasses = async (isRefresh = true) => {
@@ -97,6 +101,7 @@ const Home = ({ navigation }) => {
     } catch (error) {
       console.error('Error fetching classes', error);
     } finally {
+      dispatch(setRefreshClassesForStudent(false));
       setLoader(false);
     }
   };

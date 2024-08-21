@@ -18,7 +18,7 @@ const InstructorAttendenceScreen = ({ navigation, route }) => {
   const item = route.params?.item;
 
   let attendanceData=route?.params?.item?.attendanceStatus?.data
-  console.log("attendanceData",attendanceData)
+ 
   const token = useSelector(state => state.auth.token);
  
 

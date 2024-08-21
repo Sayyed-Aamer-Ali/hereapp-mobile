@@ -34,20 +34,32 @@ const Home = ({ navigation }) => {
     setModalVisible(false);
   };
 
+ 
+
+
+  const handleRefreshClasses = useCallback(() => {
+    if (refreshClasses) {
+      console.log('refreshClasses', refreshClasses);
+      getInstructorClasses(); // Call the function here
+    }
+  }, [refreshClasses, getInstructorClasses])
+
+
+
+
+
   useEffect(() => {
-  
-
-        getInstructorClasses();
-      
-  }, [refreshClasses]);
-
-
-  useEffect(() => {
-    getInstructorClasses
+   
+    getInstructorClasses()
   }, []);
+
+
+  useEffect(() => {
+    handleRefreshClasses();
+  }, [handleRefreshClasses]);
   
   const getInstructorClasses = async (isRefresh = true) => {
-    if (isRefresh) setLoader(true);
+     setLoader(true);
   
     try {
       // Fetch the list of classes
@@ -113,7 +125,7 @@ const Home = ({ navigation }) => {
     } catch (error) {
       console.error('Error fetching classes', error);
     } finally {
-     
+      dispatch(setRefreshClasses(false));
       setLoader(false);
     }
   };

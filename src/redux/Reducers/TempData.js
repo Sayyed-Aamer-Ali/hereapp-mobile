@@ -9,8 +9,8 @@ const tempDataSlice = createSlice({
     tempChosenLocation: null,
     tempRoutesDetail: null,
     editableRoute: null,
-    refreshClasses: true,
-    refreshClassesForStudent: true,
+    refreshClasses: false,
+    refreshClassesForStudent: false,
   },
   reducers: {
     setTempData: (state, action) => {

@@ -11,10 +11,13 @@ import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
-
+import io from 'socket.io-client';
+import BaseUrl from '../../../services/BaseUrl';
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
+
+  const newSocket = io.connect(BaseUrl);
 
   let attendanceData = item?.attendanceStatus?.data
 
@@ -80,7 +83,9 @@ const Attendance = ({ navigation, route }) => {
 
        try{
         let response = await axiosWrapper('POST', API_URLS.MARKK_ATTENDANCE, data, token, false, 'json', false);
-        dispatch(setRefreshClassesForStudent("true"));
+
+        newSocket.emit('markAttendance', response?.data);
+        dispatch(setRefreshClassesForStudent(true));
         
         setErrorMessage('');
         handleShowModal()
@@ -122,6 +127,7 @@ const Attendance = ({ navigation, route }) => {
   };
 
   const handleRequestExcusedAbsence = () => {
+  
     Alert.alert("Request Submitted", "Your request for an excused absence has been submitted.");
     
   };

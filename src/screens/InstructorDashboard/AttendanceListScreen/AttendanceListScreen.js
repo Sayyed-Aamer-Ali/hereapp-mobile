@@ -1,12 +1,42 @@
 // ParentComponent.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { UtilityMethods, } from '../../../utility';
 import { Header, MainLayout, StudentAttendanceListCard } from '../../../components';
 import { attendanceListData } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 
+import io from 'socket.io-client';
+import BaseUrl from '../../../services/BaseUrl';
+
 const AttendanceListScreen = ({ navigation }) => {
+
+ 
+
+    const newSocket = io.connect(BaseUrl);
+
+
+    useEffect(() => {
+        initSocket();
+    }, []);
+
+
+    const initSocket = async() => {
+
+  
+        newSocket.on("attendanceMarked",(data) => {
+
+            console.log("Attendance Marked",data)
+
+        })
+    
+        
+            // If there's no socket instance, create a new one
+             
+           
+           
+    
+    }
     const renderItem = ({ item }) => {
         return (
             <StudentAttendanceListCard
