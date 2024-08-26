@@ -276,15 +276,25 @@ export const notifications = [
 
 
 export const attemptsData = [
-  { label: '1 Times', value: '1 Times' },
+  { label: '1 Time', value: '1 Time' },
   { label: '2 Times', value: '2 Times' },
   { label: '3 Times', value: '3 Times' },
+  { label: '4 Times', value: '4 Times' },
+  { label: '5 Times', value: '5 Times' },
+  { label: '6 Times', value: '6 Times' },
+  { label: '7 Times', value: '7 Times' },
+  { label: '8 Times', value: '8 Times' },
+  { label: '9 Times', value: '9 Times' },
+  { label: '10 Times', value: '10 Times' },
 ];
+
 
 export const expiryData = [
   { label: '1 Minute', value: '1 Minute' },
+  { label: '2 Minutes', value: '2 Minutes' },
+  { label: '3 Minutes', value: '3 Minutes' },
+  { label: '4 Minutes', value: '4 Minutes' },
   { label: '5 Minutes', value: '5 Minutes' },
-  { label: '10 Minutes', value: '10 Minutes' },
 ];
 
 

@@ -7,23 +7,27 @@ import { attendanceListData } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 
 import io from 'socket.io-client';
-import BaseUrl from '../../../services/BaseUrl';
+import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 
 const AttendanceListScreen = ({ navigation }) => {
 
  
 
-    const newSocket = io.connect(BaseUrl);
+    const newSocket = io.connect(SocketUrl);
+
+
+
 
 
     useEffect(() => {
+        
         initSocket();
     }, []);
 
 
     const initSocket = async() => {
 
-  
+    
         newSocket.on("attendanceMarked",(data) => {
 
             console.log("Attendance Marked",data)

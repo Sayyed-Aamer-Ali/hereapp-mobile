@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text, View,RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
@@ -16,7 +16,7 @@ import { setRefreshClasses } from '../../../redux/Reducers/TempData';
 const Home = ({ navigation }) => {
  
   const [loader, setLoader] = useState(false)
-  const [classes, setClasses] = useState([])
+ let classes = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   let refreshClasses = useSelector(state => state.temp.refreshClasses);
@@ -39,7 +39,7 @@ const Home = ({ navigation }) => {
 
   const handleRefreshClasses = useCallback(() => {
     if (refreshClasses) {
-      console.log('refreshClasses', refreshClasses);
+    
       getInstructorClasses(); // Call the function here
     }
   }, [refreshClasses, getInstructorClasses])
@@ -59,6 +59,7 @@ const Home = ({ navigation }) => {
   }, [handleRefreshClasses]);
   
   const getInstructorClasses = async (isRefresh = true) => {
+   classes.current = [];
      setLoader(true);
   
     try {
@@ -73,26 +74,27 @@ const Home = ({ navigation }) => {
         false
       );
   
-      let classes = response.data;
+       classes.current = response.data;
 
       if(!classes || classes.length === 0) {
          
 
-        setClasses([]);
+      classes.current = [];
         return;
       }
 
-       classes = sortClassesByDayAndTime(classes);
+       classes.current = sortClassesByDayAndTime(classes.current);
   
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
-        classes.map(async (classItem) => {
+        classes.current.map(async (classItem) => {
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {
                 classID: classItem?._id,
                 classScheduleID: classItem?.schedule?._id
               }
+            
               const attendanceResponse = await axiosWrapper(
                 'POST',
                 API_URLS.CLASS_ATTENDANCE_STATUS,
@@ -113,7 +115,7 @@ const Home = ({ navigation }) => {
               return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error
             }
           } else {
-            
+           
             // No API call, return class as is
             return { ...classItem, attendanceStatus: null,showButtonDisabled:true };
           }
@@ -121,18 +123,19 @@ const Home = ({ navigation }) => {
       );
   
       // Set the state with the classes that now include attendance status
-      setClasses(classesWithAttendanceStatus);
+      classes.current = classesWithAttendanceStatus;
     } catch (error) {
       console.error('Error fetching classes', error);
     } finally {
       dispatch(setRefreshClasses(false));
       setLoader(false);
+      setRefreshing(false);
     }
   };
   
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getInstructorClasses(false).then(() => setRefreshing(false));
+    getInstructorClasses();
   }, []);
 
   const handleNavigation = (item) =>{
@@ -167,7 +170,7 @@ const Home = ({ navigation }) => {
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }
-          data={classes}
+          data={classes.current}
           keyExtractor={(item,index) => index?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox

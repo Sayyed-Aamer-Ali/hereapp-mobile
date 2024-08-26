@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Text, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
@@ -14,7 +14,7 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [classes, setClasses] = useState([]);
+let classes = useRef(null);
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
   let refresh = useSelector(state => state.temp.refreshClassesForStudent);
@@ -27,7 +27,7 @@ const Home = ({ navigation }) => {
 
   const handleRefreshClasses = useCallback(() => {
     if (refresh) {
-      console.log('refresh', refresh);
+     
       getInstructorClasses(); // Call the function here
     }
   }, [refresh, getInstructorClasses])
@@ -48,28 +48,30 @@ const Home = ({ navigation }) => {
 
   const getInstructorClasses = async (isRefresh = true) => {
     if (isRefresh) setLoader(true);
+   classes.current = [];
   
     try {
       // Fetch the list of classes
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
   
-      let classes = response.data;
+      classes.current = response.data;
+      
     
     
-      if(!classes || classes.length === 0) {
-        setClasses([]);
+      if(!classes.current || classes.current.length === 0) {
+      classes.current = [];
         return;
       }
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
-        classes.map(async (classItem) => {
+       classes.current.map(async (classItem) => {
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {
                 classID: classItem?._id,
                 classScheduleID: classItem?.schedule?._id
               }
-              
+      
               const attendanceResponse = await axiosWrapper(
                 'POST',
                 API_URLS.CLASS_ATTENDANCE_STATUS,
@@ -79,14 +81,20 @@ const Home = ({ navigation }) => {
                 'json',
                 false
               );
+
+  
   
               // Add the attendance status to the class object
               return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
                 attendanceResponse,
-                user?.role
+                user?.role,
+                user?._id,
+                
+
+
               ) };
             } catch (error) {
-              console.error(`Error fetching attendance status for class ${classItem.id}`, error);
+              console.error(`Error fetching attendance status for class`, error);
               return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error
             }
           } else {
@@ -97,12 +105,13 @@ const Home = ({ navigation }) => {
       );
   
       // Set the state with the classes that now include attendance status
-      setClasses(classesWithAttendanceStatus);
+      classes.current = classesWithAttendanceStatus;
     } catch (error) {
       console.error('Error fetching classes', error);
     } finally {
       dispatch(setRefreshClassesForStudent(false));
       setLoader(false);
+      setRefreshing(false);
     }
   };
   
@@ -113,7 +122,7 @@ const Home = ({ navigation }) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getInstructorClasses(false).then(() => setRefreshing(false));
+    getInstructorClasses();
   }, []);
 
   return (
@@ -142,7 +151,7 @@ const Home = ({ navigation }) => {
               </Text>
             </View>
           }
-          data={classes}
+          data={classes.current}
           keyExtractor={(item,index) => index?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox

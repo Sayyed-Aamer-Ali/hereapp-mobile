@@ -18,7 +18,8 @@ const ShowDropdown = ({
   maxHeight = UtilityMethods.hp(40),
   search = false,
   renderLeftIcon,
-  error
+  error,
+  editable = true
 }) => {
   
 
@@ -27,7 +28,7 @@ const ShowDropdown = ({
 
   const dropdownComponent = useMemo(() => (
 
-    <>
+    <View pointerEvents={editable ? 'auto' : 'none'}>
     
 
     <Dropdown
@@ -49,6 +50,7 @@ const ShowDropdown = ({
       }}
       itemTextStyle={[styles.selectedTextStyle]}
       
+      
       // renderItem={({label,props})=>(
       //   <View style={styles.item} {...props}>
       //     <Text style={{color:Colors.BLACK}}>{label}</Text>
@@ -65,7 +67,7 @@ const ShowDropdown = ({
     {error?.length > 0 ? <Text style={styles.ErrorText}>{
       error
     }</Text> : null}
-    </>
+    </View>
   ), [data, value, selectedTextStyle, containerStyle, maxHeight, search, selectedIndex, renderLeftIcon]);
 
   return (

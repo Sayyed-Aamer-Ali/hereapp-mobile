@@ -126,16 +126,37 @@ export const sortClassesByDayAndTime = (classes) => {
 };
 
 
-export const checkAttendanceStatus =  (classItem, userType) => {
+export const checkAttendanceStatus =  (classItem, userType,userId,) => {
   
-  if(userType === 'STUDENT' && classItem?.message=="Attendance code not generated yet!" ){
+  
+  if(userType === 'STUDENT'  ){
+
+    if(classItem?.message=="Attendance code not generated yet!")
+      {
     return true;
+      }
+    else if(userId && classItem?.data?.presentStudents){
+      {
+           
+          let chekUser=classItem?.data?.presentStudents.find((item)=>item.studentDetails==userId)
+       
+          if(chekUser)
+          {
+            return true;
+          }
+          else{
+            return false;
+          }
+      }
   
   }
+ 
+  
   else{
 
     return false;
 
   }
 
+}
 }

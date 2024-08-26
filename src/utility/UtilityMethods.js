@@ -359,7 +359,7 @@ class UtilityMethodsClass {
     // Calculate the difference in minutes
     const differenceInMinutes = endTime.diff(startTime, 'minutes');
 
-    return `${differenceInMinutes} Minutes`;
+    return `${differenceInMinutes}`;
 }
 
 calculateTimeLeftInSeconds(start, end) {

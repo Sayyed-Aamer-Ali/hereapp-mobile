@@ -53,9 +53,25 @@ useEffect(() => {
   if(attendanceData){
     setCheckAttendanceMarked(true)
     setOtp(attendanceData.attendanceCode)
-    let codeAttempts = `${attendanceData.codeAttempts} Times`
+  
+    let codeAttempts = ""
+   
+
+    if(attendanceData.codeAttempts=="1"){
+      codeAttempts = `${attendanceData.codeAttempts} Time`
+      
+    }
+    else{
+      codeAttempts = `${attendanceData.codeAttempts} Times`
+    }
     setAttempts(codeAttempts)
     let codeExpiryTime = UtilityMethods.calculateAttendanceDuration(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
+    if(codeExpiryTime=="1"){
+      codeExpiryTime = `${codeExpiryTime} Minute`
+    }
+    else{
+      codeExpiryTime = `${codeExpiryTime} Minutes`
+    }
     setExpiryTime(codeExpiryTime)
     let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
     
@@ -118,7 +134,7 @@ useEffect(() => {
       let response = await axiosWrapper('POST', API_URLS.INSTRUCTOR_START_CLASS, data, token, false, 'json', false);
        
       setCheckAttendanceMarked(true)
-      dispatch(setRefreshClasses("true"))
+      dispatch(setRefreshClasses(true))
 
     startTimer(timer*60);
 
@@ -140,11 +156,6 @@ useEffect(() => {
     .toString()
     .padStart(2, '0')} : ${(timer % 60).toString().padStart(2, '0')}`;
 
-  const formatTimer = () => {
-    const minutes = Math.floor(timer);
-    const seconds = 0
-    return `${minutes < 10 ? '0' : ''}${minutes} : ${seconds < 10 ? '0' : ''}${seconds}`;
-  };
 
   return (
     <MainLayout
@@ -178,6 +189,7 @@ useEffect(() => {
           label="Code Attempts"
           style={styles.dropdown}
           error={codeAttempError}
+          editable={!checkAttendanceMarked}
 
         />
         <ShowDropdown
@@ -198,6 +210,7 @@ useEffect(() => {
           </View>)}
 
           error={codeExpiryError}
+          editable={!checkAttendanceMarked}
         />
         </View>
         <Button
