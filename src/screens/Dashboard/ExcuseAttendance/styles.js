@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { CommonStyles, FontSize, UtilityMethods } from "../../../utility";
-import { Colors } from "../../../assets";
+import { Colors, Fonts } from "../../../assets";
 
 
 
@@ -60,6 +60,34 @@ const styles = StyleSheet.create({
   footer:{
     backgroundColor:'red',
     marginBottom:UtilityMethods.hp(3),
+  },
+  
+  sectionView:(index)=>({
+     height:index === 0 ? UtilityMethods.hp(30) : UtilityMethods.hp(100),
+   
+  }),
+
+  emptyListView:{
+    flex:1,
+    paddingTop:UtilityMethods.hp(15),
+ 
+    alignItems:"center",
+    paddingHorizontal:UtilityMethods.wp(5)
+   
+
+  },
+  title: {
+    fontSize: FontSize.VALUE(18),
+    fontFamily: Fonts.MEDIUM,
+    color: Colors.BLACK,
+    marginBottom: UtilityMethods.hp(1),
+  },
+  description: {
+    fontSize: FontSize.VALUE(14),
+    lineHeight:FontSize.VALUE(20),
+    fontFamily: Fonts.BOLD,
+    color: Colors.LIGHT_GRAY,
+    textAlign: 'center',
   },
 });
 

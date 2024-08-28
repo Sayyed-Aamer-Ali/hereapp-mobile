@@ -32,6 +32,7 @@ export default function formatDate(dateString) {
 
 
 export const formatSchedule = (schedule) => {
+  
   // const date = new Date(schedule?.date);
   const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
   // const formattedDate = date.toLocaleDateString('en-GB', options);
@@ -159,4 +160,34 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
   }
 
 }
+}
+
+
+
+export const filterAndSortClassesByDate=(classData)=> {
+  const today = moment().startOf('day');
+
+  return classData.filter(item => {
+      const expiresAt = moment(item.attendanceExpiresAt);
+      return expiresAt.isSame(today, 'day');
+  }).sort((a, b) => {
+      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+  });
+}
+
+export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
+  const target = moment(targetDate).startOf('day');
+
+  const filtered = classData.filter(item => {
+      const expiresAt = moment(item.attendanceExpiresAt);
+      return expiresAt.isSame(target, 'day');
+  });
+
+  if (filtered.length === 0) {
+      return []; // Return an empty array if no items match the date
+  }
+
+  return filtered.sort((a, b) => {
+      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+  });
 }

@@ -4,14 +4,19 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Colors, Fonts, Icons } from '../../assets';
 import { UtilityMethods, FontSize, CommonStyles } from '../../utility';
 import DateAndTime from '../../utility/DateAndTime';
+import moment from 'moment';
 
 const DatePickerComponent = ({
   label = "Select Date",
   placeholder = "No date selected",
   date,
   setDate,
+  maximumDate,
+  minimumDate,
 }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -22,6 +27,13 @@ const DatePickerComponent = ({
   };
 
   const handleConfirm = (selectedDate) => {
+    
+    // if(moment(selectedDate).isSame(new Date(), 'day'))
+    // {
+  
+    //   selectedDate=new Date(new Date().setDate(new Date().getDate() + 1));
+    // }
+    
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -45,9 +57,14 @@ const DatePickerComponent = ({
       </View>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
+        
         mode="date"
-        onConfirm={handleConfirm}
+        onConfirm={
+          (selectedDate) => handleConfirm(selectedDate)
+        }
         onCancel={hideDatePicker}
+        maximumDate={maximumDate}
+        minimumDate={minimumDate}
       />
     </View>
   );

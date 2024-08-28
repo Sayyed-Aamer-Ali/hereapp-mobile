@@ -19,11 +19,13 @@ const INSTRUCTOR_START_CLASS = BaseUrl + 'api/attendance-management/start-attend
 const CLASS_ATTENDANCE_STATUS = BaseUrl + 'api/attendance-management/check-attendance-status'
 const MARKK_ATTENDANCE = BaseUrl + 'api/attendance-management/mark-attendance'
 const FETCH_ATTENDANCE = BaseUrl + 'api/attendance-management/fetch-attendance-details'
+const  FETCH_ALL_MISSED_CLASSES = BaseUrl + 'api/attendance-management/fetch-missed-classes'
+
 
 export const API_URLS = {
     UPLOAD_IMAGE,
     REGISTER_URL, LOGIN_URL, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, VERIFY_AND_UPDATE_PASSWORD, GET_USER, // Auth APIs
     GET_CLASSES, //Class management
     EDIT_PROFILE, CHANGE_PASSWORD, // User management,
-    INSTRUCTOR_START_CLASS,CLASS_ATTENDANCE_STATUS,MARKK_ATTENDANCE,FETCH_ATTENDANCE /// Attendance management
+    INSTRUCTOR_START_CLASS,CLASS_ATTENDANCE_STATUS,MARKK_ATTENDANCE,FETCH_ATTENDANCE,FETCH_ALL_MISSED_CLASSES /// Attendance management
 }

@@ -8,9 +8,19 @@ import styles from './styles';
 import { useSelector } from 'react-redux';
 import { Icons } from '../../../assets';
 import { dummyExcuseData, particularDatesdummyExcuseData } from '../../../Data/DummyData';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import { API_URLS } from '../../../services/apiPathList';
+import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate } from '../../../utility/FormateDate';
 
 const ExcuseAttandence = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
+
+  const token = useSelector(state => state.auth.token);
+
+const [missedClasses,setMissedClasses]=useState([]);
+
+const [allMissedClasses,setAllMissedClasses]=useState([]);
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [search, setSearch] = useState({
@@ -22,11 +32,13 @@ const ExcuseAttandence = ({ navigation }) => {
     leftIcon: <Icons.SearchIcon />
   });
 
-  const dataSections = [
-    { index: 0, title: "Recently Missed Classes", data: dummyExcuseData, },
-    { index: 1, title: "Request for a Particular Date", data: particularDatesdummyExcuseData }
-  ];
+  const [dataSections,setDateSections]= useState([
+    { index: 0, title: "Recently Missed Classes", data: [] },
+    { index: 1, title: "Request for a Particular Date", data: [] } 
+  ]);
 
+
+  
 
    useEffect(() => {
     const handler = setTimeout(() => {
@@ -42,26 +54,121 @@ const ExcuseAttandence = ({ navigation }) => {
     item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
 
+  useEffect(() => {
+
+    getAllMissedClasses();
+  }, [])
+
+
+
+  const getAllMissedClasses = async() => {
+    let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
+    try {
+      let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
+
+      setAllMissedClasses(response.data);
+      let data = filterAndSortClassesByDate(response.data);
+
+       setMissedClasses(data);
+
+      setDateSections([
+        { index: 0, title: "Recently Missed Classes", data: [
+          data.slice(0, 1)
+        ] },
+        { index: 1, title: "Request for a Particular Date", data: [] }
+      ]);
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   const renderSectionHeader = ({ section: { title, index } }) => {
+    
     return (
       <>
         <ExcussedMissedClassTitle title={title}
           onPress={() => navigation.navigate(Routes.EXCUSE_ATTENDANCE_SECTION_SCREEN,
-            { title, index }
+            { title, index,
+              data:index===0?missedClasses:dataSections[1].data[0],
+              
+             }
           )} />
         {
           index === 1 && (
             <DatePickerComponent
               date={selectedDate}
-              setDate={setSelectedDate}
+              
+              setDate={(date) => {
+                filterDateSpecificClasses(date);
+              }}
               placeholder="Select a date"
+              
+              minimumDate={new Date(new Date().setDate(new Date().getDate() + 1))}
             />
           )
         }
       </>
     )
   }
+
+
+  const filterDateSpecificClasses = (date) => {
+
+    setSelectedDate(date);
+    let data = filterAndSortClassesBySpecificDate(allMissedClasses, date);
+     setDateSections((prevState) => {
+      return prevState.map((item) => {
+        if (item.index === 1) {
+          return { ...item, data: [data] };
+        }
+        return item;
+      });
+
+    });
+
+  }
+
+
+  const renderFlatList = ({ item,index,section }) => {
+
+    return (
+      <View style={styles.sectionView(section.index)}>
+ <CustomFlatList
+        
+        data={item}
+        keyExtractor={(item) => item?._id?.toString()}
+        renderItem={({ item }) => (
+          <ClassDetailBox
+          item={item?.classDetail}
+          buttonText="Request Excused Absence"
+          onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)} }
+          buttonDisableRequired={false}
+          schedule={item?.classDetail?.schedule[0]}
+          />
+        )}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyListView}>
+            <Text
+              style={styles.title}>No Classes Found!</Text>
+
+            <Text style={styles.description}>
+              {section.index === 0 ? 'Sorry we cannot find any missed class for you.' : 'Sorry we cannot find any registered class for you.for this date.'}
+            </Text>
+         
+          </View>
+        )}
+      />
+      </View>
+     
+    )
+
+    
+
+  }
+
+
 
   return (
     <MainLayout>
@@ -82,16 +189,10 @@ const ExcuseAttandence = ({ navigation }) => {
         search.value === '' ?
           <SectionList
             sections={dataSections}
+            style={{ flex: 1 }}
             stickySectionHeadersEnabled={false}
             keyExtractor={(item, index) => item._id + index}
-            renderItem={({ item }) => (
-              <ClassDetailBox
-                item={item}
-                buttonText="Request Excused Absence"
-                onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN) }}
-                buttonDisableRequired={false}
-              />
-            )}
+            renderItem={renderFlatList}
             renderSectionHeader={renderSectionHeader}
             ListEmptyComponent={() => (
               <EmptyComponent />

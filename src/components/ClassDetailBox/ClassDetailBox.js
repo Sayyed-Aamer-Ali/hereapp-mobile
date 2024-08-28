@@ -14,7 +14,8 @@ const ClassDetailBox = ({
   item, 
   onPress, 
   buttonText = "tendance",
-  buttonDisableRequired=true
+  buttonDisableRequired=true,
+  schedule,
  }) => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(null);
@@ -29,7 +30,7 @@ const ClassDetailBox = ({
 
   const { 
     // formattedDate, 
-    formattedTimeSlot } = formatSchedule(item?.schedule)
+    formattedTimeSlot } = formatSchedule(schedule?schedule:item?.schedule);
   useEffect(()=>{
     if(buttonDisableRequired )
     {
@@ -115,7 +116,7 @@ const ClassDetailBox = ({
           </View>
           <View style={styles.item2}>
             <Text style={styles.titleText}>
-              {item?.schedule?.day}
+              {schedule?schedule.day:item?.schedule?.day}
             </Text>
             <Text style={styles.desText}>
               Day

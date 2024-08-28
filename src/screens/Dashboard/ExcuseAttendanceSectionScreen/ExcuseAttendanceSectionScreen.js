@@ -12,6 +12,12 @@ import formatDate from '../../../utility/FormateDate';
 const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
   const title = route?.params?.title
   const index = route?.params?.index
+  
+  const [missedClasses, setMissedClasses] = useState(route?.params?.data);
+
+
+
+  
   const [selectedDate, setSelectedDate] = useState(null);
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
@@ -39,8 +45,8 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
     };
   }, [search.value]);
 
-  const filteredParticularDates = particularDatesdummyExcuseData.filter(item =>
-    item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+  const filteredParticularDates = missedClasses.filter(item =>
+    item.classDetail?.name.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
 
 
@@ -66,6 +72,12 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
                 date={selectedDate}
                 setDate={setSelectedDate}
                 placeholder="Select a date"
+                /// minimun date should be the next day of the current date//
+                minimumDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+
+
+                
+                
               />
             )
         }
@@ -78,14 +90,15 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
             desc={'Sorry we cannot find any registered class for you. Please contact your instructor.'}
             />
           )}
-          data={filteredParticularDates}
+          data={missedClasses}
           keyExtractor={(item) => item?._id?.toString()}
           renderItem={({ item }) => (
             <ClassDetailBox
-              item={item}
+              item={item?.classDetail}
               buttonText="Request Excused Absence"
               onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)} }
               buttonDisableRequired={false}
+              schedule={item?.classDetail?.schedule[0]}
             />
           )}
         />
