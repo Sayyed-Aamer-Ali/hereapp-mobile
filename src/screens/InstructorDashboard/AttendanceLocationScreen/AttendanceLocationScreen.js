@@ -7,11 +7,16 @@ import { Colors, Icons } from '../../../assets'
 
 const AttendanceLocationScreen = ({ navigation, route }) => {
 
+    let location = route.params.location;
+    let name  = route.params.name;
+    let schoolNmae = route.params.schoolNmae;
+
+
     const marker = {
-        latitude: 31.4698,
-        longitude: 74.3185,
-        title: 'Marker 1',
-        description: 'This is marker 1',
+        latitude: location?.lat,
+        longitude: location?.lng,
+        title: name,
+    
     }
 
     return (
@@ -30,8 +35,12 @@ const AttendanceLocationScreen = ({ navigation, route }) => {
 
             
             <View style={styles.footerContainer}>
-                <Text style={styles.footerTitle}>Attendance Location:</Text>
-                <Text style={styles.footerLocation}>Harvard University, Harvard Square, New York, USA</Text>
+                <Text style={styles.footerTitle}>
+                    {name}
+                </Text>
+                <Text style={styles.footerLocation}>
+                    {schoolNmae}
+                </Text>
             <Button
                 text={"Go Back"}
                 LeftIcon={<Icons.ArrowBack />}

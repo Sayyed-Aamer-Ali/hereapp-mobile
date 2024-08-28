@@ -17,7 +17,12 @@ import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
 
-  const newSocket = io.connect(SocketUrl);
+  const newSocket = io.connect(SocketUrl,{
+    transports: ['websocket'],
+        'reconnection': true,
+          'reconnectionDelay': 500,
+	  'reconnectionAttempts': Infinity, 
+  });
 
   let attendanceData = item?.attendanceStatus?.data
 
@@ -83,8 +88,19 @@ const Attendance = ({ navigation, route }) => {
 
        try{
         let response = await axiosWrapper('POST', API_URLS.MARKK_ATTENDANCE, data, token, false, 'json', false);
+
+
+        let emitDatra={
+          attendanceMarkedAt :new Date(),
+          location:{
+            lat: location?.coords?.latitude,
+            lng: location?.coords?.longitude
+          },
+          studentDetails:response?.data
+          
+        }
         
-        newSocket.emit('markAttendance', response?.data);
+        newSocket.emit('markAttendance', emitDatra);
         dispatch(setRefreshClassesForStudent(true));
         
         setErrorMessage('');

@@ -17,7 +17,11 @@ const InstructorAttendenceScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const item = route.params?.item;
 
+
+
   let attendanceData=route?.params?.item?.attendanceStatus?.data
+
+  
  
   const token = useSelector(state => state.auth.token);
  
@@ -30,6 +34,7 @@ const InstructorAttendenceScreen = ({ navigation, route }) => {
   const [timer, setTimer] = useState(0);
   const [codeAttempError, setCodeAttempError] = useState("");
   const [codeExpiryError, setCodeExpiryError] = useState("");
+  const [attendanceId, setAttendanceId] = useState(null);
 
   const [checkAttendanceMarked, setCheckAttendanceMarked] = useState(false);
 
@@ -132,9 +137,15 @@ useEffect(() => {
     try{
 
       let response = await axiosWrapper('POST', API_URLS.INSTRUCTOR_START_CLASS, data, token, false, 'json', false);
-       
-      setCheckAttendanceMarked(true)
+      
+    setCheckAttendanceMarked(true)
       dispatch(setRefreshClasses(true))
+      let attendanceData ={
+        _id:response.data._id
+      }
+      setAttendanceId(attendanceData)
+      
+
 
     startTimer(timer*60);
 
@@ -225,7 +236,9 @@ useEffect(() => {
           text={"Show Attendance List"}
           Icon={<Icons.List />}
           style={styles.listButton}
-          onPress={() => navigation.navigate(Routes.ATTENDENCE_LIST_SCREEN)}
+          onPress={() => navigation.navigate(Routes.ATTENDENCE_LIST_SCREEN,{
+            data: attendanceData?attendanceData:attendanceId
+          })}
           textStyle={styles.listButtonText}
         />
       </ScreenWrapper>

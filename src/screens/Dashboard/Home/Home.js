@@ -7,7 +7,7 @@ import { MyClasses } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton } from '../../../utility/FormateDate';
+import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDayAndTime } from '../../../utility/FormateDate';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
 const Home = ({ navigation }) => {
@@ -62,6 +62,8 @@ let classes = useRef(null);
       classes.current = [];
         return;
       }
+
+      classes.current = sortClassesByDayAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
        classes.current.map(async (classItem) => {

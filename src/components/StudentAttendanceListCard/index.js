@@ -3,32 +3,42 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { UtilityMethods,   FontSize } from '../../utility';
 import { Colors, Fonts } from '../../assets';
+import moment from 'moment';
 
-const StudentAttendanceListCard = ({ student, locationPress }) => {
+const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
+  
+
+  const getNetID = (email) => {
+    return email.split('@')[0];
+  }
   return (
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.label}>Student Name</Text>
-        <Text style={styles.value}>{student.name}</Text>
+        <Text style={styles.value}>{student.studentDetails.firstName} {student.studentDetails.lastName}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Net ID</Text>
-        <Text style={styles.value}>{student.netId}</Text>
+        <Text style={styles.value}>{getNetID(student.studentDetails.email)}  </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Status</Text>
-        <Text style={styles.value}>{student.status}</Text>
+        <Text style={styles.value}>Present</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
-        <Text style={styles.value}>{student.dateTime}</Text>
+        <Text style={styles.value}>
+          {moment(student.attendanceMarkedAt).format('MMM DD, YYYY hh:mm A')}
+        </Text>
       </View>
+      {showLocation && 
       <View style={styles.row}>
         <Text style={styles.label}>Location</Text>
         <TouchableOpacity onPress={locationPress}>
-          <Text style={[styles.value, styles.link]}>{student.location}</Text>
+          <Text style={[styles.value, styles.link]}>View on Map</Text>
         </TouchableOpacity>
       </View>
+      }
     </View>
   );
 };

@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
   
        classes.current = response.data;
 
-      if(!classes || classes.length === 0) {
+      if(!classes.current || classes.current.length === 0) {
          
 
       classes.current = [];
@@ -94,6 +94,7 @@ const Home = ({ navigation }) => {
                 classID: classItem?._id,
                 classScheduleID: classItem?.schedule?._id
               }
+            
             
               const attendanceResponse = await axiosWrapper(
                 'POST',

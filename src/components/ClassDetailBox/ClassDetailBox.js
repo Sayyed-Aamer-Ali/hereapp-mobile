@@ -70,7 +70,7 @@ const ClassDetailBox = ({
     }
     else if(timer === 0){
       
-      setIsButtonDisabled(true)
+     setIsButtonDisabled(true)
     }
 
   
