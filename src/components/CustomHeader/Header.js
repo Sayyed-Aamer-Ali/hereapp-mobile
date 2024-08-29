@@ -15,7 +15,8 @@ const Header = ({
   DrawerHeader = false, 
   isLogout = false, 
   logoutOnPress,
-  rightIcons=true
+  rightIcons=true,
+  ...props
 }) => {
   const navigation = useNavigation();
 
@@ -48,7 +49,7 @@ const Header = ({
         {showBackButton &&
           <TouchableOpacity
             style={styles.icon}
-            onPress={() => navigation.goBack()}
+            onPress={props.onPressIcon || (() => navigation.goBack())}
           >
             <Icon name="arrow-back" size={25} color={
               Colors.ICON_BLACK

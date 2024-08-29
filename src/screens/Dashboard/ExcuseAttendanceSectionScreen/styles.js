@@ -53,5 +53,9 @@ const styles = StyleSheet.create({
         marginTop: UtilityMethods.hp(2),
         marginHorizontal: UtilityMethods.wp(4)
     },
+    icon:{
+        paddingRight:UtilityMethods.wp(2)
+      },
+  
 })
 export default styles

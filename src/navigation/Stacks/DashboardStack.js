@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import {StudentStack,InstructorStack} from "./index"
 import Routes from '../Routes';
-import {ExcuseAttendanceDetailScreen, ExcuseAttendanceSectionScreen, ExcuseAttendanceSuccessScreen, NotificationScreen, PrivacyPolicy, TermsAndConditions} from '../../screens';
+import {ExcuseAttendanceDetailScreen, ExcuseAttendanceSectionScreen, ExcuseAttendanceSuccessScreen, NotificationScreen, PrivacyPolicy, SearchScreen, TermsAndConditions} from '../../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +28,12 @@ const DashboardStack = () => {
         <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_SECTION_SCREEN} component={ExcuseAttendanceSectionScreen} />
         <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN} component={ExcuseAttendanceDetailScreen} />
         <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_SUCCESS_SCREEN} component={ExcuseAttendanceSuccessScreen} />
-        
+
+          <Stack.Screen name={Routes.SEARCH_SCREEN} component={SearchScreen} 
+           options={{
+            animation:"none"
+           }}
+          />
       </Stack.Navigator>
   );
 };

@@ -22,6 +22,7 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
  import ExcuseAttendanceSuccessScreen from "./Dashboard/ExcuseAttendanceSuccessScreen/ExcuseAttendanceSuccessScreen";
  import ExcuseAttendanceDetailScreen from "./Dashboard/ExcuseAttendanceDetailScreen/ExcuseAttendanceDetailScreen";
  
+ import SearchScreen from "./Dashboard/SearchScreen/SearchScreen";
 
 
   /// Instructor Dashboard Screens///
@@ -60,4 +61,5 @@ export {
   ExcuseAttendanceSuccessScreen,
   ExcuseAttendanceDetailScreen,
   PrivacyPolicy,
+  SearchScreen
 };

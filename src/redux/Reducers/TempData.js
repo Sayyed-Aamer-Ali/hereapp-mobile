@@ -11,7 +11,9 @@ const tempDataSlice = createSlice({
     editableRoute: null,
     refreshClasses: false,
     refreshClassesForStudent: false,
+    AllMissedClassesName: [],
   },
+
   reducers: {
     setTempData: (state, action) => {
       state.tempData = action.payload;
@@ -39,6 +41,10 @@ const tempDataSlice = createSlice({
     setRefreshClassesForStudent: (state, action) => {
       state.refreshClassesForStudent = action.payload;
     },
+    
+    setAllMissedClassesName: (state, action) => {
+      state.AllMissedClassesName = action.payload;
+    },
 
   },
 });
@@ -51,5 +57,6 @@ export const {
   setEditableRoute,
   setRefreshClasses,
   setRefreshClassesForStudent,
+  setAllMissedClassesName,
 } = tempDataSlice.actions;
 export default tempDataSlice.reducer;

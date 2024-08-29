@@ -72,6 +72,23 @@ const styles = StyleSheet.create({
     height: UtilityMethods.hp(6),
     paddingRight:UtilityMethods.wp(4)
   },
+
+
+  inputnonEditable:{
+    width: '100%',
+    height: UtilityMethods.hp(6),
+    paddingRight:UtilityMethods.wp(4),
+    justifyContent: 'center',
+
+  },
+
+  inputnonEditableText:(value)=>({
+    color: value?Colors.ICON_BLACK:Colors.PLACEHOLDER_COLOR,
+    fontSize: FontSize.VALUE(16),
+    fontFamily:Fonts.REGULAR,
+    
+  }),
+
   eyeIcon: {
     width: UtilityMethods.wp(6),
     height: UtilityMethods.wp(6),

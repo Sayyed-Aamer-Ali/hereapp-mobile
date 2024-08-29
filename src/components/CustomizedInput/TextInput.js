@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors, Icons, Images } from '../../assets';
 import { UtilityMethods } from '../../utility';
@@ -22,9 +22,21 @@ const InputText = forwardRef(({
   const navigation = useNavigation();
   const [show, setShow] = useState(false);
 
+  const iputRef = useRef(null);
+
 
   // const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   const USPhoneNumberMask = ['+','1',' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
+
+  useEffect(() => {
+    if (fieldInfo?.focus) {
+      setTimeout(() => {
+      iputRef.current.focus();
+      }, 100);
+    }
+  }, [fieldInfo?.focus]);
+  
 
   return (
     <View style={[styles.mainCont, style]}>
@@ -66,44 +78,63 @@ const InputText = forwardRef(({
 
 
         <View style={{ flex: 1 }}>
+        {fieldInfo?.type=="nonEditable" ?
+        <TouchableOpacity style={styles.inputnonEditable}
+         activeOpacity={1}
+          onPress={fieldInfo?.onPress}
+        >
+          <Text style={styles.inputnonEditableText(
+            fieldInfo?.value?true:false
+          )}>
+           {fieldInfo?.value?fieldInfo?.value:fieldInfo?.placeholder}
+          </Text>
+        </TouchableOpacity>
+        :
+        <>
+        {!isPhoneNumber ?
+           
+           < TextInput
+             ref={fieldInfo?.focus ? iputRef : ref}
+             placeholder={fieldInfo?.placeholder}
+             onFocus={fieldInfo?.onFocus}
+             value={fieldInfo?.value}
+             onChangeText={onChange}
+             style={[styles.input, inputStyle]}
+             secureTextEntry={fieldInfo?.type === "password" && showPassword}
+             keyboardType={fieldInfo?.type === "email" ? 'email-address' : props?.keyboardType}
+             placeholderTextColor={Colors.PLACEHOLDER_COLOR}
+             numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
+             maxLength={props?.maxLength ? props?.maxLength : 40}
+             autoCapitalize={(fieldInfo?.type === "email" || fieldInfo?.type === "password") ? 'none' : props?.autoCapitalize}
+             returnKeyType={props?.returnKeyType? props?.returnKeyType : 'next'}
+             returnKeyLabel={props?.returnKeyLabel}
+             onSubmitEditing={onSubmitEditing}
+             {...props}
+           />
+           :
+           <MaskInput
+             ref={ref}
+             placeholder={fieldInfo?.placeholder}
+             onFocus={fieldInfo?.onFocus}
+             value={fieldInfo?.value}
+             onChangeText={onChange}
+             mask={USPhoneNumberMask}
+             style={[styles.input, inputStyle]}
+             secureTextEntry={fieldInfo?.type === "password" && showPassword}
+             keyboardType={fieldInfo?.type === "email" ? 'email-address' : props?.keyboardType}
+             placeholderTextColor={Colors.PLACEHOLDER_COLOR}
+             numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
+             maxLength={props?.maxLength ? props?.maxLength : 40}
+             autoCapitalize={(fieldInfo?.type === "email" || fieldInfo?.type === "password") ? 'none' : props?.autoCapitalize}
+             {...props}
+           />
 
-          {!isPhoneNumber ?
-            < TextInput
-              ref={ref}
-              placeholder={fieldInfo?.placeholder}
-              onFocus={fieldInfo?.onFocus}
-              value={fieldInfo?.value}
-              onChangeText={onChange}
-              style={[styles.input, inputStyle]}
-              secureTextEntry={fieldInfo?.type === "password" && showPassword}
-              keyboardType={fieldInfo?.type === "email" ? 'email-address' : props?.keyboardType}
-              placeholderTextColor={Colors.PLACEHOLDER_COLOR}
-              numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
-              maxLength={props?.maxLength ? props?.maxLength : 40}
-              autoCapitalize={(fieldInfo?.type === "email" || fieldInfo?.type === "password") ? 'none' : props?.autoCapitalize}
-              returnKeyType='next'
-              onSubmitEditing={onSubmitEditing}
-              {...props}
-            />
-            :
-            <MaskInput
-              ref={ref}
-              placeholder={fieldInfo?.placeholder}
-              onFocus={fieldInfo?.onFocus}
-              value={fieldInfo?.value}
-              onChangeText={onChange}
-              mask={USPhoneNumberMask}
-              style={[styles.input, inputStyle]}
-              secureTextEntry={fieldInfo?.type === "password" && showPassword}
-              keyboardType={fieldInfo?.type === "email" ? 'email-address' : props?.keyboardType}
-              placeholderTextColor={Colors.PLACEHOLDER_COLOR}
-              numberOfLines={props?.numberOfLines ? props?.numberOfLines : 1}
-              maxLength={props?.maxLength ? props?.maxLength : 40}
-              autoCapitalize={(fieldInfo?.type === "email" || fieldInfo?.type === "password") ? 'none' : props?.autoCapitalize}
-              {...props}
-            />
+         }
+        
+        </>
+        }
 
-          }
+         
 
         </View>
         {/* Right Icon */}
@@ -136,7 +167,13 @@ const InputText = forwardRef(({
 
 
           </View>
-        ) : null}
+        ) : 
+        props?.RightIcon ? (
+          <View>
+            {props?.RightIcon}
+          </View>
+        ) : null
+        }
 
 
 

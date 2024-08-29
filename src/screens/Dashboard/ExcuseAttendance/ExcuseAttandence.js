@@ -1,35 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, View, SectionList, StyleSheet
+  Text, View, SectionList, StyleSheet,
+  Alert
 } from 'react-native';
 import { ClassDetailBox, CustomFlatList, CustomizedInput, DatePickerComponent, EmptyComponent, ExcussedMissedClassTitle, Header, MainLayout, ScreenWrapper, } from '../../../components';
 import Routes from '../../../navigation/Routes';
 import styles from './styles';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { Icons } from '../../../assets';
 import { dummyExcuseData, particularDatesdummyExcuseData } from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate } from '../../../utility/FormateDate';
+import { setAllMissedClassesName } from '../../../redux/Reducers/TempData';
 
 const ExcuseAttandence = ({ navigation }) => {
+
+  const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
 
   const token = useSelector(state => state.auth.token);
 
-const [missedClasses,setMissedClasses]=useState([]);
+
 
 const [allMissedClasses,setAllMissedClasses]=useState([]);
 
+
+
   const [selectedDate, setSelectedDate] = useState(null);
+  const [loader, setLoader] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [search, setSearch] = useState({
     inputType: "text",
     value: "",
-    type: "text",
+    type: "nonEditable",
     error: "",
     placeholder: "Search your missed class....",
-    leftIcon: <Icons.SearchIcon />
+    leftIcon: <Icons.SearchIcon />,
+    onPress: () => {
+      handleSearch();
+    }
   });
 
   const [dataSections,setDateSections]= useState([
@@ -62,14 +72,26 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
 
 
   const getAllMissedClasses = async() => {
+    setLoader(true);
     let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
 
       setAllMissedClasses(response.data);
+
+      let filteroutNames = response.data.map((item) => {
+        return item.classDetail.name;
+      });
+      let uniqueNames = [...new Set(filteroutNames)];
+       
+      dispatch(setAllMissedClassesName({
+        AllMissedClassesName: uniqueNames,
+        AllMissedClasses: response.data
+      }));
+     
       let data = filterAndSortClassesByDate(response.data);
 
-       setMissedClasses(data);
+     
 
       setDateSections([
         { index: 0, title: "Recently Missed Classes", data: [
@@ -81,17 +103,25 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
     } catch (error) {
       console.log(error);
     }
+    finally {
+      setLoader(false);
+    }
 
   }
 
   const renderSectionHeader = ({ section: { title, index } }) => {
     
+    let paramTitle = index == 0 ? "Missed Classes" : "Particular Date";
+
+  
     return (
       <>
         <ExcussedMissedClassTitle title={title}
           onPress={() => navigation.navigate(Routes.EXCUSE_ATTENDANCE_SECTION_SCREEN,
-            { title, index,
-              data:index===0?missedClasses:dataSections[1].data[0],
+            { title:paramTitle, index,
+              data:allMissedClasses,
+              date: index === 1 ? selectedDate : null,
+            
               
              }
           )} />
@@ -168,10 +198,14 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
 
   }
 
+  const handleSearch = () => {
+   
+   navigation.navigate(Routes.SEARCH_SCREEN);
+  }
 
 
   return (
-    <MainLayout>
+    <MainLayout loader={loader}>
       <Header title="Excused Absence"
         showBackButton={true}
         DrawerHeader={false}
@@ -185,8 +219,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
         InputContStyle={styles.searchInput}
       />
 
-      {
-        search.value === '' ?
+      
           <SectionList
             sections={dataSections}
             style={{ flex: 1 }}
@@ -202,28 +235,8 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
             )}
             contentContainerStyle={styles.sectionListContent}
           />
-          :
-          <CustomFlatList
-            listStyle={styles.listStyle}
-            ListEmptyComponent={() => (
-              <EmptyComponent 
-                title={'No Classes Found!'}
-                desc={'Sorry we cannot find any registered class for you. Please contact your instructor.'}
-                />
-              )}
-
-            data={filteredParticularDates}
-            keyExtractor={(item) => item?._id?.toString()}
-            renderItem={({ item }) => (
-              <ClassDetailBox
-                item={item}
-                buttonText="Mark Attendance"
-                onPress={() => navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)}
-                buttonDisableRequired={false}
-              />
-            )}
-          />
-      }
+        
+      
     </MainLayout>
   );
 }

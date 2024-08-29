@@ -1,17 +1,31 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Text, View, RefreshControl } from 'react-native';
+import { Text, View, RefreshControl, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, CustomizedInput, DatePickerComponent, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
 import styles from './styles';
 import { dummyExcuseData, MyClasses, particularDatesdummyExcuseData } from '../../../Data/DummyData';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
+
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import formatDate from '../../../utility/FormateDate';
+import formatDate, { filterAndSortClassesBySpecificDate } from '../../../utility/FormateDate';
+import { Colors } from '../../../assets';
 
 const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
   const title = route?.params?.title
   const index = route?.params?.index
+  let searchField = route?.params?.item;
+
+  let date = route?.params?.date;
+
+
+
+
+
+
   
   const [missedClasses, setMissedClasses] = useState(route?.params?.data);
 
@@ -29,26 +43,78 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
   const [search, setSearch] = useState({
     inputType: "text",
     value: "",
-    type: "text",
+    type: "nonEditable",
     error: "",
     placeholder: "Search your missed class....",
-    leftIcon: <Icons.SearchIcon />
+    leftIcon: <Icons.SearchIcon />,
+    onPress: () => {
+      handleSearch();
+    }
   });
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search.value);
-    }, 500);
 
-    return () => {
-      clearTimeout(handler);
-    };
+  const handleSearch = () => {
+   
+    navigation.push(Routes.SEARCH_SCREEN);
+   }
+
+  useEffect(() => {
+   if (search.value.length == 0) {
+      setMissedClasses(route?.params?.data);
+     
+   }
   }, [search.value]);
 
-  const filteredParticularDates = missedClasses.filter(item =>
-    item.classDetail?.name.toLowerCase().includes(debouncedSearch.toLowerCase())
-  );
+  
 
+  useEffect(() => {
+    if (searchField) {
+
+      setSearch({ ...search, value: searchField });
+    let  filteredParticularDates = missedClasses.filter(item =>
+        item.classDetail?.name.toLowerCase().includes(searchField.toLowerCase())
+      );
+
+      setMissedClasses(filteredParticularDates);
+    }
+    else{
+      setMissedClasses(route?.params?.data);
+    }
+  }
+    , [searchField,route?.params?.data]);
+    
+
+  useEffect(() => {
+    if(index==1)
+      {
+        
+        if(selectedDate && route?.params?.data)
+          {
+            let data = filterAndSortClassesBySpecificDate(route?.params?.data, selectedDate);
+
+            setMissedClasses(data);
+          }
+          else{
+             setMissedClasses([]);
+          }
+
+      }
+    
+
+
+  }, [date,index,selectedDate]);
+
+
+  useEffect(() => {
+    if(date)
+      {
+        setSelectedDate(date);
+      }
+
+  }, [date]);
+
+  
+ 
 
   return (
     <MainLayout loader={loader}>
@@ -56,6 +122,7 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
         <Header title={title}
           showBackButton={true}
           DrawerHeader={false}
+          onPressIcon={() => navigation.navigate(Routes.EXCUSE_ATTENDANCE)}
         />
 
         {
@@ -66,6 +133,21 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
                 setSearch({ ...search, value: text, error: "" });
               }}
               InputContStyle={styles.searchInput}
+              RightIcon={
+                <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  
+                  setSearch({ ...search, value: "", error: "" });
+                }}
+                >
+                  {search.value.length > 0 &&
+                 <AntDesign name="closecircle" size={20} color={
+                    Colors.ICON_BLACK
+                  } />
+                  }
+                </TouchableOpacity>
+              }
             />
             : (
               <DatePickerComponent
