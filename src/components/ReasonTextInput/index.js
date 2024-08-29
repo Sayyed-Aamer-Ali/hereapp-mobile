@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, Text } from 'react-native';
 import { Colors, Fonts } from '../../assets';
 import { FontSize, UtilityMethods } from '../../utility';
 
-const ReasonTextInput = ({ reason, setReason }) => {
+const ReasonTextInput = ({ reason, setReason,error="" }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reason for Absence</Text>
@@ -15,6 +15,8 @@ const ReasonTextInput = ({ reason, setReason }) => {
         onChangeText={setReason}
         multiline
       />
+      {error && <Text style={styles.error}>{error}</Text>}
+
     </View>
   );
 };
@@ -42,6 +44,14 @@ const styles = StyleSheet.create({
     color: Colors.BLACK,
     textAlignVertical: 'top',
   },
+  error:{
+    marginTop: UtilityMethods.hp(1),
+
+    fontSize: FontSize.VALUE(14),
+    color: Colors.RED,
+    marginLeft: UtilityMethods.wp(1),
+    fontWeight:Fonts.REGULAR,
+  }
 });
 
 export default ReasonTextInput;

@@ -3,15 +3,22 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'reac
 import { Colors, Fonts, Icons } from '../../assets';
 import { FontSize, UtilityMethods } from '../../utility';
 import DocumentPicker from 'react-native-document-picker';
+import axiosWrapper from '../../services/AxiosWrapper';
+import { API_URLS } from '../../services/apiPathList';
 
-const FileUploadComponent = ({ file, setFile }) => {
+const FileUploadComponent = ({ file, setFile,error }) => {
   const handleFilePick = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
+        copyTo: 'cachesDirectory',
+        
+        
       });
 
-      setFile(pre => [...pre, result?.[0]]);
+    
+      // setFile(pre => [...pre, result?.[0]]);
+      formateData(result[0])
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User canceled the picker
@@ -20,6 +27,32 @@ const FileUploadComponent = ({ file, setFile }) => {
       }
     }
   };
+
+
+  const formateData = (response) => {
+   let data ={
+      uri: response.uri,
+      name: response.name,
+      type: "application/pdf",
+
+   }
+
+   uploadDoc(data)
+    
+  }
+
+  let uploadDoc = async(file) =>{
+    try {
+      const formData = new FormData();
+      formData.append('files', file);
+      let response = await  axiosWrapper('POST',API_URLS.UPLOAD_IMAGE,formData, null, true) 
+      setFile(pre => [...pre, response?.data[0]?.path]);
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+
 
   const handleRemoveFile = (index) => {
     setFile(prevFiles => prevFiles.filter((file, i) => i !== index));
@@ -52,6 +85,7 @@ const FileUploadComponent = ({ file, setFile }) => {
           ))
         }
       </View>
+      {error && <Text style={styles.error}>{error}</Text>}
 
     </View>
   );
@@ -115,6 +149,14 @@ const styles = StyleSheet.create({
   },
   cross:{
     top:UtilityMethods.wp(-1.5)
+  },
+  error:{
+    marginTop: UtilityMethods.hp(1),
+
+    fontSize: FontSize.VALUE(14),
+    color: Colors.RED,
+    marginLeft: UtilityMethods.wp(1),
+    fontWeight:Fonts.REGULAR,
   }
 });
 

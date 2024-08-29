@@ -173,7 +173,9 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
           <ClassDetailBox
           item={item?.classDetail}
           buttonText="Request Excused Absence"
-          onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN)} }
+          onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN,{
+            data:item,
+          })} }
           buttonDisableRequired={false}
           schedule={item?.classDetail?.schedule[0]}
           />
