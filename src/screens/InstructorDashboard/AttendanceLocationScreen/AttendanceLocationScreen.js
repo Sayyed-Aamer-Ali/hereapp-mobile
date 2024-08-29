@@ -9,7 +9,7 @@ const AttendanceLocationScreen = ({ navigation, route }) => {
 
     let location = route.params.location;
     let name  = route.params.name;
-    let schoolNmae = route.params.schoolNmae;
+    let schoolNmae = route.params.schoolName;
 
 
     const marker = {

@@ -167,7 +167,7 @@ const Home = ({ navigation }) => {
           ListHeaderComponent={
             <View style={styles.headerCont}>
               <Text style={styles.welcome}>Welcome {user?.firstName},</Text>
-              <Text style={styles.desc}>Please select a class to mark attendance</Text>
+              <Text style={styles.desc}>Please select a class to take attendance</Text>
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }

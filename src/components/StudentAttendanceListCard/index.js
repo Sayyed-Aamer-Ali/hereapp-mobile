@@ -6,7 +6,6 @@ import { Colors, Fonts } from '../../assets';
 import moment from 'moment';
 
 const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
-  
 
   const getNetID = (email) => {
     return email.split('@')[0];
@@ -28,7 +27,7 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
         <Text style={styles.value}>
-          {moment(student.attendanceMarkedAt).format('MMM DD, YYYY hh:mm A')}
+          {moment.utc(student.attendanceMarkedAt).format('MMM DD, YYYY hh:mm A')}
         </Text>
       </View>
       {showLocation && 

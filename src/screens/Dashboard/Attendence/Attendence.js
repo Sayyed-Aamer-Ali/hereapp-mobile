@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Header, MainLayout, ModifiedOTPInput, OtpInput, SuccessModal } from '../../../components';
 import { CommonStyles, UtilityMethods } from '../../../utility';
@@ -13,6 +13,8 @@ import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
 import io from 'socket.io-client';
 import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
+import AlertService from '../../../services/AlertService';
+import moment from 'moment';
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
@@ -25,6 +27,8 @@ const Attendance = ({ navigation, route }) => {
   });
 
   let attendanceData = item?.attendanceStatus?.data
+
+ 
 
   const MAX_ATTEMPTS = attendanceData?.codeAttempts;
   const token = useSelector(state => state.auth.token);
@@ -52,6 +56,7 @@ const Attendance = ({ navigation, route }) => {
   
   useEffect(() => {
     UtilityMethods.getUserCurrentLocation((location) => {
+     
       setLocation(location);
     });
   }, []);
@@ -64,14 +69,42 @@ const Attendance = ({ navigation, route }) => {
     }
 
 
+  if(!location?.sucess && attendanceData?.classDetail.geoTracking=="enable") {
+
+    if(location?.error=="Permission Denied")
+      {
+    Alert.alert("Location Permission", "Please enable location permission to mark attendance.",[
+      {
+        text: "Go to Settings",
+        onPress: () => {
+         Linking.openSettings();
+        },
+
+      },
+      {
+        text: "Cancel",
+        cancelable: true,
+       
+    }
+
+    ]);
+
+    return;
+  }
+  else{
+    Alert.alert("Location Not Found", "Please enable location to mark attendance.");
+    return;
+  }
+  }
+
     let data={
       scheduleID:item?.schedule?._id,
       attendanceCode:otpInp,
       location:{
         
         
-          lat: location?.coords?.latitude,
-          lng: location?.coords?.longitude
+          lat: location?.position?.coords?.latitude,
+          lng: location?.position?.coords?.longitude
           
           
           
@@ -82,7 +115,8 @@ const Attendance = ({ navigation, route }) => {
           
       }
     }
-
+    
+  
 
      setLoader(true);
 
@@ -91,10 +125,10 @@ const Attendance = ({ navigation, route }) => {
 
 
         let emitDatra={
-          attendanceMarkedAt :new Date(),
+          attendanceMarkedAt: moment.utc().toISOString(),
           location:{
-            lat: location?.coords?.latitude,
-            lng: location?.coords?.longitude
+            lat: location?.position?.coords?.latitude,
+            lng: location?.position?.coords?.longitude
           },
           studentDetails:response?.data
           
@@ -161,7 +195,12 @@ const Attendance = ({ navigation, route }) => {
 
         <ModifiedOTPInput
           value={otpInp}
-          setValue={setOtpInp}
+          setValue={
+            (value) => {
+              setOtpInp(value);
+              setErrorMessage('');
+
+          }}
           style={styles.otpContainer}
           keyboardType="email-address"
         />
@@ -172,9 +211,12 @@ const Attendance = ({ navigation, route }) => {
           onPress={attemptsLeft > 0 ? handleSubmit : handleRequestExcusedAbsence}
         />
 
-        <Text style={[styles.error, { color: attemptsLeft < MAX_ATTEMPTS ? Colors.RED : Colors.BLACK }]}>
-          {errorMessage || `You have total ${attemptsLeft} Attempts`}
+
+       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : 
+        <Text style={[styles.error, { color:  Colors.BLACK }]}>
+          { `You have total ${attemptsLeft} Attempts`}
         </Text>
+      }
 
         <ClassDetails
           section={item.semester}

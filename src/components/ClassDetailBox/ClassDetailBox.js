@@ -25,7 +25,11 @@ const ClassDetailBox = ({
   const [timer, setTimer] = useState(null);
 
 
+
+
  let attendanceData = item?.attendanceStatus?.data
+
+
  
 
   const { 
@@ -36,9 +40,11 @@ const ClassDetailBox = ({
     {
     if(item?.showButtonDisabled)
       {
+         console.log("showButtonDisabled",item?.showButtonDisabled)
         setIsButtonDisabled(item?.showButtonDisabled);
       }
       else{
+        // setIsButtonDisabled(false);
         // setIsButtonDisabled(shouldDisableButton(item));
       }
     }
@@ -50,8 +56,8 @@ const ClassDetailBox = ({
     if(attendanceData && isFocused){
     
       let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
-      
        
+   
       setTimer(timeleft)
       
     }

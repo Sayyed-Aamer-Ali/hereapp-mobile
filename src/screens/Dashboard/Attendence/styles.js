@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   error:{
     fontSize:FontSize.VALUE(16),
-    color:Colors.BLACK,
+    color:Colors.RED,
     marginTop:UtilityMethods.hp(1.5),
     marginBottom:UtilityMethods.hp(2)
   },

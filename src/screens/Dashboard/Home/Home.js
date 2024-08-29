@@ -84,17 +84,10 @@ let classes = useRef(null);
                 false
               );
 
-  
+              
   
               // Add the attendance status to the class object
-              return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
-                attendanceResponse,
-                user?.role,
-                user?._id,
-                
-
-
-              ) };
+              return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:false };
             } catch (error) {
               console.error(`Error fetching attendance status for class`, error);
               return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error

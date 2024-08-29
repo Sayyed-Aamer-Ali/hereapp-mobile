@@ -143,9 +143,12 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
        
           if(chekUser)
           {
+
+        
             return true;
           }
           else{
+            console.log("false")
             return false;
           }
       }

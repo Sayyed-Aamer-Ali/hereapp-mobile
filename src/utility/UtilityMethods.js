@@ -4,6 +4,7 @@ import { Alert, Dimensions, Linking, PixelRatio, Platform, Share } from 'react-n
 import { navigationRef } from '../App';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
+import momettimezone from 'moment-timezone';
 import Geolocation from '@react-native-community/geolocation';
 import AlertService from '../services/AlertService';
 import { AlertWithTwoButtons } from '../components';
@@ -333,12 +334,27 @@ class UtilityMethodsClass {
   getUserCurrentLocation = (callback) => {
     Geolocation.getCurrentPosition(
       (position) => {
-        callback(position);
+        callback({
+          position: position,
+          sucess : true
+        });
       },
       (error) => {
-       AlertService.toastPrompt("Please Allow Your Location","error");
+        if(error.code === 1)
+        {
+          callback({
+            error: 'Permission Denied',
+            sucess: false,
+          })
+        }
+        else{
+          callback({
+            error: 'Location not found',
+            sucess: false,
+          })
+        }
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 20000 }
     );
   
 
@@ -363,21 +379,42 @@ class UtilityMethodsClass {
 }
 
 calculateTimeLeftInSeconds(start, end) {
+
+
   // Parse the start and end times using moment
-  const startTime = moment(start);
-  const endTime = moment(end);
-  const currentTime = moment();
+  const startTime = moment.utc(start).format("hh:mm:ss:a");
+  const endTime = moment.utc(end).format("hh:mm:ss:a");
+  const currentTime = moment().format("hh:mm:ss:a");
+ 
+
+ 
+  
+
+
+
+
+
+
+
+  // const date = momettimezone.tz(new Date(), userTimezone);
+  
 
   // Check if the current time is within the start and end time
-  if (currentTime.isBefore(startTime)) {
-      return 0; // If the current time is before the start time, return 0 seconds
+
+  if (moment(currentTime, "hh:mm:ss:a").isBetween(moment(startTime, "hh:mm:ss:a"), moment(endTime, "hh:mm:ss:a"))) {
+    // Calculate the difference in seconds
+    const differenceInSeconds = moment(endTime, "hh:mm:ss:a").diff(moment(currentTime, "hh:mm:ss:a"), 'seconds');
+    return differenceInSeconds;
+  }
+  else {
+
+    return 0;
   }
 
-  // Calculate the difference in seconds between the end time and the current time
-  const timeLeftInSeconds = endTime.diff(currentTime, 'seconds');
+  
 
-  // If the time left is negative, return 0
-  return timeLeftInSeconds > 0 ? timeLeftInSeconds : 0;
+  
+
 }
 
 
