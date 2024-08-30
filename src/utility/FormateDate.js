@@ -134,6 +134,7 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
 
     if(classItem?.message=="Attendance code not generated yet!")
       {
+        
     return true;
       }
     else if(userId && classItem?.data?.presentStudents){
@@ -148,7 +149,7 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
             return true;
           }
           else{
-            console.log("false")
+           
             return false;
           }
       }

@@ -40,7 +40,7 @@ const ClassDetailBox = ({
     {
     if(item?.showButtonDisabled)
       {
-         console.log("showButtonDisabled",item?.showButtonDisabled)
+        
         setIsButtonDisabled(item?.showButtonDisabled);
       }
       else{
