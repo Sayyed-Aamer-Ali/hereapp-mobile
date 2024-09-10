@@ -151,7 +151,7 @@ useEffect(() => {
 
     }
     catch(e){
-      console.log(e)
+     
     }
     finally{
       setLoader(false)

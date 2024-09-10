@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Button, ExcuseInformationSection, FileUploadComponent, Header, MainLayout, ReasonTextInput } from '../../../components';
+import { Button, ExcuseInformationSection, FileUploadComponent, Header, MainLayout, ReasonTextInput, ScreenWrapper } from '../../../components';
 import styles from './styles';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
@@ -22,6 +22,7 @@ const ExcuseAttendanceDetailScreen = ({ navigation,route }) => {
   const handleBackPress = () => {
     navigation.goBack();
   };
+ 
 
   const handleSubmit = async() => {
 
@@ -74,6 +75,7 @@ const ExcuseAttendanceDetailScreen = ({ navigation,route }) => {
   return (
     <MainLayout loader={loader}>
       <Header title="Excused Absence" onBackPress={handleBackPress} />
+      <ScreenWrapper>
       <ExcuseInformationSection
         className={data?.classDetail?.name}
         classSection={data?.classDetail?.semester}
@@ -103,6 +105,7 @@ const ExcuseAttendanceDetailScreen = ({ navigation,route }) => {
         onPress={handleSubmit}
         style={styles.buttonContainer}
         />
+        </ScreenWrapper>
     </MainLayout>
   );
 };

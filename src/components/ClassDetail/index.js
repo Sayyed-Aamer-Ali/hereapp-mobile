@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { Colors, Fonts, Icons } from '../../assets'; 
 import { UtilityMethods, FontSize } from '../../utility';
+import moment from 'moment';
 
 const ClassDetails = ({ section, instructor, date, timeSlot }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,7 @@ const ClassDetails = ({ section, instructor, date, timeSlot }) => {
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.label}>Class Date</Text>
-            <Text style={styles.value}>{date}</Text>
+            <Text style={styles.value}>{moment().format('DD/MM/YYYY')}</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.label}>Time Slot</Text>

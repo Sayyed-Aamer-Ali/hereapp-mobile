@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
 import styles from './styles';
 import { genders, instructorClasses } from '../../../Data/DummyData';
-import { resetAuth } from '../../../redux/Reducers/AuthReducer';
+import { resetAuth, setUser } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
@@ -24,6 +24,10 @@ const Home = ({ navigation }) => {
   const token = useSelector(state => state.auth.token);
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [emptyData, setEmptyData] = useState({
+    title: user?.isApproved === 'PENDING' ? "Pending Approval" : "No Classes Found!",
+    description: user?.isApproved === 'PENDING' ? "An email was sent to your institution admin to approve your account." : "Sorry we cannot find any registered classes for you."
+  })
 
   const handleLogout = () => {
     setModalVisible(false);
@@ -49,9 +53,15 @@ const Home = ({ navigation }) => {
 
 
   useEffect(() => {
-   
+    getUserDetail()
     getInstructorClasses()
   }, []);
+
+  const getUserDetail = async () =>{
+    let userData = await axiosWrapper("GET",API_URLS.GET_USER(user?._id),null, token);
+    dispatch(setUser(userData?.data))
+  }
+
 
 
   useEffect(() => {
@@ -136,6 +146,7 @@ const Home = ({ navigation }) => {
   
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    getUserDetail()
     getInstructorClasses();
   }, []);
 
@@ -159,9 +170,8 @@ const Home = ({ navigation }) => {
           }
           ListEmptyComponent={() => (
             <EmptyComponent 
-            title={'No Classes Found!'}
-            desc={'Sorry we cannot find any registered classes for you.'}
-          
+            title={emptyData?.title}
+            desc={emptyData?.description}
             />
           )}
           ListHeaderComponent={

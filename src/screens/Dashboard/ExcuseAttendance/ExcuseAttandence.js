@@ -76,7 +76,6 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
     let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
-
       setAllMissedClasses(response.data);
 
       let filteroutNames = response.data.map((item) => {
@@ -91,8 +90,6 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
      
       let data = filterAndSortClassesByDate(response.data);
 
-     
-
       setDateSections([
         { index: 0, title: "Recently Missed Classes", data: [
           data.slice(0, 1)
@@ -101,7 +98,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
       ]);
       
     } catch (error) {
-      console.log(error);
+      
     }
     finally {
       setLoader(false);
@@ -135,7 +132,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
               }}
               placeholder="Select a date"
               
-              minimumDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+              maximumDate={new Date(new Date().setDate(new Date().getDate() - 1))}
             />
           )
         }
@@ -162,7 +159,6 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
 
 
   const renderFlatList = ({ item,index,section }) => {
-
     return (
       <View style={styles.sectionView(section.index)}>
  <CustomFlatList
@@ -178,6 +174,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
           })} }
           buttonDisableRequired={false}
           schedule={item?.classDetail?.schedule[0]}
+          dates={item?.attendanceStartedAt}
           />
         )}
         ListEmptyComponent={() => (

@@ -148,6 +148,9 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
         
             return true;
           }
+          if(classItem?.data?.codeAttemptsBy?.length >= classItem?.data?.codeAttempts){
+            return true
+          }
           else{
            
             return false;
