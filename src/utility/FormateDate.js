@@ -1,4 +1,5 @@
 import moment from "moment";
+import moments from 'moment-timezone';
 
 export default function formatDate(dateString) {
   const date = new Date(dateString);
@@ -71,23 +72,34 @@ export const getCurrentDateInFormat = () => {
 };
 
 
-export const shouldDisableButton = (data) => {
 
-  const currentTime = moment();
+
+export const shouldDisableButton = (data) => {
+  // Set the current time in CST
+  const currentTime = moment().tz('America/Chicago');
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
+   
     return true; 
   }
 
   const [startHours, startMinutes] = data.schedule.startTime.split(':').map(Number);
   const [endHours, endMinutes] = data.schedule.endTime.split(':').map(Number);
 
-  const startTime = moment().set({ hour: startHours, minute: startMinutes, second: 0, millisecond: 0 });
-  const endTime = moment().set({ hour: endHours, minute: endMinutes, second: 0, millisecond: 0 });
+  // Set start and end times also to CST
+  const startTime = moments().tz('America/Chicago').set({ hour: startHours, minute: startMinutes, second: 0, millisecond: 0 });
+  const endTime = moments().tz('America/Chicago').set({ hour: endHours, minute: endMinutes, second: 0, millisecond: 0 });
+
+  // console.log('Current Time:', currentTime.format('HH:mm, a'));
+  // console.log('Start Time:', startTime.format('HH:mm, a'));
+  // console.log('End Time:', endTime.format('HH:mm, a'));
+  // console.log('Current Time is After End Time:', currentTime.isAfter(endTime));
+  // console.log('Current Time is Before Start Time:', currentTime.isBefore(startTime));
 
   return (currentTime.isAfter(endTime) || currentTime.isBefore(startTime));
 };
+
 
 
 export const sortClassesByDayAndTime = (classes) => {
