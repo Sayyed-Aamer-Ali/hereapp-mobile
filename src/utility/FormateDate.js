@@ -76,7 +76,7 @@ export const getCurrentDateInFormat = () => {
 
 export const shouldDisableButton = (data) => {
   // Set the current time in CST
-  const currentTime = moment().tz('America/Chicago');
+  const currentTime = moments().tz('America/Chicago');
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
@@ -91,19 +91,21 @@ export const shouldDisableButton = (data) => {
   const startTime = moments().tz('America/Chicago').set({ hour: startHours, minute: startMinutes, second: 0, millisecond: 0 });
   const endTime = moments().tz('America/Chicago').set({ hour: endHours, minute: endMinutes, second: 0, millisecond: 0 });
 
-  // console.log('Current Time:', currentTime.format('HH:mm, a'));
-  // console.log('Start Time:', startTime.format('HH:mm, a'));
-  // console.log('End Time:', endTime.format('HH:mm, a'));
-  // console.log('Current Time is After End Time:', currentTime.isAfter(endTime));
-  // console.log('Current Time is Before Start Time:', currentTime.isBefore(startTime));
+  console.log('Current Time:', currentTime.format('HH:mm, a'));
+  console.log('Start Time:', startTime.format('HH:mm, a'));
+  console.log('End Time:', endTime.format('HH:mm, a'));
+  console.log('Current Time is After End Time:', currentTime.isAfter(endTime));
+  console.log('Current Time is Before Start Time:', currentTime.isBefore(startTime));
 
   return (currentTime.isAfter(endTime) || currentTime.isBefore(startTime));
 };
 
 
 
+
+
 export const sortClassesByDayAndTime = (classes) => {
-  const now = moment();
+  const now = moments().tz('America/Chicago'); // Use CST time
   const currentDay = now.format('dddd'); 
 
   return classes.sort((a, b) => {
@@ -111,10 +113,10 @@ export const sortClassesByDayAndTime = (classes) => {
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
     const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
 
-    const aStartTime = moment(a.schedule.startTime, "HH:mm");
-    const aEndTime = moment(a.schedule.endTime, "HH:mm");
-    const bStartTime = moment(b.schedule.startTime, "HH:mm");
-    const bEndTime = moment(b.schedule.endTime, "HH:mm");
+    const aStartTime = moments.tz(`${a.schedule.startTime}`, "HH:mm", 'America/Chicago');
+    const aEndTime = moments.tz(`${a.schedule.endTime}`, "HH:mm", 'America/Chicago');
+    const bStartTime = moments.tz(`${b.schedule.startTime}`, "HH:mm", 'America/Chicago');
+    const bEndTime = moments.tz(`${b.schedule.endTime}`, "HH:mm", 'America/Chicago');
 
     const isACurrentlyRunning = a?.schedule?.day === currentDay && now.isBetween(aStartTime, aEndTime);
     const isBCurrentlyRunning = b?.schedule?.day === currentDay && now.isBetween(bStartTime, bEndTime);
@@ -137,6 +139,7 @@ export const sortClassesByDayAndTime = (classes) => {
     return aStartTime.isAfter(bStartTime) ? 1 : -1;
   });
 };
+
 
 
 export const checkAttendanceStatus =  (classItem, userType,userId,) => {
