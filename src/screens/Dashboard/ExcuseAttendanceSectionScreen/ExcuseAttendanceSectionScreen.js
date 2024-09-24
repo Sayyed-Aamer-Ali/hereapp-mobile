@@ -155,11 +155,7 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
                 setDate={setSelectedDate}
                 placeholder="Select a date"
                 /// minimun date should be the next day of the current date//
-                minimumDate={new Date(new Date().setDate(new Date().getDate() + 1))}
-
-
-                
-                
+                maximumDate={new Date(new Date().setDate(new Date().getDate() - 1))}
               />
             )
         }
@@ -183,6 +179,7 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
               })} }
               buttonDisableRequired={false}
               schedule={item?.classDetail?.schedule[0]}
+              dates={item?.attendanceStartedAt}
             />
           )}
         />

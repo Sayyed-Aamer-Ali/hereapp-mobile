@@ -21,7 +21,7 @@ const axiosConfig = {
         'Content-Type': 'application/json'
     },
 };
-const axiosWrapper = async (method, url, data, token, isFormData = false, responseType = 'json', showToast = false) => {
+const axiosWrapper = async (method, url, data, token, isFormData = false, responseType = 'json', showToast = false,isObj=false) => {
    
      try {
         const config = {
@@ -48,10 +48,6 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
         return response.data ? response.data : response;
     } catch (error) {
 
-         console.log("error",error?.response?.data)
-        // let msg = error?.response?.data?.desc ? error?.response?.data?.desc : error?.response?.data?.error ? error?.response?.data?.error : error?.response?.data?.message ? error?.response?.data?.message
-        //     : error?.response?.message ? error?.response?.message : error?.response?.desc ? error?.response?.desc :error?.message?error?.message: false;
-        
         let msg=   error?.response?.data?.validation?.body?.message ||
             error?.response?.data?.desc ||
             error?.response?.data?.message ||
@@ -64,7 +60,7 @@ const axiosWrapper = async (method, url, data, token, isFormData = false, respon
                 store.dispatch(resetAuth())
                 AlertService.toastPrompt("You are not an authorized user", 'error')
             }
-        return Promise.reject(msg);
+        return Promise.reject(isObj ? {msg,data:error?.response.data}  : msg);
     }
 };
 export default axiosWrapper;

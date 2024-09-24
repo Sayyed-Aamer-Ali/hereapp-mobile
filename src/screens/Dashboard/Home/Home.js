@@ -14,7 +14,7 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-let classes = useRef(null);
+  let classes = useRef(null);
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
   let refresh = useSelector(state => state.temp.refreshClassesForStudent);
@@ -27,7 +27,6 @@ let classes = useRef(null);
 
   const handleRefreshClasses = useCallback(() => {
     if (refresh) {
-     
       getInstructorClasses(); // Call the function here
     }
   }, [refresh, getInstructorClasses])
@@ -53,11 +52,7 @@ let classes = useRef(null);
     try {
       // Fetch the list of classes
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
-  
       classes.current = response.data;
-      
-    
-    
       if(!classes.current || classes.current.length === 0) {
       classes.current = [];
         return;
@@ -84,7 +79,6 @@ let classes = useRef(null);
                 false
               );
 
-              
   
               // Add the attendance status to the class object
               return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(

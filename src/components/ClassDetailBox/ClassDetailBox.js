@@ -5,18 +5,19 @@ import { CommonStyles, FontSize, UtilityMethods } from '../../utility'
 import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 import { useSelector } from 'react-redux'
-import { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
+import formatDate, { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
 import { useIsFocused } from '@react-navigation/native'
 
 
 
-const ClassDetailBox = ({ 
-  item, 
-  onPress, 
+const ClassDetailBox = ({
+  item,
+  onPress,
   buttonText = "tendance",
-  buttonDisableRequired=true,
+  buttonDisableRequired = true,
   schedule,
- }) => {
+  dates,
+}) => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(null);
   let isFocused = useIsFocused();
@@ -27,62 +28,59 @@ const ClassDetailBox = ({
 
 
 
- let attendanceData = item?.attendanceStatus?.data
+  let attendanceData = item?.attendanceStatus?.data
 
 
- 
 
-  const { 
+
+  const {
     // formattedDate, 
-    formattedTimeSlot } = formatSchedule(schedule?schedule:item?.schedule);
-  useEffect(()=>{
-    if(buttonDisableRequired )
-    {
-    if(item?.showButtonDisabled)
-      {
-        
+    formattedTimeSlot } = formatSchedule(schedule ? schedule : item?.schedule);
+  useEffect(() => {
+    if (buttonDisableRequired) {
+      if (item?.showButtonDisabled) {
+
         setIsButtonDisabled(item?.showButtonDisabled);
       }
-      else{
+      else {
         // setIsButtonDisabled(false);
         // setIsButtonDisabled(shouldDisableButton(item));
       }
     }
-   
-  },[item])
+
+  }, [item])
 
 
   useEffect(() => {
-    if(attendanceData && isFocused){
-    
+    if (attendanceData && isFocused) {
+
       let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
-       
-   
+
+
       setTimer(timeleft)
-      
+
     }
-  
-  }, [attendanceData,isFocused]);
+
+  }, [attendanceData, isFocused]);
 
 
 
   useEffect(() => {
 
-  
+
     if (timer > 0) {
       const interval = setInterval(() => {
         setTimer(timer - 1);
       }, 1000);
       return () => clearInterval(interval);
     }
-    else if(timer === 0){
-      
-     setIsButtonDisabled(true)
+    else if (timer === 0) {
+
+      setIsButtonDisabled(true)
     }
 
-  
-  }, [timer]);
 
+  }, [timer]);
 
   return (
     <ShadowCard cardStyle={styles.contStyle}
@@ -94,13 +92,13 @@ const ClassDetailBox = ({
         </Text>
       </View>
       <View style={styles.body}>
-        <View style={[CommonStyles.ROW_VIEW,styles.itemsContainer]}>
+        <View style={[CommonStyles.ROW_VIEW, styles.itemsContainer]}>
           <View style={styles.item1}>
             <Text style={styles.titleText}>
-            {user?.role === 'STUDENT' ? `${item?.createdBy?.firstName || ''} ${item?.createdBy?.lastName || ''}` : item?.enrolledStudents?.length} 
+              {user?.role === 'STUDENT' ? `${item?.createdBy?.firstName || ''} ${item?.createdBy?.lastName || ''}` : item?.enrolledStudents?.length}
             </Text>
             <Text style={styles.desText}>
-            {user?.role === 'STUDENT' ? 'Class Instructor' : "Enrolled Students"} 
+              {user?.role === 'STUDENT' ? 'Class Instructor' : "Enrolled Students"}
             </Text>
           </View>
           <View style={styles.item2}>
@@ -120,14 +118,24 @@ const ClassDetailBox = ({
               Time Slot
             </Text>
           </View>
-          <View style={styles.item2}>
-            <Text style={styles.titleText}>
-              {schedule?schedule.day:item?.schedule?.day}
-            </Text>
-            <Text style={styles.desText}>
-              Day
-            </Text>
-          </View>
+          {dates ?
+            <View style={styles.item2}>
+              <Text style={styles.titleText}>
+                {formatDate(dates)}
+              </Text>
+              <Text style={styles.desText}>
+                Date
+              </Text>
+            </View>
+
+            : <View style={styles.item2}>
+              <Text style={styles.titleText}>
+                {schedule ? schedule.day : item?.schedule?.day}
+              </Text>
+              <Text style={styles.desText}>
+                Day
+              </Text>
+            </View>}
 
         </View>
       </View>
@@ -135,7 +143,7 @@ const ClassDetailBox = ({
         Icon={
           <Icons.Right />
         }
-        style={{backgroundColor:isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK, opacity:isButtonDisabled ? 0.8: 1}}
+        style={{ backgroundColor: isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK, opacity: isButtonDisabled ? 0.8 : 1 }}
         onPress={onPress}
         disabled={isButtonDisabled}
       />
@@ -155,16 +163,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: UtilityMethods.wp(4),
 
   },
-  itemsContainer:{
-    justifyContent: "space-between", 
+  itemsContainer: {
+    justifyContent: "space-between",
     flexWrap: 'wrap',
-    rowGap:UtilityMethods.hp(1),
+    rowGap: UtilityMethods.hp(1),
   },
-  item1:{
-    width:'60%',
+  item1: {
+    width: '60%',
   },
-  item2:{
-    width:'40%',
+  item2: {
+    width: '40%',
   },
   header: {
     justifyContent: "center",
@@ -189,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.MEDIUM,
     color: Colors.GRAY,
-    marginBottom:UtilityMethods.hp(0.5),
+    marginBottom: UtilityMethods.hp(0.5),
   },
   desText: {
     fontSize: FontSize.VALUE(14),

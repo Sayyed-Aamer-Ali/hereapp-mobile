@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Header, MainLayout, ModifiedOTPInput, OtpInput, SuccessModal } from '../../../components';
 import { CommonStyles, UtilityMethods } from '../../../utility';
 import styles from './styles';
-import { Icons, Colors } from '../../../assets'; 
+import { Icons, Colors } from '../../../assets';
 import ClassDetails from '../../../components/ClassDetail';
 import { formatSchedule } from '../../../utility/FormateDate';
 import axiosWrapper from '../../../services/AxiosWrapper';
@@ -15,20 +15,21 @@ import io from 'socket.io-client';
 import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 import AlertService from '../../../services/AlertService';
 import moment from 'moment';
+import Routes from '../../../navigation/Routes';
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
 
-  const newSocket = io.connect(SocketUrl,{
+  const newSocket = io.connect(SocketUrl, {
     transports: ['websocket'],
-        'reconnection': true,
-          'reconnectionDelay': 500,
-	  'reconnectionAttempts': Infinity, 
+    'reconnection': true,
+    'reconnectionDelay': 500,
+    'reconnectionAttempts': Infinity,
   });
 
   let attendanceData = item?.attendanceStatus?.data
 
- 
+
 
   const MAX_ATTEMPTS = attendanceData?.codeAttempts;
   const token = useSelector(state => state.auth.token);
@@ -40,8 +41,10 @@ const Attendance = ({ navigation, route }) => {
   const [location, setLocation] = useState(null);
   const [loader, setLoader] = useState(false);
   const [attemptsLeft, setAttemptsLeft] = useState(
-    attendanceData?.codeAttempts
+     attendanceData?.codeAttempts - attendanceData?.codeAttemptsBy.length
   );
+  const [absenceItem, setAbsenceItem] = useState(null)
+
   const [errorMessage, setErrorMessage] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const handleShowModal = () => {
@@ -53,133 +56,115 @@ const Attendance = ({ navigation, route }) => {
     navigation.goBack()
   };
 
-  
+  console.log(attendanceData)
   useEffect(() => {
     UtilityMethods.getUserCurrentLocation((location) => {
-     
+
       setLocation(location);
     });
   }, []);
 
-  const handleSubmit = async() => {
-   
+  const handleSubmit = async () => {
+
     if (!otpInp) {
       setErrorMessage("Please Enter OTP");
       return;
     }
 
 
-  if(!location?.sucess && attendanceData?.classDetail.geoTracking=="enable") {
+    if (!location?.sucess && attendanceData?.classDetail.geoTracking == "enable") {
 
-    if(location?.error=="Permission Denied")
-      {
-    Alert.alert("Location Permission", "Please enable location permission to mark attendance.",[
-      {
-        text: "Go to Settings",
-        onPress: () => {
-         Linking.openSettings();
-        },
+      if (location?.error == "Permission Denied") {
+        Alert.alert("Location Permission", "Please enable location permission to mark attendance.", [
+          {
+            text: "Go to Settings",
+            onPress: () => {
+              Linking.openSettings();
+            },
 
-      },
-      {
-        text: "Cancel",
-        cancelable: true,
-       
+          },
+          {
+            text: "Cancel",
+            cancelable: true,
+          }
+        ]);
+
+        return;
+      }
+      else {
+        Alert.alert("Location Not Found", "Please enable location to mark attendance.");
+        return;
+      }
     }
 
-    ]);
+    let data = {
+      scheduleID: item?.schedule?._id,
+      attendanceCode: otpInp,
+      location: {
+        lat: location?.position?.coords?.latitude,
+        lng: location?.position?.coords?.longitude
+      }
+    }
 
-    return;
-  }
-  else{
-    Alert.alert("Location Not Found", "Please enable location to mark attendance.");
-    return;
-  }
-  }
 
-    let data={
-      scheduleID:item?.schedule?._id,
-      attendanceCode:otpInp,
-      location:{
-        
-        
+
+    setLoader(true);
+
+    try {
+      let response = await axiosWrapper('POST', API_URLS.MARKK_ATTENDANCE, data, token, false, 'json', false, attemptsLeft===1);
+
+
+      let emitDatra = {
+        attendanceMarkedAt: moment.utc().toISOString(),
+        location: {
           lat: location?.position?.coords?.latitude,
           lng: location?.position?.coords?.longitude
-          
-          
-          
-          
-          
-          
-          
-          
+        },
+        studentDetails: response?.data
+
       }
+
+      newSocket.emit('markAttendance', emitDatra);
+      // dispatch(setRefreshClassesForStudent(true));
+
+      setErrorMessage('');
+      handleShowModal()
     }
-    
-  
+    catch (e) {
+      
+      let splitError = attemptsLeft === 1 ? e?.msg?.split(" ") :  e?.split(" ");
 
-     setLoader(true);
-
-       try{
-        let response = await axiosWrapper('POST', API_URLS.MARKK_ATTENDANCE, data, token, false, 'json', false);
-
-
-        let emitDatra={
-          attendanceMarkedAt: moment.utc().toISOString(),
-          location:{
-            lat: location?.position?.coords?.latitude,
-            lng: location?.position?.coords?.longitude
-          },
-          studentDetails:response?.data
-          
-        }
-        
-        newSocket.emit('markAttendance', emitDatra);
-        dispatch(setRefreshClassesForStudent(true));
-        
-        setErrorMessage('');
-        handleShowModal()
-      }
-      catch(e){
-        console.log("error",e)
-        let splitError = e?.split(" ");
-        let attemptsLeft = parseInt(splitError[4]); // Convert the value to an integer
-        
-        // Ensure attemptsLeft is a valid number before proceeding
-        if (!isNaN(attemptsLeft)) {
-            attemptsLeft -= 1; // Subtract 1 from the attemptsLeft
-        
-            setAttemptsLeft(attemptsLeft); // Set the updated attemptsLeft value
-            if (attemptsLeft >= 0) {
-                setErrorMessage(`Wrong Code, You have ${attemptsLeft} Attempts Left.`);
-            } else {
-                setErrorMessage("No Attempts Left, You’ve been marked absent!");
-            }
+      let attemptsLeft1 = parseInt(splitError[4]); 
+      
+      if (!isNaN(attemptsLeft1)) {
+        attemptsLeft1 -= 1; 
+        setAttemptsLeft(attemptsLeft1)
+        setAbsenceItem(e?.data?.data)
+        if (attemptsLeft1 >= 0) {
+          setErrorMessage(`Wrong Code, You have ${attemptsLeft1} Attempts Left.`);
         } else {
-            console.error("Failed to parse attemptsLeft as a number.");
-            setErrorMessage("An error occurred, please try again.");
+          setErrorMessage("No Attempts Left, You’ve been marked absent!");
         }
-        
-      }
-      finally{
-    
-        setLoader(false);
+      } else {
+        console.error("Failed to parse attemptsLeft as a number.");
+        setErrorMessage("An error occurred, please try again.");
       }
 
-
-
-   
-
-   
-
-
-    
+    }
+    finally {
+      dispatch(setRefreshClassesForStudent(true));
+      setLoader(false);
+    }
   };
 
+
   const handleRequestExcusedAbsence = () => {
-  
-    Alert.alert("Request Submitted", "Your request for an excused absence has been submitted.");
-    
+
+    // Alert.alert("Request Submitted", "Your request for an excused absence has been submitted.");
+
+    navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN, {
+      data: absenceItem,
+    })
   };
   const { formattedTimeSlot } = formatSchedule(item?.schedule)
   return (
@@ -199,8 +184,7 @@ const Attendance = ({ navigation, route }) => {
             (value) => {
               setOtpInp(value);
               setErrorMessage('');
-
-          }}
+            }}
           style={styles.otpContainer}
           keyboardType="email-address"
         />
@@ -212,11 +196,11 @@ const Attendance = ({ navigation, route }) => {
         />
 
 
-       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : 
-        <Text style={[styles.error, { color:  Colors.BLACK }]}>
-          { `You have total ${attemptsLeft} Attempts`}
-        </Text>
-      }
+        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> :
+          <Text style={[styles.error, { color: Colors.BLACK }]}>
+            {`You have total ${attemptsLeft} Attempts`}
+          </Text>
+        }
 
         <ClassDetails
           section={item.semester}
@@ -242,7 +226,7 @@ const Attendance = ({ navigation, route }) => {
           <View style={styles.noteBody}>
             <Text style={styles.bulletPoint}>•</Text>
             <Text style={styles.noteText}>
-             {`Your location ${item?.geoTracking=="enable"?"will be":"will not be"} recorded at the time of marking the attendance.`}
+              {`Your location ${item?.geoTracking == "enable" ? "will be" : "will not be"} recorded at the time of marking the attendance.`}
             </Text>
           </View>
         </View>
