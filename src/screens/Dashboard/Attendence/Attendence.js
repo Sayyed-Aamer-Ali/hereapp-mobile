@@ -56,7 +56,7 @@ const Attendance = ({ navigation, route }) => {
     navigation.goBack()
   };
 
-  console.log(attendanceData)
+
   useEffect(() => {
     UtilityMethods.getUserCurrentLocation((location) => {
 
