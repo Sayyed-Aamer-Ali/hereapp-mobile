@@ -184,21 +184,21 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
 
 
 export const filterAndSortClassesByDate=(classData)=> {
-  const today = moment().startOf('day');
+  const today =  moments().tz('America/Chicago').startOf('day');
 
   return classData.filter(item => {
-      const expiresAt = moment(item.attendanceExpiresAt);
+      const expiresAt = moments.tz(item.attendanceExpiresAt,'America/Chicago');
       return expiresAt.isSame(today, 'day');
   }).sort((a, b) => {
-      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
   });
 }
 
 export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
-  const target = moment(targetDate).startOf('day');
+  const target =moments.tz(targetDate,'America/Chicago').startOf('day');
 
   const filtered = classData.filter(item => {
-      const expiresAt = moment(item.attendanceExpiresAt);
+      const expiresAt = moments.tz(item.attendanceExpiresAt,'America/Chicago');
       return expiresAt.isSame(target, 'day');
   });
 
@@ -207,6 +207,6 @@ export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
   }
 
   return filtered.sort((a, b) => {
-      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
   });
 }
