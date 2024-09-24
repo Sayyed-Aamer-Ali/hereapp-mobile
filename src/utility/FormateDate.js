@@ -139,9 +139,11 @@ export const sortClassesByDayAndTime = (classes) => {
 
 
 export const checkAttendanceStatus =  (classItem, userType,userId,) => {
-  
-  
+
+
   if(userType === 'STUDENT'  ){
+
+
 
     if(classItem?.message=="Attendance code not generated yet!")
       {
@@ -155,15 +157,17 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
        
           if(chekUser)
           {
-
+           
+           
         
             return true;
           }
           if(classItem?.data?.codeAttemptsBy?.length >= classItem?.data?.codeAttempts){
+           
             return true
           }
           else{
-           
+             
             return false;
           }
       }

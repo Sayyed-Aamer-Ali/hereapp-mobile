@@ -56,7 +56,7 @@ const ClassDetailBox = ({
 
       let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
 
-
+     
       setTimer(timeleft)
 
     }

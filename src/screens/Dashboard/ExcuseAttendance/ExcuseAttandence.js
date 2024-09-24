@@ -76,6 +76,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
     let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
+  
       setAllMissedClasses(response.data);
 
       let filteroutNames = response.data.map((item) => {

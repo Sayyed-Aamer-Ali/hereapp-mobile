@@ -14,7 +14,7 @@ import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 import io from 'socket.io-client';
 import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 import AlertService from '../../../services/AlertService';
-import moment from 'moment';
+import moment from "moment-timezone"
 import Routes from '../../../navigation/Routes';
 
 const Attendance = ({ navigation, route }) => {
@@ -115,7 +115,7 @@ const Attendance = ({ navigation, route }) => {
 
 
       let emitDatra = {
-        attendanceMarkedAt: moment.utc().toISOString(),
+        attendanceMarkedAt: moment().tz('America/Chicago'),
         location: {
           lat: location?.position?.coords?.latitude,
           lng: location?.position?.coords?.longitude
