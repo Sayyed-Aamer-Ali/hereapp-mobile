@@ -380,11 +380,11 @@ class UtilityMethodsClass {
 
 calculateTimeLeftInSeconds(start, end) {
 
-
+  const timeZone = 'America/Chicago'; 
   // Parse the start and end times using moment
   const startTime = moment.utc(start).format("hh:mm:ss:a");
   const endTime = moment.utc(end).format("hh:mm:ss:a");
-  const currentTime = moment().format("hh:mm:ss:a");
+  const currentTime = momettimezone.tz(timeZone).format("hh:mm:ss:a");
  
 
  

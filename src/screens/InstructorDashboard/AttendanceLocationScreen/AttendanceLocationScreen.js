@@ -39,7 +39,7 @@ const AttendanceLocationScreen = ({ navigation, route }) => {
                     {name}
                 </Text>
                 <Text style={styles.footerLocation}>
-                    {schoolNmae}
+                    {location?.address}
                 </Text>
             <Button
                 text={"Go Back"}

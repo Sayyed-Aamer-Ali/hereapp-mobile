@@ -153,12 +153,12 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
     else if(userId && classItem?.data?.presentStudents){
       {
            
-          let chekUser=classItem?.data?.presentStudents.find((item)=>item.studentDetails==userId)
+          let chekUser=classItem?.data?.presentStudents.find((item)=>item?.studentDetails?._id==userId)
        
           if(chekUser)
           {
            
-           
+         
         
             return true;
           }

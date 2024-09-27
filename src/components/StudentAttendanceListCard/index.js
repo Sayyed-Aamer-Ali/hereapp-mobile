@@ -10,6 +10,15 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
   const getNetID = (email) => {
     return email.split('@')[0];
   }
+
+  getCityAndAddress = (location) => {
+   let SplitLocation =  location.split(",");
+
+    return SplitLocation[0] + "," + SplitLocation[1];
+
+
+
+  }
   return (
     <View style={styles.card}>
       <View style={styles.row}>
@@ -34,7 +43,9 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Location</Text>
         <TouchableOpacity onPress={locationPress}>
-          <Text style={[styles.value, styles.link]}>View on Map</Text>
+          <Text style={[styles.value, styles.link]}>
+            {getCityAndAddress(student.location?.address)}
+          </Text>
         </TouchableOpacity>
       </View>
       }

@@ -9,6 +9,7 @@ import ClassDetails from '../../../components/ClassDetail';
 import { formatSchedule } from '../../../utility/FormateDate';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import Geocoder from 'react-native-geocoding';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
 import io from 'socket.io-client';
@@ -58,9 +59,14 @@ const Attendance = ({ navigation, route }) => {
 
 
   useEffect(() => {
+    Geocoder.init("AIzaSyB6XRs-qCpdktWttSDGLKMaiTiYdsUowdM");
     UtilityMethods.getUserCurrentLocation((location) => {
+     
+      setLocation(location)
+      
+      getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess)
 
-      setLocation(location);
+      
     });
   }, []);
 
@@ -101,10 +107,18 @@ const Attendance = ({ navigation, route }) => {
       scheduleID: item?.schedule?._id,
       attendanceCode: otpInp,
       location: {
-        lat: location?.position?.coords?.latitude,
-        lng: location?.position?.coords?.longitude
-      }
+        lat: location?.latitude,
+        lng: location?.longitude,
+        address:`${location?.address}${location?.city},${location?.country}`,
+
+
+
+      },
+      
+      
     }
+
+    console.log("data", data);
 
 
 
@@ -117,8 +131,12 @@ const Attendance = ({ navigation, route }) => {
       let emitDatra = {
         attendanceMarkedAt: moment().tz('America/Chicago'),
         location: {
-          lat: location?.position?.coords?.latitude,
-          lng: location?.position?.coords?.longitude
+          lat: location?.latitude,
+          lng: location?.longitude,
+          address:`${location?.address}${location?.city},${location?.country}`,
+  
+  
+  
         },
         studentDetails: response?.data
 
@@ -131,7 +149,7 @@ const Attendance = ({ navigation, route }) => {
       handleShowModal()
     }
     catch (e) {
-      
+      console.error("Error marking attendance", e);
       let splitError = attemptsLeft === 1 ? e?.msg?.split(" ") :  e?.split(" ");
 
       let attemptsLeft1 = parseInt(splitError[4]); 
@@ -156,6 +174,74 @@ const Attendance = ({ navigation, route }) => {
       setLoader(false);
     }
   };
+
+  const getFormtAddress = async (latitude, longitude,sucess) => {
+
+    Geocoder.from(latitude, longitude)
+    .then((json) => {
+      var addressComponent = json.results[0];
+      var address = '';
+      var city = '';
+      var country = '';
+      addressComponent.formatted_address.split(',').map((item, index) => {
+        // last index for country
+        if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 1
+        ) {
+          country = item;
+        }
+        // second last index for province
+        else if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 2
+        ) {
+          province = item;
+        }
+        // third last index for city
+        else if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 3
+        ) {
+          city = item;
+        } else {
+          address = address + item + ',';
+        }
+      });
+
+      const addressFromMap = {
+        address: address,
+        city: city,
+        country: country,
+        province: province,
+        latitude: latitude,
+        longitude: longitude,
+        sucess:sucess
+      };
+      // console.log('addressFromM', addressFromMap);
+      
+      setLocation(addressFromMap);
+    })
+    .catch((error) => {
+      console.log('error', error);
+        AlertService.show("Error", "Failed to get location", "OK", () => { });
+        setLocation({
+          address: "Location Not Found",
+          city: "",
+          country: "",
+          province: "",
+          latitude: latitude,
+          longitude: longitude,
+          sucess:sucess
+        })
+    });
+
+
+  }
+     
+
+
+
 
 
   const handleRequestExcusedAbsence = () => {

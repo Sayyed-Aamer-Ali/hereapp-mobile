@@ -63,6 +63,7 @@ const Home = ({ navigation }) => {
       const classesWithAttendanceStatus = await Promise.all(
        classes.current.map(async (classItem) => {
           if (!shouldDisableButton(classItem)) {
+             
             try {
               let data = {
                 classID: classItem?._id,
@@ -79,14 +80,15 @@ const Home = ({ navigation }) => {
                 false
               );
 
-  
+              
               // Add the attendance status to the class object
               return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
                 attendanceResponse,
                 user?.role,
                 user?._id,
                 
-
+                
+           
 
               )  };
             } catch (error) {
