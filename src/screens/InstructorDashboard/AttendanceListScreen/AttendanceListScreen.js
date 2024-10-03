@@ -35,6 +35,7 @@ const AttendanceListScreen = ({ navigation, route }) => {
       
         try {
           const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+      
           setAttendanceList(prevList => [...prevList, parsedData]);
         } catch (error) {
           console.error("Error parsing data:", error);

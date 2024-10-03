@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import DeviceInfo from 'react-native-device-info';
 import { Text, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
@@ -25,6 +26,10 @@ const Home = ({ navigation }) => {
   
 
 
+
+  
+
+
   const handleRefreshClasses = useCallback(() => {
     if (refresh) {
       getInstructorClasses(); // Call the function here
@@ -35,9 +40,12 @@ const Home = ({ navigation }) => {
 
 
   useEffect(() => {
-   
+
     getInstructorClasses()
   }, []);
+
+
+  
 
 
   useEffect(() => {
@@ -53,6 +61,10 @@ const Home = ({ navigation }) => {
       // Fetch the list of classes
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
       classes.current = response.data;
+
+      
+  
+     
       if(!classes.current || classes.current.length === 0) {
       classes.current = [];
         return;

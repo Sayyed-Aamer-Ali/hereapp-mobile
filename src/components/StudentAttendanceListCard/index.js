@@ -7,6 +7,7 @@ import moment from "moment-timezone"
 
 const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
 
+
   const getNetID = (email) => {
     return email.split('@')[0];
   }
@@ -49,6 +50,15 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
         </TouchableOpacity>
       </View>
       }
+      {student?.studentDetails?.device &&
+      <View style={styles.row}>
+        <Text style={styles.label}>Device Name</Text>
+        <Text style={styles.value}>
+          {student?.studentDetails?.device}
+        </Text>
+      </View>
+      }
+
     </View>
   );
 };

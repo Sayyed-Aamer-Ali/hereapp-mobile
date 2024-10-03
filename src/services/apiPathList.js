@@ -10,7 +10,7 @@ const VERIFY_OTP = BaseUrl + 'api/user/verify-otp';
 const VERIFY_EMAIL = BaseUrl + 'api/user/verify-email';
 const VERIFY_AND_UPDATE_PASSWORD = BaseUrl + 'api/user/verify/password';
 const GET_USER = (userID) =>BaseUrl + `api/user/${userID}`;
-const GET_CLASSES =  BaseUrl + `api/class-management/classes`;
+const GET_CLASSES =  BaseUrl + `api/class-management/enrolled-classes`;
 
 const EDIT_PROFILE = BaseUrl + 'api/user/profile'
 const CHANGE_PASSWORD = BaseUrl + 'api/user/verify-and-update-password'

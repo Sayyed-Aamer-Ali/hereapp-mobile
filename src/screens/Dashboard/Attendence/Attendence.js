@@ -17,6 +17,7 @@ import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 import AlertService from '../../../services/AlertService';
 import moment from "moment-timezone"
 import Routes from '../../../navigation/Routes';
+import DeviceInfo from 'react-native-device-info';
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
@@ -40,6 +41,7 @@ const Attendance = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [otpInp, setOtpInp] = useState("");
   const [location, setLocation] = useState(null);
+  const [deviceName, setDeviceName] = useState(null);
   const [loader, setLoader] = useState(false);
   const [attemptsLeft, setAttemptsLeft] = useState(
      attendanceData?.codeAttempts - attendanceData?.codeAttemptsBy.length
@@ -68,8 +70,17 @@ const Attendance = ({ navigation, route }) => {
 
       
     });
+    fetchDeviceName();
+   
   }, []);
 
+
+  const fetchDeviceName = async () => {
+    const deviceName = await DeviceInfo.getDeviceName();
+
+    setDeviceName(deviceName);
+    
+  }
   const handleSubmit = async () => {
 
     if (!otpInp) {
@@ -110,10 +121,12 @@ const Attendance = ({ navigation, route }) => {
         lat: location?.latitude,
         lng: location?.longitude,
         address:`${location?.address}${location?.city},${location?.country}`,
+        device: deviceName
 
 
 
       },
+   
       
       
     }
@@ -134,10 +147,12 @@ const Attendance = ({ navigation, route }) => {
           lat: location?.latitude,
           lng: location?.longitude,
           address:`${location?.address}${location?.city},${location?.country}`,
+          device: deviceName,
   
   
   
         },
+    
         studentDetails: response?.data
 
       }
@@ -164,8 +179,15 @@ const Attendance = ({ navigation, route }) => {
           setErrorMessage("No Attempts Left, You’ve been marked absent!");
         }
       } else {
-        console.error("Failed to parse attemptsLeft as a number.");
-        setErrorMessage("An error occurred, please try again.");
+         if(e.includes("attendance has been conducted"))
+          {
+            setErrorMessage("Class attendance has been conducted. Please request excused attendance")
+            setAttemptsLeft(0)
+          }
+          else{
+            setErrorMessage("An error occurred, please try again.");
+          }
+      
       }
 
     }
