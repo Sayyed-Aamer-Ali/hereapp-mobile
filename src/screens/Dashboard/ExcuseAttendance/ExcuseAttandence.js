@@ -91,6 +91,8 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
      
       let data = filterAndSortClassesByDate(response.data);
 
+
+
       setDateSections([
         { index: 0, title: "Recently Missed Classes", data: [
           data.slice(0, 1)
@@ -169,11 +171,13 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
         renderItem={({ item }) => (
           <ClassDetailBox
           item={item?.classDetail}
+          data={item}
+
           buttonText="Request Excused Absence"
           onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN,{
             data:item,
           })} }
-          buttonDisableRequired={false}
+          buttonDisableRequired={true}
           schedule={item?.classDetail?.schedule[0]}
           dates={item?.attendanceStartedAt}
           />

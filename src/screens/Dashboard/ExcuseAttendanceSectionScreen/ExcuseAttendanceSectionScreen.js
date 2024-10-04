@@ -177,9 +177,10 @@ const ExcuseAttendanceSectionScreen = ({ navigation, route }) => {
               onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN,{
                 data:item,
               })} }
-              buttonDisableRequired={false}
+              buttonDisableRequired={true}
               schedule={item?.classDetail?.schedule[0]}
               dates={item?.attendanceStartedAt}
+              data={item}
             />
           )}
         />

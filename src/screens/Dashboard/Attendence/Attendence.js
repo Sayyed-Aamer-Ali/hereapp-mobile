@@ -61,15 +61,19 @@ const Attendance = ({ navigation, route }) => {
 
 
   useEffect(() => {
-    Geocoder.init("AIzaSyB6XRs-qCpdktWttSDGLKMaiTiYdsUowdM");
-    UtilityMethods.getUserCurrentLocation((location) => {
-     
-      setLocation(location)
-      
-      getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess)
+    if( attendanceData?.classDetail.geoTracking == "enable")
+      {
 
-      
-    });
+        Geocoder.init("AIzaSyB6XRs-qCpdktWttSDGLKMaiTiYdsUowdM");
+        UtilityMethods.getUserCurrentLocation((location) => {
+          
+          setLocation(location)
+          
+          getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess,location?.error);
+    
+          
+        });
+      }
     fetchDeviceName();
    
   }, []);
@@ -87,7 +91,7 @@ const Attendance = ({ navigation, route }) => {
       setErrorMessage("Please Enter OTP");
       return;
     }
-
+   console.log("location", location);
 
     if (!location?.sucess && attendanceData?.classDetail.geoTracking == "enable") {
 
@@ -99,6 +103,15 @@ const Attendance = ({ navigation, route }) => {
               Linking.openSettings();
             },
 
+          },
+          {
+            text: "Allow Location",
+            onPress: () => {
+              UtilityMethods.getUserCurrentLocation((location) => {
+                setLocation(location)
+                getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess,location?.error);
+              });
+            }
           },
           {
             text: "Cancel",
@@ -131,7 +144,6 @@ const Attendance = ({ navigation, route }) => {
       
     }
 
-    console.log("data", data);
 
 
 
@@ -197,7 +209,7 @@ const Attendance = ({ navigation, route }) => {
     }
   };
 
-  const getFormtAddress = async (latitude, longitude,sucess) => {
+  const getFormtAddress = async (latitude, longitude,sucess,error) => {
 
     Geocoder.from(latitude, longitude)
     .then((json) => {
@@ -238,15 +250,17 @@ const Attendance = ({ navigation, route }) => {
         province: province,
         latitude: latitude,
         longitude: longitude,
-        sucess:sucess
+        sucess:sucess,
+        error:error
+        
       };
       // console.log('addressFromM', addressFromMap);
       
       setLocation(addressFromMap);
     })
-    .catch((error) => {
-      console.log('error', error);
-        AlertService.show("Error", "Failed to get location", "OK", () => { });
+    .catch((e) => {
+      
+        
         setLocation({
           address: "Location Not Found",
           city: "",
@@ -254,7 +268,8 @@ const Attendance = ({ navigation, route }) => {
           province: "",
           latitude: latitude,
           longitude: longitude,
-          sucess:sucess
+          sucess:sucess,
+          error:error
         })
     });
 

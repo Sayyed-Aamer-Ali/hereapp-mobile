@@ -58,6 +58,8 @@ const AttendanceListScreen = ({ navigation, route }) => {
     let baseUrl = `${API_URLS.FETCH_ATTENDANCE}/${data?._id}`;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
+
+   
     setAttendanceList(response.data?.presentStudents);
     setGeoTracking(response.data?.classDetail?.geoTracking);
     } catch (error) {

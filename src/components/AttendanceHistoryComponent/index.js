@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../../assets';
 import { UtilityMethods, FontSize } from '../../utility';
+import { API_URLS } from '../../services/apiPathList';
+import { useSelector } from 'react-redux';
+import { LoaderModal } from '../LoaderModal';
+import axiosWrapper from '../../services/AxiosWrapper';
+import moment from 'moment';
 
 const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
+  
+
+  
+
+
   return (
     <View style={styles.container}>
+   
       <View style={styles.row}>
         <Text style={styles.label}>Attendance Status:</Text>
         <Text style={styles.value}>{status}</Text>
@@ -16,7 +27,9 @@ const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
-        <Text style={styles.value}>{dateTime}</Text>
+        <Text style={styles.value}>{
+          moment(dateTime).format('ddd h:mm A, MMM D, YYYY')
+        }</Text>
       </View>
     </View>
   );
