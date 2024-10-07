@@ -50,6 +50,7 @@ const ClassDetailBox = ({
            
              if(data?.alreadyRequested||data?.usedExcuseAbsenceAllowance>=data?.classDetail?.excusedAbsenceAllowance)
               {
+               
                 setIsButtonDisabled(true)
               }
           }
