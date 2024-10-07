@@ -6,7 +6,7 @@ import { API_URLS } from '../../services/apiPathList';
 import { useSelector } from 'react-redux';
 import { LoaderModal } from '../LoaderModal';
 import axiosWrapper from '../../services/AxiosWrapper';
-import moment from 'moment';
+import moment from  "moment-timezone";
 
 const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
   
@@ -28,7 +28,9 @@ const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
         <Text style={styles.value}>{
-          moment(dateTime).format('ddd h:mm A, MMM D, YYYY')
+
+moment.tz(dateTime, "America/Chicago").format('ddd h:mm A, MMM D, YYYY')
+         
         }</Text>
       </View>
     </View>

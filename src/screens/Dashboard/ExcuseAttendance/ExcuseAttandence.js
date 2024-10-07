@@ -11,7 +11,7 @@ import { Icons } from '../../../assets';
 import { dummyExcuseData, particularDatesdummyExcuseData } from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate } from '../../../utility/FormateDate';
+import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate, sortClassesByDate } from '../../../utility/FormateDate';
 import { setAllMissedClassesName } from '../../../redux/Reducers/TempData';
 
 const ExcuseAttandence = ({ navigation }) => {
@@ -76,8 +76,11 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
     let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
+
+       let sortClasses = sortClassesByDate(response.data);
+
   
-      setAllMissedClasses(response.data);
+      setAllMissedClasses(sortClasses);
 
       let filteroutNames = response.data.map((item) => {
         return item.classDetail.name;

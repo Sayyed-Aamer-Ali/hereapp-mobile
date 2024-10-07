@@ -190,9 +190,15 @@ export const filterAndSortClassesByDate=(classData)=> {
   const today =  moments().tz('America/Chicago').startOf('day');
 
   return classData.filter(item => {
-      const expiresAt = moments.tz(item.attendanceExpiresAt,'America/Chicago');
+      const expiresAt = moment(item.attendanceExpiresAt);
       return expiresAt.isSame(today, 'day');
   }).sort((a, b) => {
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
+  });
+}
+
+export const sortClassesByDate=(classData)=> {
+  return classData.sort((a, b) => {
       return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
   });
 }

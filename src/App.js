@@ -15,6 +15,7 @@ import { StatusBar } from 'react-native';
 import RootStack from './navigation/RootStack';
 import { Colors } from './assets';
 
+
 export const navigationRef = createNavigationContainerRef();
 
 
@@ -36,7 +37,7 @@ const App = () => {
             <GestureHandlerRootView style={{ flex: 1 }}>
               <StatusBar backgroundColor="#fff" barStyle="dark-content" />
               <RootStack />
-           
+
             </GestureHandlerRootView>
           </NavigationContainer>
         </PersistGate>

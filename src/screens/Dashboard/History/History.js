@@ -8,6 +8,8 @@ import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import { useSelector } from 'react-redux';
 
+import moment from "moment-timezone"
+
 const History = () => {
 
 
@@ -31,7 +33,7 @@ const History = () => {
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
 
-    
+       
       
       setAttendanceList(response.data);
    
@@ -45,10 +47,11 @@ const History = () => {
   };
 
   const renderItem = ({ item }) => (
+
     <AttendanceHistoryComponent
       status={item?.status}
       className={item?.attendanceDetail?.classDetail?.name}
-      dateTime={item?.attendanceDetail?.createdAt}
+      dateTime={item?.attendanceDetail?.createdBy?.createdAt}
     />
   );
 
