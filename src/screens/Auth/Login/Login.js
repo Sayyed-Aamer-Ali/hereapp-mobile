@@ -102,7 +102,8 @@ const Login = ({ navigation, route }) => {
       setLoader(true)
       let response = await axiosWrapper('POST', API_URLS.LOGIN_URL, data, null, false, 'json', false);
       if (response) {
-        if(response?.data?.user.role !== userType.toUpperCase()){
+
+        if(response?.data?.user.role !== userType.toUpperCase() && response?.data?.user?.actingRole !== userType.toUpperCase()){
           let vowel = userType === 'Student' ? 'a': 'an'
           AlertService.toastPrompt(`Please select the correct role, you are not ${vowel} ${userType.toLowerCase()}`, 'error')
           return
