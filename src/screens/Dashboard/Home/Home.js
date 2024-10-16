@@ -10,6 +10,7 @@ import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDayAndTime } from '../../../utility/FormateDate';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
+import { UtilityMethods } from '../../../utility';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,13 @@ const Home = ({ navigation }) => {
 
 
   
-
+  useEffect(() => {
+    setTimeout(async () => {
+      UtilityMethods.requestPermission((res) => {
+        console.log('requestPermission res', res);
+      });
+    }, 10);
+  }, []);
 
 
   
