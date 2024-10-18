@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import DeviceInfo from 'react-native-device-info';
 import { Text, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
@@ -9,6 +10,7 @@ import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDayAndTime } from '../../../utility/FormateDate';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
+import { UtilityMethods } from '../../../utility';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -20,6 +22,16 @@ const Home = ({ navigation }) => {
   let refresh = useSelector(state => state.temp.refreshClassesForStudent);
 
 
+
+
+  
+  useEffect(() => {
+    setTimeout(async () => {
+      UtilityMethods.requestPermission((res) => {
+        console.log('requestPermission res', res);
+      });
+    }, 10);
+  }, []);
 
 
   
@@ -35,9 +47,12 @@ const Home = ({ navigation }) => {
 
 
   useEffect(() => {
-   
+
     getInstructorClasses()
   }, []);
+
+
+  
 
 
   useEffect(() => {
@@ -53,6 +68,10 @@ const Home = ({ navigation }) => {
       // Fetch the list of classes
       let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
       classes.current = response.data;
+
+      
+  
+     
       if(!classes.current || classes.current.length === 0) {
       classes.current = [];
         return;
@@ -63,6 +82,7 @@ const Home = ({ navigation }) => {
       const classesWithAttendanceStatus = await Promise.all(
        classes.current.map(async (classItem) => {
           if (!shouldDisableButton(classItem)) {
+             
             try {
               let data = {
                 classID: classItem?._id,
@@ -79,14 +99,15 @@ const Home = ({ navigation }) => {
                 false
               );
 
-  
+              
               // Add the attendance status to the class object
               return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
                 attendanceResponse,
                 user?.role,
                 user?._id,
                 
-
+                
+           
 
               )  };
             } catch (error) {

@@ -17,6 +17,7 @@ const ClassDetailBox = ({
   buttonDisableRequired = true,
   schedule,
   dates,
+  data
 }) => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(null);
@@ -43,6 +44,16 @@ const ClassDetailBox = ({
         setIsButtonDisabled(item?.showButtonDisabled);
       }
       else {
+
+        if(data)
+          {
+           
+             if(data?.alreadyRequested||data?.usedExcuseAbsenceAllowance>=data?.classDetail?.excusedAbsenceAllowance)
+              {
+               
+                setIsButtonDisabled(true)
+              }
+          }
         // setIsButtonDisabled(false);
         // setIsButtonDisabled(shouldDisableButton(item));
       }
@@ -56,7 +67,7 @@ const ClassDetailBox = ({
 
       let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
 
-
+     
       setTimer(timeleft)
 
     }

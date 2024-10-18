@@ -1,4 +1,5 @@
 import moment from "moment";
+import moments from 'moment-timezone';
 
 export default function formatDate(dateString) {
   const date = new Date(dateString);
@@ -71,27 +72,36 @@ export const getCurrentDateInFormat = () => {
 };
 
 
-export const shouldDisableButton = (data) => {
 
-  const currentTime = moment();
+
+export const shouldDisableButton = (data) => {
+  // Set the current time in CST
+  const currentTime = moments().tz('America/Chicago');
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
+   
     return true; 
   }
 
   const [startHours, startMinutes] = data.schedule.startTime.split(':').map(Number);
   const [endHours, endMinutes] = data.schedule.endTime.split(':').map(Number);
 
-  const startTime = moment().set({ hour: startHours, minute: startMinutes, second: 0, millisecond: 0 });
-  const endTime = moment().set({ hour: endHours, minute: endMinutes, second: 0, millisecond: 0 });
+  // Set start and end times also to CST
+  const startTime = moments().tz('America/Chicago').set({ hour: startHours, minute: startMinutes, second: 0, millisecond: 0 });
+  const endTime = moments().tz('America/Chicago').set({ hour: endHours, minute: endMinutes, second: 0, millisecond: 0 });
+
+
 
   return (currentTime.isAfter(endTime) || currentTime.isBefore(startTime));
 };
 
 
+
+
+
 export const sortClassesByDayAndTime = (classes) => {
-  const now = moment();
+  const now = moments().tz('America/Chicago'); // Use CST time
   const currentDay = now.format('dddd'); 
 
   return classes.sort((a, b) => {
@@ -99,10 +109,10 @@ export const sortClassesByDayAndTime = (classes) => {
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
     const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
 
-    const aStartTime = moment(a.schedule.startTime, "HH:mm");
-    const aEndTime = moment(a.schedule.endTime, "HH:mm");
-    const bStartTime = moment(b.schedule.startTime, "HH:mm");
-    const bEndTime = moment(b.schedule.endTime, "HH:mm");
+    const aStartTime = moments.tz(`${a.schedule.startTime}`, "HH:mm", 'America/Chicago');
+    const aEndTime = moments.tz(`${a.schedule.endTime}`, "HH:mm", 'America/Chicago');
+    const bStartTime = moments.tz(`${b.schedule.startTime}`, "HH:mm", 'America/Chicago');
+    const bEndTime = moments.tz(`${b.schedule.endTime}`, "HH:mm", 'America/Chicago');
 
     const isACurrentlyRunning = a?.schedule?.day === currentDay && now.isBetween(aStartTime, aEndTime);
     const isBCurrentlyRunning = b?.schedule?.day === currentDay && now.isBetween(bStartTime, bEndTime);
@@ -127,10 +137,13 @@ export const sortClassesByDayAndTime = (classes) => {
 };
 
 
+
 export const checkAttendanceStatus =  (classItem, userType,userId,) => {
-  
-  
+
+
   if(userType === 'STUDENT'  ){
+
+
 
     if(classItem?.message=="Attendance code not generated yet!")
       {
@@ -140,19 +153,21 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
     else if(userId && classItem?.data?.presentStudents){
       {
            
-          let chekUser=classItem?.data?.presentStudents.find((item)=>item.studentDetails==userId)
+          let chekUser=classItem?.data?.presentStudents.find((item)=>item?.studentDetails?._id==userId)
        
           if(chekUser)
           {
-
+           
+         
         
             return true;
           }
           if(classItem?.data?.codeAttemptsBy?.length >= classItem?.data?.codeAttempts){
+           
             return true
           }
           else{
-           
+             
             return false;
           }
       }
@@ -172,21 +187,27 @@ export const checkAttendanceStatus =  (classItem, userType,userId,) => {
 
 
 export const filterAndSortClassesByDate=(classData)=> {
-  const today = moment().startOf('day');
+  const today =  moments().tz('America/Chicago').startOf('day');
 
   return classData.filter(item => {
       const expiresAt = moment(item.attendanceExpiresAt);
       return expiresAt.isSame(today, 'day');
   }).sort((a, b) => {
-      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
+  });
+}
+
+export const sortClassesByDate=(classData)=> {
+  return classData.sort((a, b) => {
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
   });
 }
 
 export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
-  const target = moment(targetDate).startOf('day');
+  const target =moments.tz(targetDate,'America/Chicago').startOf('day');
 
   const filtered = classData.filter(item => {
-      const expiresAt = moment(item.attendanceExpiresAt);
+      const expiresAt = moments.tz(item.attendanceExpiresAt,'America/Chicago');
       return expiresAt.isSame(target, 'day');
   });
 
@@ -195,6 +216,6 @@ export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
   }
 
   return filtered.sort((a, b) => {
-      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
+      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
   });
 }

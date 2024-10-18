@@ -11,7 +11,7 @@ import { Icons } from '../../../assets';
 import { dummyExcuseData, particularDatesdummyExcuseData } from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate } from '../../../utility/FormateDate';
+import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate, sortClassesByDate } from '../../../utility/FormateDate';
 import { setAllMissedClassesName } from '../../../redux/Reducers/TempData';
 
 const ExcuseAttandence = ({ navigation }) => {
@@ -76,7 +76,11 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
     let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
-      setAllMissedClasses(response.data);
+
+       let sortClasses = sortClassesByDate(response.data);
+
+  
+      setAllMissedClasses(sortClasses);
 
       let filteroutNames = response.data.map((item) => {
         return item.classDetail.name;
@@ -89,6 +93,8 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
       }));
      
       let data = filterAndSortClassesByDate(response.data);
+
+
 
       setDateSections([
         { index: 0, title: "Recently Missed Classes", data: [
@@ -168,11 +174,13 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
         renderItem={({ item }) => (
           <ClassDetailBox
           item={item?.classDetail}
+          data={item}
+
           buttonText="Request Excused Absence"
           onPress={() => { navigation.navigate(Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN,{
             data:item,
           })} }
-          buttonDisableRequired={false}
+          buttonDisableRequired={true}
           schedule={item?.classDetail?.schedule[0]}
           dates={item?.attendanceStartedAt}
           />

@@ -3,12 +3,23 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { UtilityMethods,   FontSize } from '../../utility';
 import { Colors, Fonts } from '../../assets';
-import moment from 'moment';
+import moment from "moment-timezone"
 
 const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
 
+
+
   const getNetID = (email) => {
     return email.split('@')[0];
+  }
+
+  getCityAndAddress = (location) => {
+   let SplitLocation =  location.split(",");
+
+    return SplitLocation[0] + "," + SplitLocation[1];
+
+
+
   }
   return (
     <View style={styles.card}>
@@ -27,17 +38,28 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
         <Text style={styles.value}>
-          {moment.utc(student.attendanceMarkedAt).format('MMM DD, YYYY hh:mm A')}
+          {moment.tz(student.attendanceMarkedAt,"America/Chicago").format('MMM DD, YYYY hh:mm A')}
         </Text>
       </View>
       {showLocation && 
       <View style={styles.row}>
         <Text style={styles.label}>Location</Text>
         <TouchableOpacity onPress={locationPress}>
-          <Text style={[styles.value, styles.link]}>View on Map</Text>
+          <Text style={[styles.value, styles.link]}>
+            {getCityAndAddress(student.location?.address)}
+          </Text>
         </TouchableOpacity>
       </View>
       }
+      { student?.location?.device &&
+      <View style={styles.row}>
+        <Text style={styles.label}>Device Name</Text>
+        <Text style={styles.value}>
+          {student.location.device}
+        </Text>
+      </View>
+      }
+
     </View>
   );
 };

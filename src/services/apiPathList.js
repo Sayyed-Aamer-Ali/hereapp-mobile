@@ -10,7 +10,7 @@ const VERIFY_OTP = BaseUrl + 'api/user/verify-otp';
 const VERIFY_EMAIL = BaseUrl + 'api/user/verify-email';
 const VERIFY_AND_UPDATE_PASSWORD = BaseUrl + 'api/user/verify/password';
 const GET_USER = (userID) =>BaseUrl + `api/user/${userID}`;
-const GET_CLASSES =  BaseUrl + `api/class-management/classes`;
+const GET_CLASSES =  BaseUrl + `api/class-management/enrolled-classes`;
 
 const EDIT_PROFILE = BaseUrl + 'api/user/profile'
 const CHANGE_PASSWORD = BaseUrl + 'api/user/verify-and-update-password'
@@ -23,6 +23,8 @@ const  FETCH_ALL_MISSED_CLASSES = BaseUrl + 'api/attendance-management/fetch-mis
 
 const EXCUSE_ABSENCE = BaseUrl + 'api/attendance-management//request-excused-attendance'
 
+const ATTENDENCE_HISTORY    = BaseUrl + 'api/attendance-management/get-attendance-report-of-student'
+
 
 export const API_URLS = {
     UPLOAD_IMAGE,
@@ -30,5 +32,7 @@ export const API_URLS = {
     GET_CLASSES, //Class management
     EDIT_PROFILE, CHANGE_PASSWORD, // User management,
     INSTRUCTOR_START_CLASS,CLASS_ATTENDANCE_STATUS,MARKK_ATTENDANCE,FETCH_ATTENDANCE /// Attendance management
-    ,FETCH_ALL_MISSED_CLASSES,EXCUSE_ABSENCE // Excuse attendance
+    ,FETCH_ALL_MISSED_CLASSES,EXCUSE_ABSENCE, 
+    ATTENDENCE_HISTORY
+     // Excuse attendance
 }

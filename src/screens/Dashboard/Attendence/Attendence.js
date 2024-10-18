@@ -9,13 +9,15 @@ import ClassDetails from '../../../components/ClassDetail';
 import { formatSchedule } from '../../../utility/FormateDate';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
+import Geocoder from 'react-native-geocoding';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 
 import io from 'socket.io-client';
 import BaseUrl, { SocketUrl } from '../../../services/BaseUrl';
 import AlertService from '../../../services/AlertService';
-import moment from 'moment';
+import moment from "moment-timezone"
 import Routes from '../../../navigation/Routes';
+import DeviceInfo from 'react-native-device-info';
 
 const Attendance = ({ navigation, route }) => {
   const item = route.params?.item;
@@ -39,6 +41,7 @@ const Attendance = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [otpInp, setOtpInp] = useState("");
   const [location, setLocation] = useState(null);
+  const [deviceName, setDeviceName] = useState(null);
   const [loader, setLoader] = useState(false);
   const [attemptsLeft, setAttemptsLeft] = useState(
      attendanceData?.codeAttempts - attendanceData?.codeAttemptsBy.length
@@ -56,21 +59,39 @@ const Attendance = ({ navigation, route }) => {
     navigation.goBack()
   };
 
-  console.log(attendanceData)
-  useEffect(() => {
-    UtilityMethods.getUserCurrentLocation((location) => {
 
-      setLocation(location);
-    });
+  useEffect(() => {
+    if( attendanceData?.classDetail.geoTracking == "enable")
+      {
+
+        Geocoder.init("AIzaSyB6XRs-qCpdktWttSDGLKMaiTiYdsUowdM");
+        UtilityMethods.getUserCurrentLocation((location) => {
+          
+          setLocation(location)
+          
+          getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess,location?.error);
+    
+          
+        });
+      }
+    fetchDeviceName();
+   
   }, []);
 
+
+  const fetchDeviceName = async () => {
+    const deviceName = await DeviceInfo.getDeviceName();
+
+    setDeviceName(deviceName);
+    
+  }
   const handleSubmit = async () => {
 
     if (!otpInp) {
       setErrorMessage("Please Enter OTP");
       return;
     }
-
+   console.log("location", location);
 
     if (!location?.sucess && attendanceData?.classDetail.geoTracking == "enable") {
 
@@ -82,6 +103,15 @@ const Attendance = ({ navigation, route }) => {
               Linking.openSettings();
             },
 
+          },
+          {
+            text: "Allow Location",
+            onPress: () => {
+              UtilityMethods.getUserCurrentLocation((location) => {
+                setLocation(location)
+                getFormtAddress(location?.position?.coords?.latitude, location?.position?.coords?.longitude,location?.sucess,location?.error);
+              });
+            }
           },
           {
             text: "Cancel",
@@ -101,10 +131,19 @@ const Attendance = ({ navigation, route }) => {
       scheduleID: item?.schedule?._id,
       attendanceCode: otpInp,
       location: {
-        lat: location?.position?.coords?.latitude,
-        lng: location?.position?.coords?.longitude
-      }
+        lat: location?.latitude,
+        lng: location?.longitude,
+        address:`${location?.address}${location?.city},${location?.country}`,
+        device: deviceName
+
+
+
+      },
+   
+      
+      
     }
+
 
 
 
@@ -115,11 +154,17 @@ const Attendance = ({ navigation, route }) => {
 
 
       let emitDatra = {
-        attendanceMarkedAt: moment.utc().toISOString(),
+        attendanceMarkedAt: moment().tz('America/Chicago'),
         location: {
-          lat: location?.position?.coords?.latitude,
-          lng: location?.position?.coords?.longitude
+          lat: location?.latitude,
+          lng: location?.longitude,
+          address:`${location?.address}${location?.city},${location?.country}`,
+          device: deviceName,
+  
+  
+  
         },
+    
         studentDetails: response?.data
 
       }
@@ -131,7 +176,7 @@ const Attendance = ({ navigation, route }) => {
       handleShowModal()
     }
     catch (e) {
-      
+      console.error("Error marking attendance", e);
       let splitError = attemptsLeft === 1 ? e?.msg?.split(" ") :  e?.split(" ");
 
       let attemptsLeft1 = parseInt(splitError[4]); 
@@ -146,8 +191,15 @@ const Attendance = ({ navigation, route }) => {
           setErrorMessage("No Attempts Left, You’ve been marked absent!");
         }
       } else {
-        console.error("Failed to parse attemptsLeft as a number.");
-        setErrorMessage("An error occurred, please try again.");
+         if(e.includes("attendance has been conducted"))
+          {
+            setErrorMessage("Class attendance has been conducted. Please request excused attendance")
+            setAttemptsLeft(0)
+          }
+          else{
+            setErrorMessage("An error occurred, please try again.");
+          }
+      
       }
 
     }
@@ -156,6 +208,77 @@ const Attendance = ({ navigation, route }) => {
       setLoader(false);
     }
   };
+
+  const getFormtAddress = async (latitude, longitude,sucess,error) => {
+
+    Geocoder.from(latitude, longitude)
+    .then((json) => {
+      var addressComponent = json.results[0];
+      var address = '';
+      var city = '';
+      var country = '';
+      addressComponent.formatted_address.split(',').map((item, index) => {
+        // last index for country
+        if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 1
+        ) {
+          country = item;
+        }
+        // second last index for province
+        else if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 2
+        ) {
+          province = item;
+        }
+        // third last index for city
+        else if (
+          index ==
+          addressComponent.formatted_address.split(',').length - 3
+        ) {
+          city = item;
+        } else {
+          address = address + item + ',';
+        }
+      });
+
+      const addressFromMap = {
+        address: address,
+        city: city,
+        country: country,
+        province: province,
+        latitude: latitude,
+        longitude: longitude,
+        sucess:sucess,
+        error:error
+        
+      };
+      // console.log('addressFromM', addressFromMap);
+      
+      setLocation(addressFromMap);
+    })
+    .catch((e) => {
+      
+        
+        setLocation({
+          address: "Location Not Found",
+          city: "",
+          country: "",
+          province: "",
+          latitude: latitude,
+          longitude: longitude,
+          sucess:sucess,
+          error:error
+        })
+    });
+
+
+  }
+     
+
+
+
 
 
   const handleRequestExcusedAbsence = () => {

@@ -35,6 +35,7 @@ const AttendanceListScreen = ({ navigation, route }) => {
       
         try {
           const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+      
           setAttendanceList(prevList => [...prevList, parsedData]);
         } catch (error) {
           console.error("Error parsing data:", error);
@@ -57,6 +58,8 @@ const AttendanceListScreen = ({ navigation, route }) => {
     let baseUrl = `${API_URLS.FETCH_ATTENDANCE}/${data?._id}`;
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
+
+   
     setAttendanceList(response.data?.presentStudents);
     setGeoTracking(response.data?.classDetail?.geoTracking);
     } catch (error) {

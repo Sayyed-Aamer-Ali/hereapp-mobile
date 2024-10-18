@@ -1,6 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
-import { Alert, Dimensions, Linking, PixelRatio, Platform, Share } from 'react-native';
-
+import messaging from "@react-native-firebase/messaging";
+import { Alert, Dimensions, Linking, PixelRatio, Platform, Share,PermissionsAndroid } from 'react-native';
+import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { navigationRef } from '../App';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
@@ -380,11 +381,11 @@ class UtilityMethodsClass {
 
 calculateTimeLeftInSeconds(start, end) {
 
-
+  const timeZone = 'America/Chicago'; 
   // Parse the start and end times using moment
   const startTime = moment.utc(start).format("hh:mm:ss:a");
   const endTime = moment.utc(end).format("hh:mm:ss:a");
-  const currentTime = moment().format("hh:mm:ss:a");
+  const currentTime = momettimezone.tz(timeZone).format("hh:mm:ss:a");
  
 
  
@@ -411,12 +412,71 @@ calculateTimeLeftInSeconds(start, end) {
     return 0;
   }
 
-  
+
+
+
 
   
 
 }
-
+ requestPermission = (callback) => {
+    if (Platform.OS == "ios") {
+      messaging()
+        .requestPermission()
+        .then((response) => {
+          if (response) {
+            // console.log('FCM Permission ', response);
+            this.getFCMToken((res) => {
+              callback(res);
+            });
+          } else {
+            callback("");
+          }
+        })
+        .catch((error) => {
+          callback("Error", error);
+        });
+    } else {
+      request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+        if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
+          //console.log('Permission is granted');
+          this.getFCMToken((res) => {
+            callback(res);
+          });
+        } else {
+          //console.log('Permission is not granted');
+          callback("");
+        }
+      });
+    }
+  };
+  getFCMToken = (callback) => {
+    messaging()
+      .hasPermission()
+      .then(async (enabled) => {
+        if (enabled) {
+          if (
+            !messaging().isDeviceRegisteredForRemoteMessages &&
+            Platform.OS == "ios"
+          ) {
+            await messaging().registerDeviceForRemoteMessages();
+          }
+          await messaging()
+            .getToken()
+            .then((response) => {
+              callback(response);
+            })
+            .catch(() => {
+              null;
+            });
+        } else {
+          callback("");
+        }
+      })
+      .catch(() => {
+        callback("");
+      });
+  };
 
 }
 
