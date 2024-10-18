@@ -22,27 +22,24 @@ export const navigationRef = createNavigationContainerRef();
 
 
 const App = () => {
- 
+
 
   return (
     <ToastProvider
-    offsetTop={40}
-    successColor={Colors.parotGreen}
-  >
-    <Provider store={store}>
-    
+      offsetTop={40}
+      successColor={Colors.parotGreen}
+    >
+      <Provider store={store}>
         <PersistGate persistor={persister}>
-          <NavigationContainer  ref={navigationRef}>
+          <NavigationContainer ref={navigationRef}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <StatusBar backgroundColor="#fff" barStyle="dark-content" />
               <RootStack />
-           
             </GestureHandlerRootView>
           </NavigationContainer>
         </PersistGate>
-    
-    </Provider>
-  </ToastProvider>
+      </Provider>
+    </ToastProvider>
   );
 };
 
