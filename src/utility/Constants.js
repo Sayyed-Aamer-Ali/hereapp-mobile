@@ -46,6 +46,12 @@ const Constants = {
       icon:<Icons.PrivacyPolicy/>,
       route:Routes.PRIVACY_POLICY
     },
+    {
+      id:4,
+      name:'Settings',
+      icon:<Icons.settings/>,
+      route:Routes.SETTINGS_SCREEN
+    },
     
   ]
 };

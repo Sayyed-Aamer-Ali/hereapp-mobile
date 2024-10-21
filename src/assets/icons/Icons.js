@@ -42,6 +42,7 @@ import CalendarYellow from './CalendarYellow.svg'
 import Attach from './Attach.svg'
 import Cross from './Cross.svg'
 import PDF from './pdf.svg'
+import settings from './settings.svg'
 
 
 
@@ -91,6 +92,7 @@ export default Icons = {
     Attach,
     Cross,
     PDF,
+    settings,
 }
 
 

@@ -36,6 +36,9 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
   import TermsAndConditions from "./TermsAndConditions/TermsAndConditions"
   import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy"
 
+  // Settings
+  import SettingsScreen from "./SettingsScreen/SettingsScreen"
+
 
 export {
   Splash,
@@ -61,5 +64,6 @@ export {
   ExcuseAttendanceSuccessScreen,
   ExcuseAttendanceDetailScreen,
   PrivacyPolicy,
-  SearchScreen
+  SearchScreen,
+  SettingsScreen,
 };

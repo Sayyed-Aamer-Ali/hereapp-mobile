@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // import {Home,Attendance,EditProfile,ExcuseAttandence} from '../../screens';
 import Routes from '../Routes';
 import {DrawerNavigator} from "./index"
-import { ChangePassword, EditProfile, Attendance, ExcuseAttandence} from '../../screens';
+import { ChangePassword, EditProfile, Attendance, ExcuseAttandence, SettingsScreen} from '../../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +25,7 @@ const StudentStack = () => {
       <Stack.Screen name={Routes.CHANGE_PASSWORD} component={ChangePassword} />
       <Stack.Screen name={Routes.ATTENDANCE} component={Attendance} />
       <Stack.Screen name={Routes.EXCUSE_ATTENDANCE} component={ExcuseAttandence} />
+      <Stack.Screen name={Routes.SETTINGS_SCREEN} component={SettingsScreen} />
       {/* <Stack.Screen name={Routes.HOME} component={Home} /> */}
       
       </Stack.Navigator>

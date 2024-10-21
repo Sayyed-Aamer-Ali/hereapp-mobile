@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native';
 import messaging from "@react-native-firebase/messaging";
-import { Alert, Dimensions, Linking, PixelRatio, Platform, Share,PermissionsAndroid } from 'react-native';
+import { Alert, Dimensions, Linking, PixelRatio, Platform, Share, PermissionsAndroid } from 'react-native';
 import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { navigationRef } from '../App';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -115,7 +115,7 @@ class UtilityMethodsClass {
    * @param {*} email
    * @memberof UtilityMethods
    */
-  
+
 
   /**
    * Helper Function for validating Phone Numbers
@@ -123,7 +123,7 @@ class UtilityMethodsClass {
    * @param {*} phoneNumber
    * @memberof UtilityMethods
    */
- 
+
 
   /**
    * Helper Function for capitalize First Letter of Text
@@ -141,7 +141,7 @@ class UtilityMethodsClass {
    * @param {*} str
    * @memberof UtilityMethods
    */
- ;
+  ;
 
   /**
    * Helper Function for generating a random string
@@ -243,7 +243,7 @@ class UtilityMethodsClass {
 
 
 
- 
+
 
   isIphoneX() {
     const dimen = Dimensions.get('window');
@@ -284,7 +284,7 @@ class UtilityMethodsClass {
   }
 
   selectImage = (selectType, callback, multiple) => {
- 
+
     if (selectType === 'camera') {
       ImagePicker.openCamera({
         cropping: true,
@@ -296,7 +296,7 @@ class UtilityMethodsClass {
         callback(image);
       }).catch((error) => {
 
-        
+
       }
       );
     } else {
@@ -337,18 +337,17 @@ class UtilityMethodsClass {
       (position) => {
         callback({
           position: position,
-          sucess : true
+          sucess: true
         });
       },
       (error) => {
-        if(error.code === 1)
-        {
+        if (error.code === 1) {
           callback({
             error: 'Permission Denied',
             sucess: false,
           })
         }
-        else{
+        else {
           callback({
             error: 'Location not found',
             sucess: false,
@@ -357,18 +356,18 @@ class UtilityMethodsClass {
       },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 20000 }
     );
-  
+
 
   }
 
-   generateAlphanumericOtp = () => {
+  generateAlphanumericOtp = () => {
     return Array.from({ length: 3 }, () => {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       return characters.charAt(Math.floor(Math.random() * characters.length));
     }).join('');
   };
 
-   calculateAttendanceDuration(start, end) {
+  calculateAttendanceDuration(start, end) {
     // Parse the start and end times using moment
     const startTime = moment(start);
     const endTime = moment(end);
@@ -377,106 +376,203 @@ class UtilityMethodsClass {
     const differenceInMinutes = endTime.diff(startTime, 'minutes');
 
     return `${differenceInMinutes}`;
-}
-
-calculateTimeLeftInSeconds(start, end) {
-
-  const timeZone = 'America/Chicago'; 
-  // Parse the start and end times using moment
-  const startTime = moment.utc(start).format("hh:mm:ss:a");
-  const endTime = moment.utc(end).format("hh:mm:ss:a");
-  const currentTime = momettimezone.tz(timeZone).format("hh:mm:ss:a");
- 
-
- 
-  
-
-
-
-
-
-
-
-  // const date = momettimezone.tz(new Date(), userTimezone);
-  
-
-  // Check if the current time is within the start and end time
-
-  if (moment(currentTime, "hh:mm:ss:a").isBetween(moment(startTime, "hh:mm:ss:a"), moment(endTime, "hh:mm:ss:a"))) {
-    // Calculate the difference in seconds
-    const differenceInSeconds = moment(endTime, "hh:mm:ss:a").diff(moment(currentTime, "hh:mm:ss:a"), 'seconds');
-    return differenceInSeconds;
-  }
-  else {
-
-    return 0;
   }
 
+  calculateTimeLeftInSeconds(start, end) {
+
+    const timeZone = 'America/Chicago';
+    // Parse the start and end times using moment
+    const startTime = moment.utc(start).format("hh:mm:ss:a");
+    const endTime = moment.utc(end).format("hh:mm:ss:a");
+    const currentTime = momettimezone.tz(timeZone).format("hh:mm:ss:a");
 
 
 
 
-  
 
-}
- requestPermission = (callback) => {
-    if (Platform.OS == "ios") {
-      messaging()
-        .requestPermission()
-        .then((response) => {
-          if (response) {
-            // console.log('FCM Permission ', response);
+
+
+
+
+
+
+    // const date = momettimezone.tz(new Date(), userTimezone);
+
+
+    // Check if the current time is within the start and end time
+
+    if (moment(currentTime, "hh:mm:ss:a").isBetween(moment(startTime, "hh:mm:ss:a"), moment(endTime, "hh:mm:ss:a"))) {
+      // Calculate the difference in seconds
+      const differenceInSeconds = moment(endTime, "hh:mm:ss:a").diff(moment(currentTime, "hh:mm:ss:a"), 'seconds');
+      return differenceInSeconds;
+    }
+    else {
+
+      return 0;
+    }
+
+
+
+
+
+
+
+  }
+  // requestPermission = (callback) => {
+  //   if (Platform.OS == "ios") {
+  //     messaging()
+  //       .requestPermission()
+  //       .then((response) => {
+  //         if (response) {
+  //           this.getFCMToken((res) => {
+  //             callback(res);
+  //           });
+  //         } else {
+  //           callback("");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         callback("Error", error);
+  //       });
+  //   } else {
+  //     request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+  //       if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
+  //         this.getFCMToken((res) => {
+  //           callback(res);
+  //         });
+  //       } else {
+  //         callback("");
+  //       }
+  //     });
+  //   }
+  // };
+
+  requestPermission = (callback) => {
+    const askForPermission = () => {
+      if (Platform.OS === "ios") {
+        messaging()
+          .requestPermission()
+          .then((response) => {
+            if (response) {
+              this.getFCMToken((res) => {
+                callback(res);
+              });
+            } else {
+              // If permission is denied, show alert and ask to open settings
+              Alert.alert(
+                "Permission Required",
+                "You need to enable notifications in Settings.",
+                [
+                  {
+                    text: "Settings",
+                    onPress: () => {
+                      Linking.openSettings();
+                    }
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => callback("")
+                  }
+                ]
+              );
+            }
+          })
+          .catch((error) => {
+            callback("Error", error);
+          });
+      } else {
+        request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+          if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
+            console.log(result === RESULTS.GRANTED)
             this.getFCMToken((res) => {
+              console.log(res,'dssadfd')
               callback(res);
             });
           } else {
-            callback("");
+            // If permission is denied, re-request permission
+            console.log("helloe")
+            Alert.alert(
+              "Permission Required",
+              "We need your permission to send notifications. Please grant it.",
+              [
+                {
+                  text: "Settings",
+                  onPress: Linking.openSettings,
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => callback("")
+                }
+              ]
+            );
           }
-        })
-        .catch((error) => {
-          callback("Error", error);
         });
-    } else {
-      request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
-        if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
-          //console.log('Permission is granted');
-          this.getFCMToken((res) => {
-            callback(res);
-          });
-        } else {
-          //console.log('Permission is not granted');
-          callback("");
+      }
+    };
+
+    // Initial call to ask for permission
+    askForPermission();
+  };
+
+  // getFCMToken = (callback) => {
+  //   messaging()
+  //     .hasPermission()
+  //     .then(async (enabled) => {
+  //       if (enabled) {
+  //         if (
+  //           !messaging().isDeviceRegisteredForRemoteMessages &&
+  //           Platform.OS == "ios"
+  //         ) {
+  //           await messaging().registerDeviceForRemoteMessages();
+  //         }
+  //         await messaging()
+  //           .getToken()
+  //           .then((response) => {
+  //             callback(response);
+  //           })
+  //           .catch(() => {
+  //             null;
+  //           });
+  //       } else {
+  //         callback("");
+  //       }
+  //     })
+  //     .catch(() => {
+  //       callback("");
+  //     });
+  // };
+
+
+  getFCMToken = async (callback) => {
+    try {
+      // Check if permission is granted
+      const enabled = await messaging().hasPermission();
+
+      if (enabled) {
+        // For iOS, ensure the device is registered for remote messages
+        if (Platform.OS === "ios" && !messaging().isDeviceRegisteredForRemoteMessages) {
+          await messaging().registerDeviceForRemoteMessages();
         }
-      });
+        // Get the FCM token
+        const token = await messaging().getToken();
+        console.log(token)
+        callback(token);
+      } else {
+        callback(""); // Permission not granted
+      }
+    } catch (error) {
+      console.error("Error getting FCM token:", error);
+      callback(""); // Return empty string in case of error
     }
   };
-  getFCMToken = (callback) => {
-    messaging()
-      .hasPermission()
-      .then(async (enabled) => {
-        if (enabled) {
-          if (
-            !messaging().isDeviceRegisteredForRemoteMessages &&
-            Platform.OS == "ios"
-          ) {
-            await messaging().registerDeviceForRemoteMessages();
-          }
-          await messaging()
-            .getToken()
-            .then((response) => {
-              callback(response);
-            })
-            .catch(() => {
-              null;
-            });
-        } else {
-          callback("");
-        }
-      })
-      .catch(() => {
-        callback("");
-      });
-  };
+
+
+  getForegroundMessage = (callback) => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      callback(remoteMessage)
+    });
+    return unsubscribe;
+  }
 
 }
 

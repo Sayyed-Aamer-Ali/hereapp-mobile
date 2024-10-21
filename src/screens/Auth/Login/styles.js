@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
   inPutCont:{
     marginTop:UtilityMethods.hp(6),
     rowGap:UtilityMethods.hp(2)
-  
-
   },
   rowCont:{
     flexDirection:'row',

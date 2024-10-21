@@ -25,6 +25,7 @@ import ExcuseInformationSection from "./ExcuseInformationSection";
 import ReasonTextInput from "./ReasonTextInput";
 import FileUploadComponent from "./FileUploadComponent";
 import FastImageComponent from "./FastImageComponent";
+import NotificationsIcon from "./NotificationsIcon";
 
 
 
@@ -56,4 +57,5 @@ export {
   ReasonTextInput,
   FileUploadComponent,
   FastImageComponent,
+  NotificationsIcon,
 };

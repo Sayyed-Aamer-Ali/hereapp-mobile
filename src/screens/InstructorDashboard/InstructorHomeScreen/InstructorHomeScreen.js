@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
 import styles from './styles';
 import { genders, instructorClasses } from '../../../Data/DummyData';
-import { resetAuth, setUser } from '../../../redux/Reducers/AuthReducer';
+import { resetAuth, setFcmToken, setUser } from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
 import { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDateTime, sortClassesByDayAndTime } from '../../../utility/FormateDate';
 import { setRefreshClasses } from '../../../redux/Reducers/TempData';
+import { UtilityMethods } from '../../../utility';
 
 
 
@@ -19,6 +20,7 @@ const Home = ({ navigation }) => {
  let classes = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const fcmToken = useSelector(state => state.auth.fcmToken);
   let refreshClasses = useSelector(state => state.temp.refreshClasses);
 
   const token = useSelector(state => state.auth.token);
@@ -28,6 +30,39 @@ const Home = ({ navigation }) => {
     title: user?.isApproved === 'PENDING' ? "Pending Approval" : "No Classes Found!",
     description: user?.isApproved === 'PENDING' ? "An email was sent to your institution admin to approve your account." : "Sorry we cannot find any registered classes for you."
   })
+
+
+  useEffect(() => {
+    setTimeout(async () => {
+      UtilityMethods.requestPermission((res) => {
+        console.log(res)
+        if(res)
+        updateDeviceTokenForNotificaiton(res)
+      });
+    }, 10);
+  }, []);
+
+
+  const updateDeviceTokenForNotificaiton = async (res) => {
+    let payload = {
+      fcmToken: res,
+      isInAppNotificationEnabled: true
+    }
+
+    try {
+      if (!fcmToken && fcmToken !== res) {
+        let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', false);
+        dispatch(setFcmToken(res))
+      }
+     
+
+    } catch (error) {
+      console.log(error,'error')
+    }
+  }
+
+
+
 
   const handleLogout = () => {
     setModalVisible(false);

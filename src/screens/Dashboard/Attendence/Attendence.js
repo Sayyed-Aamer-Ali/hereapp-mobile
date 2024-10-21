@@ -91,7 +91,6 @@ const Attendance = ({ navigation, route }) => {
       setErrorMessage("Please Enter OTP");
       return;
     }
-   console.log("location", location);
 
     if (!location?.sucess && attendanceData?.classDetail.geoTracking == "enable") {
 
@@ -133,7 +132,7 @@ const Attendance = ({ navigation, route }) => {
       location: {
         lat: location?.latitude,
         lng: location?.longitude,
-        address:`${location?.address}${location?.city},${location?.country}`,
+        address:attendanceData?.classDetail.geoTracking == "enable" ? `${location?.address}${location?.city},${location?.country}` : '',
         device: deviceName
 
 
@@ -158,11 +157,11 @@ const Attendance = ({ navigation, route }) => {
         location: {
           lat: location?.latitude,
           lng: location?.longitude,
-          address:`${location?.address}${location?.city},${location?.country}`,
+          address:attendanceData?.classDetail.geoTracking == "enable" ? `${location?.address}${location?.city},${location?.country}` : '',
           device: deviceName,
   
   
-  
+
         },
     
         studentDetails: response?.data
@@ -254,7 +253,7 @@ const Attendance = ({ navigation, route }) => {
         error:error
         
       };
-      // console.log('addressFromM', addressFromMap);
+      
       
       setLocation(addressFromMap);
     })
