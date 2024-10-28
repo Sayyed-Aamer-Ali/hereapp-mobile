@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     },
     dot: {
         position: 'absolute',
-        width: UtilityMethods.wp(1.5),
-        height: UtilityMethods.wp(1.5),
+        width: UtilityMethods.wp(2),
+        height: UtilityMethods.wp(2),
         borderRadius: UtilityMethods.wp(1),
         backgroundColor: Colors.RED,
         zIndex: 1,
