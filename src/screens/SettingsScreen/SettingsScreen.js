@@ -37,7 +37,7 @@ const SettingsScreen = ({ navigation }) => {
             dispatch(setUser({...user,isEmailNotificationEnabled:!emailNotification }));
             toggleEmailNotification()
         } catch (error) {
-            console.log(error,'error')
+       
         } finally{
             setLoader(false)
         }
@@ -58,7 +58,7 @@ const SettingsScreen = ({ navigation }) => {
             dispatch(setUser({...user,isInAppNotificationEnabled:!inAppNotification }));
             toggleInAppNotification()
         } catch (error) {
-            console.log(error,'error')
+           
         } finally{
             setLoader(false)
         }
@@ -67,7 +67,6 @@ const SettingsScreen = ({ navigation }) => {
 
     const askForNotificaitonPermission = () =>{
         UtilityMethods.requestPermission((res) => {
-            console.log(res)
             if(res)
                 handlePushNotificaiton(res)
           });

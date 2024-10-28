@@ -43,7 +43,6 @@ const Home = ({ navigation }) => {
       fcmToken: res,
       isInAppNotificationEnabled: true
     }
-    console.log(res, fcmToken)
     try {
       if (!fcmToken && fcmToken !== res) {
         let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', false);
@@ -51,7 +50,7 @@ const Home = ({ navigation }) => {
       }
 
     } catch (error) {
-      console.log(error,'error')
+      
     }
   }
 

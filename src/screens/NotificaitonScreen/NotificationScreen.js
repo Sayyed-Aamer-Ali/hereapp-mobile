@@ -31,7 +31,6 @@ const NotificationsScreen = ({ navigation }) => {
       let notificaitonsList = response?.data;
       setAllNotificaitons(notificaitonsList)
     } catch (error) {
-      console.log(error)
     }
     finally {
       setLoader(false)
@@ -49,7 +48,6 @@ const NotificationsScreen = ({ navigation }) => {
     try {
       setLoader(true)
       let response = await axiosWrapper('POST', API_URLS.READ_NOTIFICATION, data, token)
-      console.log('read', response)
       const updatedNotifications = allNotificaitons.map(notification => {
         if (idsArray.includes(notification._id)) {
             return { ...notification, isRead: true }; // Update isRead to true
@@ -60,7 +58,7 @@ const NotificationsScreen = ({ navigation }) => {
     setAllNotificaitons(updatedNotifications)
     dispatch(setTotalNotification(totalNotification - idsArray?.length))
     } catch (error) {
-      console.log(error)
+      
     }
     finally{
       setLoader(false)

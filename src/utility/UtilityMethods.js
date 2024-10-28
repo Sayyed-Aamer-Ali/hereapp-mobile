@@ -483,14 +483,11 @@ class UtilityMethodsClass {
       } else {
         request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
           if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
-            console.log(result === RESULTS.GRANTED)
             this.getFCMToken((res) => {
-              console.log(res,'dssadfd')
               callback(res);
             });
           } else {
             // If permission is denied, re-request permission
-            console.log("helloe")
             Alert.alert(
               "Permission Required",
               "We need your permission to send notifications. Please grant it.",
@@ -555,7 +552,6 @@ class UtilityMethodsClass {
         }
         // Get the FCM token
         const token = await messaging().getToken();
-        console.log(token)
         callback(token);
       } else {
         callback(""); // Permission not granted

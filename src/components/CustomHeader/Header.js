@@ -44,7 +44,7 @@ const Header = ({
       let notificaitonCount = notificaitonsList?.filter((data) => !data?.isRead)
       dispatch(setTotalNotification(notificaitonCount.length))
     } catch (error) {
-      console.log(error)
+      
     }
   }
 

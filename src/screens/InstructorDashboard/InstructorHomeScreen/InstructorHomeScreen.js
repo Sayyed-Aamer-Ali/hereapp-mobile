@@ -35,7 +35,6 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     setTimeout(async () => {
       UtilityMethods.requestPermission((res) => {
-        console.log(res)
         if(res)
         updateDeviceTokenForNotificaiton(res)
       });
@@ -57,7 +56,7 @@ const Home = ({ navigation }) => {
      
 
     } catch (error) {
-      console.log(error,'error')
+     
     }
   }
 
