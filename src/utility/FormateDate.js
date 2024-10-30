@@ -204,10 +204,10 @@ export const sortClassesByDate=(classData)=> {
 }
 
 export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
-  const target =moments.tz(targetDate,'America/Chicago').startOf('day');
+  const target = moment(targetDate).startOf('day');
 
   const filtered = classData.filter(item => {
-      const expiresAt = moments.tz(item.attendanceExpiresAt,'America/Chicago');
+      const expiresAt = moment(item.attendanceExpiresAt);
       return expiresAt.isSame(target, 'day');
   });
 
@@ -216,6 +216,11 @@ export const  filterAndSortClassesBySpecificDate=(classData, targetDate)=> {
   }
 
   return filtered.sort((a, b) => {
-      return moments.tz(b.attendanceExpiresAt,'America/Chicago').diff(moments.tz(a.attendanceExpiresAt,'America/Chicago'));
+      return moment(b.attendanceExpiresAt).diff(moment(a.attendanceExpiresAt));
   });
+}
+
+export const getFormattedDate=(date)=> {
+  const formattedDate = moment(date).format('YYYY/MM/DD');
+  return formattedDate;
 }

@@ -118,14 +118,14 @@ const Login = ({ navigation, route }) => {
           dispatch(setToken(response?.data.token));
           dispatch(setUser(response?.data.user));
           
-          AlertService.toastPrompt("user logged in successfully", 'success')
+          AlertService.toastPrompt(response?.message, 'success')
         }
         else {
           let response = await getOTP()
           if(response){
             navigation.navigate(Routes.OTP_VERIFICATION, {
               user: data,
-              successMessage: 'user logged in successfully'
+              successMessage: response?.message
             });
           }
         }

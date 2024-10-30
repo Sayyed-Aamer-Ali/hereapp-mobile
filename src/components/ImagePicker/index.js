@@ -28,6 +28,7 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
 
   const openCamera = () => {
     UtilityMethods.selectImage("camera", (response) => {
+     
       onChnage(response.path)
       const imageData = formateData(response)
       setEditImage?.(imageData)
@@ -52,8 +53,8 @@ const ImagePicker = ({ filedInfo, editImage, setEditImage, onChnage }) => {
       type: response.mime,
     } :
       {
-        uri: response.sourceURL,
-        name: response.filename,
+        uri: response.sourceURL?response.sourceURL:response.path,
+        name: response.filename?response.filename:getFileName(response.path),
         type: response.mime,
       }
   }

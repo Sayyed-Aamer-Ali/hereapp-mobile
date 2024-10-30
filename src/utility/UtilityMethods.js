@@ -288,15 +288,16 @@ class UtilityMethodsClass {
     if (selectType === 'camera') {
       ImagePicker.openCamera({
         cropping: true,
-        mediaType: 'photo',
+       
         compressImageQuality: 1,
         compressImageMaxWidth: 1024,
         compressImageMaxHeight: 1024,
       }).then((image) => {
+  
         callback(image);
       }).catch((error) => {
 
-
+        
       }
       );
     } else {

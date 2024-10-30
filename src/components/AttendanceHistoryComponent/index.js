@@ -8,9 +8,9 @@ import { LoaderModal } from '../LoaderModal';
 import axiosWrapper from '../../services/AxiosWrapper';
 import moment from  "moment-timezone";
 
-const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
+const AttendanceHistoryComponent = ({ status, className, dateTime,schedule }) => {
   
-
+ 
   
 
 
@@ -27,11 +27,11 @@ const AttendanceHistoryComponent = ({ status, className, dateTime }) => {
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
-        <Text style={styles.value}>{
+        <Text style={styles.value}>
 
-moment.tz(dateTime, "America/Chicago").format('ddd h:mm A, MMM D, YYYY')
+{moment.tz(dateTime,"America/Chicago").format('YYYY/MMM/DD hh:mm A')}
          
-        }</Text>
+        </Text>
       </View>
     </View>
   );

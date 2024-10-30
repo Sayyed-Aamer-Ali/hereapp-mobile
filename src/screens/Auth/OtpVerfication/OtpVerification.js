@@ -46,6 +46,7 @@ const OtpVerification = ({ navigation, route }) => {
       }
       const data = { email: user.email };
       const response = await axiosWrapper('POST', API_URLS.SEND_OTP, data, null, false, 'json', true);
+      console.log("response", response)
     } catch (error) {
     }
   };

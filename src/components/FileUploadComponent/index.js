@@ -5,6 +5,7 @@ import { FontSize, UtilityMethods } from '../../utility';
 import DocumentPicker from 'react-native-document-picker';
 import axiosWrapper from '../../services/AxiosWrapper';
 import { API_URLS } from '../../services/apiPathList';
+import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const FileUploadComponent = ({ file, setFile,error }) => {
   const handleFilePick = async () => {
@@ -67,7 +68,10 @@ const FileUploadComponent = ({ file, setFile,error }) => {
         editable={false}
       />
 
-      <TouchableOpacity style={styles.iconButton} onPress={handleFilePick}>
+      <TouchableOpacity style={styles.iconButton(file.length>0)} onPress={handleFilePick}
+      disabled={file.length >0 ? true : false}
+      
+      >
         <Icons.Attach />
       </TouchableOpacity>
 
@@ -78,7 +82,9 @@ const FileUploadComponent = ({ file, setFile,error }) => {
               <View style={styles.fileIcon}>
                 <Icons.PDF />
               </View>
-              <TouchableOpacity onPress={() => handleRemoveFile(index)} style={styles.cross}>
+              <TouchableOpacity onPress={() => handleRemoveFile(index)} style={styles.cross}
+               
+              >
                 <Icons.Cross />
               </TouchableOpacity>
             </View>
@@ -107,7 +113,7 @@ const styles = StyleSheet.create({
     color: Colors.BLACK,
     flexDirection: 'row',
   },
-  iconButton: {
+  iconButton: (isFile) => ({
     position: 'absolute',
     right: UtilityMethods.wp(0),
     borderTopRightRadius: UtilityMethods.wp(2),
@@ -117,7 +123,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: UtilityMethods.wp(4),
     justifyContent: 'center',
     alignItems: 'center',
-  },
+    opacity: isFile ? 0.5 : 1,
+  }),
   resetText: {
     color: Colors.PRIMARY,
     fontFamily: Fonts.BOLD,

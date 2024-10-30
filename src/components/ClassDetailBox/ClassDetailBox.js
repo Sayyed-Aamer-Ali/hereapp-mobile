@@ -5,7 +5,7 @@ import { CommonStyles, FontSize, UtilityMethods } from '../../utility'
 import { ShadowCard } from '../ShadowView'
 import Button from '../CustomizedButton'
 import { useSelector } from 'react-redux'
-import formatDate, { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
+import formatDate, { formatSchedule, getFormattedDate, shouldDisableButton } from '../../utility/FormateDate'
 import { useIsFocused } from '@react-navigation/native'
 
 
@@ -132,7 +132,8 @@ const ClassDetailBox = ({
           {dates ?
             <View style={styles.item2}>
               <Text style={styles.titleText}>
-                {formatDate(dates)}
+                {/* {formatDate(dates)} */}
+                {getFormattedDate(dates)}
               </Text>
               <Text style={styles.desText}>
                 Date

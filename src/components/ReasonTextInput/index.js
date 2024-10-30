@@ -14,6 +14,7 @@ const ReasonTextInput = ({ reason, setReason,error="" }) => {
         value={reason}
         onChangeText={setReason}
         multiline
+        maxLength={300}
       />
       {error && <Text style={styles.error}>{error}</Text>}
 

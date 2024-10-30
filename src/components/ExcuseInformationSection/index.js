@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../../assets';
 import { FontSize, UtilityMethods } from '../../utility';
 import moment from 'moment';
-import { formatSchedule } from '../../utility/FormateDate';
+import { formatSchedule, getFormattedDate } from '../../utility/FormateDate';
 
 const ExcuseInformationSection = ({ className, classSection, dateTime,day }) => {
   const { 
@@ -20,7 +20,7 @@ const ExcuseInformationSection = ({ className, classSection, dateTime,day }) => 
 
       <Text style={styles.label}>Date and Time:</Text>
       <Text style={styles.value}>
-        {moment(day).format("d/MM/YYYY")} , {formattedTimeSlot}
+        {getFormattedDate(day)} , {formattedTimeSlot}
          </Text>
     </View>
   );

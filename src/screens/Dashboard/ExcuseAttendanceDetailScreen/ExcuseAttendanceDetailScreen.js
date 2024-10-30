@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 const ExcuseAttendanceDetailScreen = ({ navigation,route }) => {
 
   let data = route?.params?.data;
+
+  
   const token = useSelector(state => state.auth.token);
 
   const [reason, setReason] = useState('');
@@ -80,7 +82,7 @@ const ExcuseAttendanceDetailScreen = ({ navigation,route }) => {
         className={data?.classDetail?.name}
         classSection={data?.classDetail?.semester}
         dateTime={data?.classDetail?.schedule[0]}
-        day={data?.classDetail?.createdAt}
+        day={data?.attendanceStartedAt}
       
       />
       <ReasonTextInput reason={reason} setReason={

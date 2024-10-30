@@ -5,6 +5,7 @@ import { Colors, Fonts, Icons } from '../../assets';
 import { UtilityMethods, FontSize, CommonStyles } from '../../utility';
 import DateAndTime from '../../utility/DateAndTime';
 import moment from 'moment';
+import { getFormattedDate } from '../../utility/FormateDate';
 
 const DatePickerComponent = ({
   label = "Select Date",
@@ -46,7 +47,7 @@ const DatePickerComponent = ({
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.dateContainer}> 
-        <Text style={styles.dateText}>{date ? DateAndTime.formatDateForDatePicker(date) : placeholder}</Text>
+        <Text style={styles.dateText}>{date ? getFormattedDate(date) : placeholder}</Text>
         <TouchableOpacity onPress={date ? resetDate : showDatePicker} style={styles.iconContainer}>
           {date ? (
             <Text style={styles.resetText}>Reset</Text>

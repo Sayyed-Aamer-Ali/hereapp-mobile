@@ -38,7 +38,7 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
         <Text style={styles.value}>
-          {moment.tz(student.attendanceMarkedAt,"America/Chicago").format('MMM DD, YYYY hh:mm A')}
+          {moment.tz(student.attendanceMarkedAt,"America/Chicago").format('YYYY/MMM/DD hh:mm A')}
         </Text>
       </View>
       {showLocation && 

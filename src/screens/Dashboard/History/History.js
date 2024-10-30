@@ -33,7 +33,7 @@ const History = () => {
     try {
       let response = await axiosWrapper('GET', baseUrl, null, token, false, 'json', false);
 
-       
+    
       
       setAttendanceList(response.data);
    
@@ -51,7 +51,8 @@ const History = () => {
     <AttendanceHistoryComponent
       status={item?.status}
       className={item?.attendanceDetail?.classDetail?.name}
-      dateTime={item?.attendanceDetail?.createdBy?.createdAt}
+      dateTime={item?.attendanceDetail?.classDetail?.createdAt}
+      schedule={item?.attendanceDetail?.classDetail.schedule[0]}
     />
   );
 

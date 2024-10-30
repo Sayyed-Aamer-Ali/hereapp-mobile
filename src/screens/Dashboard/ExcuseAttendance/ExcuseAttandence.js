@@ -11,7 +11,7 @@ import { Icons } from '../../../assets';
 import { dummyExcuseData, particularDatesdummyExcuseData } from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import { API_URLS } from '../../../services/apiPathList';
-import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate, sortClassesByDate } from '../../../utility/FormateDate';
+import { filterAndSortClassesByDate, filterAndSortClassesBySpecificDate, getFormattedDate, sortClassesByDate } from '../../../utility/FormateDate';
 import { setAllMissedClassesName } from '../../../redux/Reducers/TempData';
 
 const ExcuseAttandence = ({ navigation }) => {
@@ -148,6 +148,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
 
 
   const filterDateSpecificClasses = (date) => {
+    console.log(getFormattedDate(date));
 
     setSelectedDate(date);
     let data = filterAndSortClassesBySpecificDate(allMissedClasses, date);
@@ -228,6 +229,7 @@ const [allMissedClasses,setAllMissedClasses]=useState([]);
 
       
           <SectionList
+            bounces={false}
             sections={dataSections}
             style={{ flex: 1 }}
             stickySectionHeadersEnabled={false}
