@@ -528,7 +528,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = DMT9KG3LGL;
+				DEVELOPMENT_TEAM = U79FABW39A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = hereAppIo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HereApp;
@@ -561,7 +561,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = DMT9KG3LGL;
+				DEVELOPMENT_TEAM = U79FABW39A;
 				INFOPLIST_FILE = hereAppIo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HereApp;
 				LD_RUNPATH_SEARCH_PATHS = (
