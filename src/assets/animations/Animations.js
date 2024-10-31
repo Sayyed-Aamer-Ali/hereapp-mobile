@@ -1,5 +1,3 @@
-const Animations = {
-  
-};
+const Animations = {};
 
 export default Animations;

@@ -1,23 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Button, MainLayout } from '../../../components';
-import { Colors, Fonts, Images } from '../../../assets';
-import { FontSize, UtilityMethods } from '../../../utility';
-import { Header } from '../../../components';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {Button, MainLayout} from '../../../components';
+import {Colors, Fonts, Images} from '../../../assets';
+import {FontSize, UtilityMethods} from '../../../utility';
+import {Header} from '../../../components';
 import Routes from '../../../navigation/Routes';
-import { DrawerActions } from '@react-navigation/native';
-import { StackActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
+import {StackActions} from '@react-navigation/native';
 
-const ExcuseAttendanceSuccessScreen = ({ navigation }) => {
+const ExcuseAttendanceSuccessScreen = ({navigation}) => {
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleOkayPress = () => {
-    navigation.dispatch(DrawerActions.closeDrawer())
-    navigation.replace(Routes.DASHBOARD_STACK)
+    navigation.dispatch(DrawerActions.closeDrawer());
+    navigation.replace(Routes.DASHBOARD_STACK);
     // navigation.dispatch(StackActions.replace(Routes.HOME))
-    // navigation.replace(Routes.DRAWER_NAVIGATOR); 
+    // navigation.replace(Routes.DRAWER_NAVIGATOR);
   };
 
   return (
@@ -26,12 +26,10 @@ const ExcuseAttendanceSuccessScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Image source={Images.CHECK_MARK} style={styles.icon} />
         <Text style={styles.message}>
-          An Excused Absence Request has been sent to your instructor. You’ll be notified as soon as they respond!
+          An Excused Absence Request has been sent to your instructor. You’ll be
+          notified as soon as they respond!
         </Text>
-        <Button
-          text={"Okay"}
-          onPress={handleOkayPress}
-        />
+        <Button text={'Okay'} onPress={handleOkayPress} />
       </View>
     </MainLayout>
   );

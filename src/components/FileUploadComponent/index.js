@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import { Colors, Fonts, Icons } from '../../assets';
-import { FontSize, UtilityMethods } from '../../utility';
+import React, {useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Image,
+} from 'react-native';
+import {Colors, Fonts, Icons} from '../../assets';
+import {FontSize, UtilityMethods} from '../../utility';
 import DocumentPicker from 'react-native-document-picker';
 import axiosWrapper from '../../services/AxiosWrapper';
-import { API_URLS } from '../../services/apiPathList';
-import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+import {API_URLS} from '../../services/apiPathList';
+import {opacity} from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
-const FileUploadComponent = ({ file, setFile,error }) => {
+const FileUploadComponent = ({file, setFile, error}) => {
   const handleFilePick = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
         copyTo: 'cachesDirectory',
-        
-        
       });
 
-    
       // setFile(pre => [...pre, result?.[0]]);
-      formateData(result[0])
+      formateData(result[0]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User canceled the picker
@@ -29,33 +33,34 @@ const FileUploadComponent = ({ file, setFile,error }) => {
     }
   };
 
-
-  const formateData = (response) => {
-   let data ={
+  const formateData = response => {
+    let data = {
       uri: response.uri,
       name: response.name,
-      type: "application/pdf",
+      type: 'application/pdf',
+    };
 
-   }
+    uploadDoc(data);
+  };
 
-   uploadDoc(data)
-    
-  }
-
-  let uploadDoc = async(file) =>{
+  let uploadDoc = async file => {
     try {
       const formData = new FormData();
       formData.append('files', file);
-      let response = await  axiosWrapper('POST',API_URLS.UPLOAD_IMAGE,formData, null, true) 
+      let response = await axiosWrapper(
+        'POST',
+        API_URLS.UPLOAD_IMAGE,
+        formData,
+        null,
+        true,
+      );
       setFile(pre => [...pre, response?.data[0]?.path]);
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
-  }
+  };
 
-
-
-  const handleRemoveFile = (index) => {
+  const handleRemoveFile = index => {
     setFile(prevFiles => prevFiles.filter((file, i) => i !== index));
   };
 
@@ -68,10 +73,10 @@ const FileUploadComponent = ({ file, setFile,error }) => {
         editable={false}
       />
 
-      <TouchableOpacity style={styles.iconButton(file.length>0)} onPress={handleFilePick}
-      disabled={file.length >0 ? true : false}
-      
-      >
+      <TouchableOpacity
+        style={styles.iconButton(file.length > 0)}
+        onPress={handleFilePick}
+        disabled={file.length > 0 ? true : false}>
         <Icons.Attach />
       </TouchableOpacity>
 
@@ -82,17 +87,15 @@ const FileUploadComponent = ({ file, setFile,error }) => {
               <View style={styles.fileIcon}>
                 <Icons.PDF />
               </View>
-              <TouchableOpacity onPress={() => handleRemoveFile(index)} style={styles.cross}
-               
-              >
+              <TouchableOpacity
+                onPress={() => handleRemoveFile(index)}
+                style={styles.cross}>
                 <Icons.Cross />
               </TouchableOpacity>
             </View>
-          ))
-        }
+          ))}
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
-
     </View>
   );
 };
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     color: Colors.BLACK,
     flexDirection: 'row',
   },
-  iconButton: (isFile) => ({
+  iconButton: isFile => ({
     position: 'absolute',
     right: UtilityMethods.wp(0),
     borderTopRightRadius: UtilityMethods.wp(2),
@@ -129,22 +132,22 @@ const styles = StyleSheet.create({
     color: Colors.PRIMARY,
     fontFamily: Fonts.BOLD,
   },
-  files:{
-    flexDirection:'row',
-    justifyContent:'flex-start',
-    alignItems:'center',
-    flexWrap:'wrap'
+  files: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   fileContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: UtilityMethods.hp(2),
-    backgroundColor:'#F3F3F3',
-    paddingHorizontal:UtilityMethods.wp(1),
-    paddingTop:UtilityMethods.wp(3),
-    paddingVertical:UtilityMethods.wp(2),
-    marginRight:UtilityMethods.wp(2),
-    borderRadius:UtilityMethods.wp(2)
+    backgroundColor: '#F3F3F3',
+    paddingHorizontal: UtilityMethods.wp(1),
+    paddingTop: UtilityMethods.wp(3),
+    paddingVertical: UtilityMethods.wp(2),
+    marginRight: UtilityMethods.wp(2),
+    borderRadius: UtilityMethods.wp(2),
   },
   fileIcon: {
     marginRight: UtilityMethods.wp(1),
@@ -154,17 +157,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.REGULAR,
     fontSize: FontSize.VALUE(14),
   },
-  cross:{
-    top:UtilityMethods.wp(-1.5)
+  cross: {
+    top: UtilityMethods.wp(-1.5),
   },
-  error:{
+  error: {
     marginTop: UtilityMethods.hp(1),
 
     fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
-    fontWeight:Fonts.REGULAR,
-  }
+    fontWeight: Fonts.REGULAR,
+  },
 });
 
 export default FileUploadComponent;

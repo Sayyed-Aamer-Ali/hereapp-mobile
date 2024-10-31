@@ -1,35 +1,33 @@
 // StudentCard.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { UtilityMethods,   FontSize } from '../../utility';
-import { Colors, Fonts } from '../../assets';
-import moment from "moment-timezone"
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {UtilityMethods, FontSize} from '../../utility';
+import {Colors, Fonts} from '../../assets';
+import moment from 'moment-timezone';
 
-const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
-
-
-
-  const getNetID = (email) => {
+const StudentAttendanceListCard = ({student, locationPress, showLocation}) => {
+  const getNetID = email => {
     return email.split('@')[0];
-  }
+  };
 
-  getCityAndAddress = (location) => {
-   let SplitLocation =  location.split(",");
+  getCityAndAddress = location => {
+    let SplitLocation = location.split(',');
 
-    return SplitLocation[0] + "," + SplitLocation[1];
-
-
-
-  }
+    return SplitLocation[0] + ',' + SplitLocation[1];
+  };
   return (
     <View style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.label}>Student Name</Text>
-        <Text style={styles.value}>{student.studentDetails.firstName} {student.studentDetails.lastName}</Text>
+        <Text style={styles.value}>
+          {student.studentDetails.firstName} {student.studentDetails.lastName}
+        </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Net ID</Text>
-        <Text style={styles.value}>{getNetID(student.studentDetails.email)}  </Text>
+        <Text style={styles.value}>
+          {getNetID(student.studentDetails.email)}{' '}
+        </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Status</Text>
@@ -38,28 +36,27 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
         <Text style={styles.value}>
-          {moment.tz(student.attendanceMarkedAt,"America/Chicago").format('YYYY/MM/DD hh:mm A')}
+          {moment
+            .tz(student.attendanceMarkedAt, 'America/Chicago')
+            .format('YYYY/MM/DD hh:mm A')}
         </Text>
       </View>
-      {showLocation && 
-      <View style={styles.row}>
-        <Text style={styles.label}>Location</Text>
-        <TouchableOpacity onPress={locationPress}>
-          <Text style={[styles.value, styles.link]}>
-            {getCityAndAddress(student.location?.address)}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      }
-      { student?.location?.device &&
-      <View style={styles.row}>
-        <Text style={styles.label}>Device Name</Text>
-        <Text style={styles.value}>
-          {student.location.device}
-        </Text>
-      </View>
-      }
-
+      {showLocation && (
+        <View style={styles.row}>
+          <Text style={styles.label}>Location</Text>
+          <TouchableOpacity onPress={locationPress}>
+            <Text style={[styles.value, styles.link]}>
+              {getCityAndAddress(student.location?.address)}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {student?.location?.device && (
+        <View style={styles.row}>
+          <Text style={styles.label}>Device Name</Text>
+          <Text style={styles.value}>{student.location.device}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -67,13 +64,13 @@ const StudentAttendanceListCard = ({ student, locationPress,showLocation }) => {
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: UtilityMethods.wp(4),
-    padding:UtilityMethods.wp(4),
+    padding: UtilityMethods.wp(4),
     paddingVertical: UtilityMethods.wp(3),
     marginVertical: UtilityMethods.hp(1),
     backgroundColor: Colors.WHITE,
     borderRadius: UtilityMethods.wp(2),
     shadowColor: Colors.BLACK,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.2,
     shadowRadius: 1,
     elevation: 3,
@@ -101,5 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StudentAttendanceListCard
-;
+export default StudentAttendanceListCard;

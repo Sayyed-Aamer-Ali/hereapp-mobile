@@ -1,20 +1,32 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import DeviceInfo from 'react-native-device-info';
-import { Text, View, RefreshControl } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, MainLayout, ModifiedOTPInput } from '../../../components';
+import {Text, View, RefreshControl} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  ClassDetailBox,
+  CustomFlatList,
+  EmptyComponent,
+  Header,
+  MainLayout,
+  ModifiedOTPInput,
+} from '../../../components';
 import styles from './styles';
-import { MyClasses } from '../../../Data/DummyData';
+import {MyClasses} from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import { API_URLS } from '../../../services/apiPathList';
-import formatDate, { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDayAndTime } from '../../../utility/FormateDate';
-import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
-import { UtilityMethods } from '../../../utility';
+import {API_URLS} from '../../../services/apiPathList';
+import formatDate, {
+  checkAttendanceStatus,
+  getCurrentDateInFormat,
+  shouldDisableButton,
+  sortClassesByDayAndTime,
+} from '../../../utility/FormateDate';
+import {setRefreshClassesForStudent} from '../../../redux/Reducers/TempData';
+import {UtilityMethods} from '../../../utility';
 import AlertService from '../../../services/AlertService';
-import { setFcmToken } from '../../../redux/Reducers/AuthReducer';
+import {setFcmToken} from '../../../redux/Reducers/AuthReducer';
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -24,61 +36,48 @@ const Home = ({ navigation }) => {
   const fcmToken = useSelector(state => state.auth.fcmToken);
   let refresh = useSelector(state => state.temp.refreshClassesForStudent);
 
-
-
-
-
   useEffect(() => {
     setTimeout(async () => {
-      UtilityMethods.requestPermission((res) => {
-        if(res)
-        updateDeviceTokenForNotificaiton(res)
+      UtilityMethods.requestPermission(res => {
+        if (res) updateDeviceTokenForNotificaiton(res);
       });
     }, 10);
   }, []);
 
-
-  const updateDeviceTokenForNotificaiton = async (res) => {
+  const updateDeviceTokenForNotificaiton = async res => {
     let payload = {
       fcmToken: res,
-      isInAppNotificationEnabled: true
-    }
+      isInAppNotificationEnabled: true,
+    };
     try {
       if (!fcmToken && fcmToken !== res) {
-        let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', false);
-        dispatch(setFcmToken(res))
+        let response = await axiosWrapper(
+          'PATCH',
+          API_URLS.EDIT_PROFILE,
+          payload,
+          token,
+          false,
+          'json',
+          false,
+        );
+        dispatch(setFcmToken(res));
       }
-
-    } catch (error) {
-      
-    }
-  }
-
-
-
+    } catch (error) {}
+  };
 
   const handleRefreshClasses = useCallback(() => {
     if (refresh) {
       getInstructorClasses(); // Call the function here
     }
-  }, [refresh, getInstructorClasses])
-
-
-
+  }, [refresh, getInstructorClasses]);
 
   useEffect(() => {
-
-    getInstructorClasses()
+    getInstructorClasses();
   }, []);
-
-
-
-
 
   useEffect(() => {
     handleRefreshClasses();
   }, [handleRefreshClasses]);
-
 
   const getInstructorClasses = async (isRefresh = true) => {
     if (isRefresh) setLoader(true);
@@ -86,11 +85,16 @@ const Home = ({ navigation }) => {
 
     try {
       // Fetch the list of classes
-      let response = await axiosWrapper('GET', `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`, null, token, false, 'json', false);
+      let response = await axiosWrapper(
+        'GET',
+        `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`,
+        null,
+        token,
+        false,
+        'json',
+        false,
+      );
       classes.current = response.data;
-
-
-
 
       if (!classes.current || classes.current.length === 0) {
         classes.current = [];
@@ -100,14 +104,13 @@ const Home = ({ navigation }) => {
       classes.current = sortClassesByDayAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
-        classes.current.map(async (classItem) => {
+        classes.current.map(async classItem => {
           if (!shouldDisableButton(classItem)) {
-
             try {
               let data = {
                 classID: classItem?._id,
-                classScheduleID: classItem?.schedule?._id
-              }
+                classScheduleID: classItem?.schedule?._id,
+              };
 
               const attendanceResponse = await axiosWrapper(
                 'POST',
@@ -116,31 +119,39 @@ const Home = ({ navigation }) => {
                 token,
                 false,
                 'json',
-                false
+                false,
               );
-
 
               // Add the attendance status to the class object
               return {
-                ...classItem, attendanceStatus: attendanceResponse, showButtonDisabled: checkAttendanceStatus(
+                ...classItem,
+                attendanceStatus: attendanceResponse,
+                showButtonDisabled: checkAttendanceStatus(
                   attendanceResponse,
                   user?.role,
                   user?._id,
-
-
-
-
-                )
+                ),
               };
             } catch (error) {
-              console.error(`Error fetching attendance status for class`, error);
-              return { ...classItem, attendanceStatus: null, showButtonDisabled: true }; // Handle error
+              console.error(
+                `Error fetching attendance status for class`,
+                error,
+              );
+              return {
+                ...classItem,
+                attendanceStatus: null,
+                showButtonDisabled: true,
+              }; // Handle error
             }
           } else {
             // No API call, return class as is
-            return { ...classItem, attendanceStatus: null, showButtonDisabled: true };
+            return {
+              ...classItem,
+              attendanceStatus: null,
+              showButtonDisabled: true,
+            };
           }
-        })
+        }),
       );
 
       // Set the state with the classes that now include attendance status
@@ -154,9 +165,8 @@ const Home = ({ navigation }) => {
     }
   };
 
-
-  const handleAttendance = (item) => {
-    navigation.navigate(Routes.ATTENDANCE, { item });
+  const handleAttendance = item => {
+    navigation.navigate(Routes.ATTENDANCE, {item});
   };
 
   const onRefresh = useCallback(() => {
@@ -167,10 +177,7 @@ const Home = ({ navigation }) => {
   return (
     <MainLayout loader={loader}>
       <View style={styles.cont}>
-        <Header title="Home"
-          showBackButton={false}
-          DrawerHeader={true}
-        />
+        <Header title="Home" showBackButton={false} DrawerHeader={true} />
         <CustomFlatList
           listStyle={styles.listStyle}
           refreshControl={
@@ -179,20 +186,20 @@ const Home = ({ navigation }) => {
           ListEmptyComponent={() => (
             <EmptyComponent
               title={'No Classes Found!'}
-              desc={'Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.'}
+              desc={
+                'Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.'
+              }
             />
           )}
           ListHeaderComponent={
             <View style={styles.headerCont}>
               <Text style={styles.headerText}>My Classes</Text>
-              <Text style={styles.regText}>
-                for {formatDate(new Date())}
-              </Text>
+              <Text style={styles.regText}>for {formatDate(new Date())}</Text>
             </View>
           }
           data={classes.current}
           keyExtractor={(item, index) => index?.toString()}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <ClassDetailBox
               item={item}
               buttonText="Mark Attendance"
@@ -203,6 +210,6 @@ const Home = ({ navigation }) => {
       </View>
     </MainLayout>
   );
-}
+};
 
 export default Home;

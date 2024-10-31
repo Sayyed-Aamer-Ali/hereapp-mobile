@@ -1,5 +1,5 @@
 const PDF = {
-    // EXAMPLE: require("your path") | File
-}
+  // EXAMPLE: require("your path") | File
+};
 
-export default PDF
+export default PDF;

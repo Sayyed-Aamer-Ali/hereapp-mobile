@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Colors, Fonts, Icons } from '../../assets';
-import { UtilityMethods, FontSize, CommonStyles } from '../../utility';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Colors, Fonts, Icons} from '../../assets';
+import {UtilityMethods, FontSize, CommonStyles} from '../../utility';
 
-const ExcussedMissedClassTitle = ({title,  onPress }) => {
+const ExcussedMissedClassTitle = ({title, onPress}) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
@@ -32,9 +32,7 @@ const styles = StyleSheet.create({
     color: Colors.ICON_BLACK,
     fontFamily: Fonts.SEMI_BOLD,
   },
-  iconContainer: {
-  
-  },
+  iconContainer: {},
 });
 
 export default ExcussedMissedClassTitle;

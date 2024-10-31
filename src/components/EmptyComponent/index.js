@@ -1,19 +1,17 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Colors, Fonts, Images } from '../../assets'; 
-import { FontSize, UtilityMethods } from '../../utility'; 
+import {View, Text, Image, StyleSheet} from 'react-native';
+import {Colors, Fonts, Images} from '../../assets';
+import {FontSize, UtilityMethods} from '../../utility';
 
-const EmptyComponent = ({title,desc}) => {
+const EmptyComponent = ({title, desc}) => {
   return (
     <View style={styles.container}>
-      <Image source={Images.EMPTY_IMAGE} style={styles.image} /> 
+      <Image source={Images.EMPTY_IMAGE} style={styles.image} />
       {title && <Text style={styles.title}>{title}</Text>}
-      {desc &&
-        <Text style={styles.description}>{desc}</Text>
-      }
+      {desc && <Text style={styles.description}>{desc}</Text>}
     </View>
-  )
-}
+  );
+};
 
 export default EmptyComponent;
 
@@ -26,11 +24,10 @@ const styles = StyleSheet.create({
     padding: UtilityMethods.wp(6),
   },
   image: {
-    width: UtilityMethods.wp(40), 
-    height: UtilityMethods.hp(20), 
+    width: UtilityMethods.wp(40),
+    height: UtilityMethods.hp(20),
     resizeMode: 'contain',
     marginBottom: UtilityMethods.hp(1),
-
   },
   title: {
     fontSize: FontSize.VALUE(18),
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: FontSize.VALUE(14),
-    lineHeight:FontSize.VALUE(20),
+    lineHeight: FontSize.VALUE(20),
     fontFamily: Fonts.BOLD,
     color: Colors.LIGHT_GRAY,
     textAlign: 'center',

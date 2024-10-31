@@ -1,40 +1,68 @@
 //================================ React Native Imported Files ======================================//
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 /// ====================================== Local Imported Files ======================================//
-import { useDispatch,useSelector } from 'react-redux';
-import {StudentStack,InstructorStack} from "./index"
+import {useDispatch, useSelector} from 'react-redux';
+import {StudentStack, InstructorStack} from './index';
 import Routes from '../Routes';
-import {ExcuseAttendanceDetailScreen, ExcuseAttendanceSectionScreen, ExcuseAttendanceSuccessScreen, NotificationScreen, PrivacyPolicy, SearchScreen, TermsAndConditions} from '../../screens';
+import {
+  ExcuseAttendanceDetailScreen,
+  ExcuseAttendanceSectionScreen,
+  ExcuseAttendanceSuccessScreen,
+  NotificationScreen,
+  PrivacyPolicy,
+  SearchScreen,
+  TermsAndConditions,
+} from '../../screens';
 
 const Stack = createNativeStackNavigator();
 
 const DashboardStack = () => {
   const user = useSelector(state => state.auth.user);
 
-   return (
+  return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}>
-      {user?.role === "STUDENT" ? (
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {user?.role === 'STUDENT' ? (
         <Stack.Screen name={Routes.StudentStack} component={StudentStack} />
       ) : (
-        <Stack.Screen name={Routes.InstructorStack}component={InstructorStack} />
+        <Stack.Screen
+          name={Routes.InstructorStack}
+          component={InstructorStack}
+        />
       )}
-        <Stack.Screen name={Routes.NOTIFICATION_SCREEN} component={NotificationScreen} />
-        <Stack.Screen name={Routes.TERMS_AND_CONDITIONS} component={TermsAndConditions} />
-        <Stack.Screen name={Routes.PRIVACY_POLICY} component={PrivacyPolicy} />
-        <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_SECTION_SCREEN} component={ExcuseAttendanceSectionScreen} />
-        <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN} component={ExcuseAttendanceDetailScreen} />
-        <Stack.Screen name={Routes.EXCUSE_ATTENDANCE_SUCCESS_SCREEN} component={ExcuseAttendanceSuccessScreen} />
+      <Stack.Screen
+        name={Routes.NOTIFICATION_SCREEN}
+        component={NotificationScreen}
+      />
+      <Stack.Screen
+        name={Routes.TERMS_AND_CONDITIONS}
+        component={TermsAndConditions}
+      />
+      <Stack.Screen name={Routes.PRIVACY_POLICY} component={PrivacyPolicy} />
+      <Stack.Screen
+        name={Routes.EXCUSE_ATTENDANCE_SECTION_SCREEN}
+        component={ExcuseAttendanceSectionScreen}
+      />
+      <Stack.Screen
+        name={Routes.EXCUSE_ATTENDANCE_DETAIL_SCREEN}
+        component={ExcuseAttendanceDetailScreen}
+      />
+      <Stack.Screen
+        name={Routes.EXCUSE_ATTENDANCE_SUCCESS_SCREEN}
+        component={ExcuseAttendanceSuccessScreen}
+      />
 
-          <Stack.Screen name={Routes.SEARCH_SCREEN} component={SearchScreen} 
-           options={{
-            animation:"none"
-           }}
-          />
-      </Stack.Navigator>
+      <Stack.Screen
+        name={Routes.SEARCH_SCREEN}
+        component={SearchScreen}
+        options={{
+          animation: 'none',
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 

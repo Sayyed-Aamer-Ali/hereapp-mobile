@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
-import { Colors, Fonts, Icons } from '../../assets'; 
-import { UtilityMethods, FontSize } from '../../utility';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
+import {Colors, Fonts, Icons} from '../../assets';
+import {UtilityMethods, FontSize} from '../../utility';
 import moment from 'moment';
 
-const ClassDetails = ({ section, instructor, date, timeSlot }) => {
+const ClassDetails = ({section, instructor, date, timeSlot}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -42,14 +48,12 @@ const ClassDetails = ({ section, instructor, date, timeSlot }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor:Colors.BOX_HEADER,
+    backgroundColor: Colors.BOX_HEADER,
     padding: UtilityMethods.wp(4),
   },
   headerText: {
@@ -65,9 +69,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: UtilityMethods.hp(1),
-    borderBottomColor:Colors.BOX_HEADER,
-    borderBottomWidth:1,
-    paddingBottom:UtilityMethods.hp(1)
+    borderBottomColor: Colors.BOX_HEADER,
+    borderBottomWidth: 1,
+    paddingBottom: UtilityMethods.hp(1),
   },
   label: {
     fontSize: FontSize.VALUE(14),

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     fcmToken: null,
     user: null,
@@ -10,10 +10,10 @@ const authSlice = createSlice({
     routesDetail: null,
     routesListing: null,
     totalNotification: null,
-    token:null,
+    token: null,
     rememberMeCreds: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       rememberMe: false,
     },
   },
@@ -27,14 +27,14 @@ const authSlice = createSlice({
     setRememberMeCreds: (state, action) => {
       state.rememberMeCreds = action.payload;
     },
-    clearRememberMeCreds: (state) => {
+    clearRememberMeCreds: state => {
       state.rememberMeCreds = {
-        email: "",
-        password: "",
+        email: '',
+        password: '',
         rememberMe: false,
       };
     },
-    resetAuth: (state) => {
+    resetAuth: state => {
       state.token = null;
       state.user = null;
       state.fcmToken = null;

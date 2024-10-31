@@ -1,6 +1,6 @@
-import { View, Text, SectionList } from "react-native";
-import React from "react";
-import UtilityMethods from "../../utility/UtilityMethods";
+import {View, Text, SectionList} from 'react-native';
+import React from 'react';
+import UtilityMethods from '../../utility/UtilityMethods';
 
 export const CustomSectionList = ({
   item,
@@ -22,7 +22,7 @@ export const CustomSectionList = ({
     <SectionList
       stickySectionHeadersEnabled={false}
       contentContainerStyle={[
-        { paddingBottom: UtilityMethods.hp(2), flexGrow: 1 },
+        {paddingBottom: UtilityMethods.hp(2), flexGrow: 1},
         contentContainerStyle,
       ]}
       {...props}

@@ -1,74 +1,58 @@
-import { StyleSheet } from "react-native";
-import { CommonStyles, FontSize, UtilityMethods } from "../../../utility";
-import { Colors, Fonts } from "../../../assets";
-
-
-
+import {StyleSheet} from 'react-native';
+import {CommonStyles, FontSize, UtilityMethods} from '../../../utility';
+import {Colors, Fonts} from '../../../assets';
 
 const styles = StyleSheet.create({
   cont: {
-    flex:1,
+    flex: 1,
     ...CommonStyles.PADDING_HORIZONTAL,
-    paddingTop:UtilityMethods.hp(2),
- 
+    paddingTop: UtilityMethods.hp(2),
+  },
+  logo: {
+    width: UtilityMethods.wp(24),
+    height: UtilityMethods.wp(24),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  mainText: {
+    fontSize: FontSize.VALUE(20),
+    color: Colors.BLACK,
+    fontFamily: Fonts.SEMI_BOLD,
+    marginTop: UtilityMethods.hp(5),
+  },
 
-    
-    
- },
-  logo:{
-    width:UtilityMethods.wp(24),
-    height:UtilityMethods.wp(24),
-    resizeMode:'contain',
-    alignSelf:'center'
+  inPutCont: {
+    marginTop: UtilityMethods.hp(2),
+    rowGap: UtilityMethods.hp(2),
   },
-  mainText:{
-    fontSize:FontSize.VALUE(20),
-    color:Colors.BLACK,
-    fontFamily:Fonts.SEMI_BOLD,
-    marginTop:UtilityMethods.hp(5),
-   
-  },
-  
+  rowCont: {
+    flexDirection: 'row',
 
-  inPutCont:{
-    marginTop:UtilityMethods.hp(2),
-    rowGap:UtilityMethods.hp(2)
-  
-
+    paddingHorizontal: UtilityMethods.wp(1),
   },
-  rowCont:{
-    flexDirection:'row',
-    
-    paddingHorizontal:UtilityMethods.wp(1),
-  
+  regText: {
+    fontSize: FontSize.VALUE(14),
+    color: Colors.ICON_BLACK,
+    fontFamily: Fonts.REGULAR,
+    marginLeft: UtilityMethods.wp(2),
   },
-  regText:{
-    fontSize:FontSize.VALUE(14),
-    color:Colors.ICON_BLACK,
-    fontFamily:Fonts.REGULAR,
-    marginLeft:UtilityMethods.wp(2),
-    
-  
+  LinkedView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: UtilityMethods.hp(2),
   },
-  LinkedView:{
-    flexDirection:'row',
-    justifyContent:'center',
-    marginTop:UtilityMethods.hp(2)
-
-  },
-  underLineText:{
-    fontSize:FontSize.VALUE(14),
-    color:Colors.BLACK,
-    fontFamily:Fonts.MEDIUM,
-    textDecorationLine:"underline",
-    marginLeft:UtilityMethods.wp(1)
-    
+  underLineText: {
+    fontSize: FontSize.VALUE(14),
+    color: Colors.BLACK,
+    fontFamily: Fonts.MEDIUM,
+    textDecorationLine: 'underline',
+    marginLeft: UtilityMethods.wp(1),
   },
   errorText: {
     fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
-    fontWeight:Fonts.REGULAR,
+    fontWeight: Fonts.REGULAR,
   },
 });
 

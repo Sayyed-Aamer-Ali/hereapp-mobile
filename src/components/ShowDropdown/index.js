@@ -1,82 +1,87 @@
-import React, { useMemo } from 'react';
-import { Dropdown } from 'react-native-element-dropdown';
-import { View, StyleSheet, Text } from 'react-native';
-import { Colors, Fonts, Icons } from '../../assets';
-import { UtilityMethods, FontSize } from '../../utility';
+import React, {useMemo} from 'react';
+import {Dropdown} from 'react-native-element-dropdown';
+import {View, StyleSheet, Text} from 'react-native';
+import {Colors, Fonts, Icons} from '../../assets';
+import {UtilityMethods, FontSize} from '../../utility';
 
 const ShowDropdown = ({
   data,
   value,
   setValue,
   label,
-  placeTxt = "",
+  placeTxt = '',
   style,
-  labelField = "label",
-  valueField = "value",
+  labelField = 'label',
+  valueField = 'value',
   selectedTextStyle = {},
   containerStyle,
   maxHeight = UtilityMethods.hp(40),
   search = false,
   renderLeftIcon,
   error,
-  editable = true
+  editable = true,
 }) => {
-  
+  const selectedIndex = useMemo(
+    () => data.findIndex(item => item[valueField] === value),
+    [data, value, valueField],
+  );
 
-  
-  const selectedIndex = useMemo(() => data.findIndex(item => item[valueField] === value), [data, value, valueField]);
+  const dropdownComponent = useMemo(
+    () => (
+      <View pointerEvents={editable ? 'auto' : 'none'}>
+        <Dropdown
+          style={[styles.dropdown, style]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={[styles.selectedTextStyle, selectedTextStyle]}
+          iconStyle={styles.iconStyle}
+          renderLeftIcon={renderLeftIcon}
+          containerStyle={containerStyle}
+          data={data}
+          maxHeight={maxHeight}
+          labelField={labelField}
+          valueField={valueField}
+          search={search}
+          placeholder={placeTxt}
+          value={value}
+          onChange={item => {
+            setValue(item.value);
+          }}
+          itemTextStyle={[styles.selectedTextStyle]}
 
-  const dropdownComponent = useMemo(() => (
+          // renderItem={({label,props})=>(
+          //   <View style={styles.item} {...props}>
+          //     <Text style={{color:Colors.BLACK}}>{label}</Text>
+          //   </View>
+          // )}
+          // flatListProps={{
+          //   initialScrollIndex: selectedIndex >= 0 ? selectedIndex : 0,  // Scroll to the selected item
+          //   getItemLayout: (data, index) => (
+          //     { length: UtilityMethods.hp(6.2), offset: UtilityMethods.hp(6.2) * index, index }
+          //   ),
+          // }}
+        />
 
-    <View pointerEvents={editable ? 'auto' : 'none'}>
-    
-
-    <Dropdown
-      style={[styles.dropdown, style]}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={[styles.selectedTextStyle, selectedTextStyle]}
-      iconStyle={styles.iconStyle}
-      renderLeftIcon={renderLeftIcon}
-      containerStyle={containerStyle}
-      data={data}
-      maxHeight={maxHeight}
-      labelField={labelField}
-      valueField={valueField}
-      search={search}
-      placeholder={placeTxt}
-      value={value}
-      onChange={(item) => {
-        setValue(item.value);
-      }}
-      itemTextStyle={[styles.selectedTextStyle]}
-      
-      
-      // renderItem={({label,props})=>(
-      //   <View style={styles.item} {...props}>
-      //     <Text style={{color:Colors.BLACK}}>{label}</Text>
-      //   </View>
-      // )}
-      // flatListProps={{
-      //   initialScrollIndex: selectedIndex >= 0 ? selectedIndex : 0,  // Scroll to the selected item
-      //   getItemLayout: (data, index) => (
-      //     { length: UtilityMethods.hp(6.2), offset: UtilityMethods.hp(6.2) * index, index }
-      //   ),
-      // }}
-    />
-
-    {error?.length > 0 ? <Text style={styles.ErrorText}>{
-      error
-    }</Text> : null}
-    </View>
-  ), [data, value, selectedTextStyle, containerStyle, maxHeight, search, selectedIndex, renderLeftIcon]);
+        {error?.length > 0 ? (
+          <Text style={styles.ErrorText}>{error}</Text>
+        ) : null}
+      </View>
+    ),
+    [
+      data,
+      value,
+      selectedTextStyle,
+      containerStyle,
+      maxHeight,
+      search,
+      selectedIndex,
+      renderLeftIcon,
+    ],
+  );
 
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       {dropdownComponent}
-
-   
-
     </View>
   );
 };
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
     color: Colors.BLACK,
     fontFamily: Fonts.REGULAR,
     marginBottom: UtilityMethods.hp(0.5),
-    marginLeft: UtilityMethods.wp(1)
+    marginLeft: UtilityMethods.wp(1),
   },
   selectedTextStyle: {
     fontSize: FontSize.VALUE(16),
@@ -112,16 +117,16 @@ const styles = StyleSheet.create({
     height: UtilityMethods.wp(5),
     tintColor: Colors.BLACK,
   },
-  item:{
-    height:UtilityMethods.hp(6.4),
-    paddingHorizontal:UtilityMethods.wp(5)
+  item: {
+    height: UtilityMethods.hp(6.4),
+    paddingHorizontal: UtilityMethods.wp(5),
   },
   ErrorText: {
     fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
-    fontWeight:Fonts.REGULAR,
-    marginTop:UtilityMethods.hp(1)
+    fontWeight: Fonts.REGULAR,
+    marginTop: UtilityMethods.hp(1),
   },
 });
 

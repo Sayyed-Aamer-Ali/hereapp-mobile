@@ -1,164 +1,142 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
- // Update the path to the actual file
-import { Button, Header, MainLayout, ScreenWrapper,ShowDropdown } from '../../../components';
-import { Colors, Fonts, Icons } from '../../../assets';
-import { UtilityMethods, FontSize } from '../../../utility';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+// Update the path to the actual file
+import {
+  Button,
+  Header,
+  MainLayout,
+  ScreenWrapper,
+  ShowDropdown,
+} from '../../../components';
+import {Colors, Fonts, Icons} from '../../../assets';
+import {UtilityMethods, FontSize} from '../../../utility';
 import styles from './styles';
 import Routes from '../../../navigation/Routes';
-import { attemptsData, expiryData } from '../../../Data/DummyData';
+import {attemptsData, expiryData} from '../../../Data/DummyData';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import { API_URLS } from '../../../services/apiPathList';
+import {API_URLS} from '../../../services/apiPathList';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setRefreshClasses } from '../../../redux/Reducers/TempData';
+import {useDispatch, useSelector} from 'react-redux';
+import {setRefreshClasses} from '../../../redux/Reducers/TempData';
 
-const InstructorAttendenceScreen = ({ navigation, route }) => {
+const InstructorAttendenceScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const item = route.params?.item;
 
+  let attendanceData = route?.params?.item?.attendanceStatus?.data;
 
-
-  let attendanceData=route?.params?.item?.attendanceStatus?.data
-
-  
- 
   const token = useSelector(state => state.auth.token);
- 
-
 
   const [otp, setOtp] = useState('XXX');
   const [loader, setLoader] = useState(false);
-  const [attempts, setAttempts] = useState("");
+  const [attempts, setAttempts] = useState('');
   const [expiryTime, setExpiryTime] = useState(null);
   const [timer, setTimer] = useState(0);
-  const [codeAttempError, setCodeAttempError] = useState("");
-  const [codeExpiryError, setCodeExpiryError] = useState("");
+  const [codeAttempError, setCodeAttempError] = useState('');
+  const [codeExpiryError, setCodeExpiryError] = useState('');
   const [attendanceId, setAttendanceId] = useState(null);
 
   const [checkAttendanceMarked, setCheckAttendanceMarked] = useState(false);
 
-
-
-
-
-useEffect(() => {
-  if (timer > 0) {
-    const interval = setInterval(() => {
-      setTimer(timer - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }
-}, [timer]);
-
-
-
-
-useEffect(() => {
-  if(attendanceData){
-    setCheckAttendanceMarked(true)
-    setOtp(attendanceData.attendanceCode)
-  
-    let codeAttempts = ""
-   
-
-    if(attendanceData.codeAttempts=="1"){
-      codeAttempts = `${attendanceData.codeAttempts} Time`
-      
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer(timer - 1);
+      }, 1000);
+      return () => clearInterval(interval);
     }
-    else{
-      codeAttempts = `${attendanceData.codeAttempts} Times`
+  }, [timer]);
+
+  useEffect(() => {
+    if (attendanceData) {
+      setCheckAttendanceMarked(true);
+      setOtp(attendanceData.attendanceCode);
+
+      let codeAttempts = '';
+
+      if (attendanceData.codeAttempts == '1') {
+        codeAttempts = `${attendanceData.codeAttempts} Time`;
+      } else {
+        codeAttempts = `${attendanceData.codeAttempts} Times`;
+      }
+      setAttempts(codeAttempts);
+      let codeExpiryTime = UtilityMethods.calculateAttendanceDuration(
+        attendanceData?.attendanceStartedAt,
+        attendanceData?.attendanceExpiresAt,
+      );
+      if (codeExpiryTime == '1') {
+        codeExpiryTime = `${codeExpiryTime} Minute`;
+      } else {
+        codeExpiryTime = `${codeExpiryTime} Minutes`;
+      }
+      setExpiryTime(codeExpiryTime);
+      let timeleft = UtilityMethods.calculateTimeLeftInSeconds(
+        attendanceData?.attendanceStartedAt,
+        attendanceData?.attendanceExpiresAt,
+      );
+
+      startTimer(timeleft);
     }
-    setAttempts(codeAttempts)
-    let codeExpiryTime = UtilityMethods.calculateAttendanceDuration(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
-    if(codeExpiryTime=="1"){
-      codeExpiryTime = `${codeExpiryTime} Minute`
-    }
-    else{
-      codeExpiryTime = `${codeExpiryTime} Minutes`
-    }
-    setExpiryTime(codeExpiryTime)
-    let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
-    
-     
-    startTimer(timeleft)
-    
-  }
+  }, [attendanceData]);
 
-}, [attendanceData]);
-
-
-
-
-  const generateOtp = async() => {
-
-
-    let error = false
+  const generateOtp = async () => {
+    let error = false;
     if (!attempts) {
-      setCodeAttempError("Please select code attempts")
-      error = true
+      setCodeAttempError('Please select code attempts');
+      error = true;
     }
     if (!expiryTime) {
-      setCodeExpiryError("Please select code expiry time")
-      error = true
+      setCodeExpiryError('Please select code expiry time');
+      error = true;
     }
     if (error) {
-      return
+      return;
     }
-
-    
 
     const newOtp = UtilityMethods.generateAlphanumericOtp();
     setOtp(newOtp);
 
+    setLoader(true);
 
-    setLoader(true)
+    let split = expiryTime.split(' ');
+    let timer = parseInt(split[0]);
 
-    let split = expiryTime.split(" ")
-    let timer = parseInt(split[0])
+    let codeAttempts = parseInt(attempts.split(' ')[0]);
 
-    let codeAttempts = parseInt(attempts.split(" ")[0])
+    let data = {
+      classID: item?._id,
+      classScheduleID: item?.schedule?._id,
+      codeAttempts: codeAttempts,
+      attendanceCode: newOtp,
+      codeExpiryTime: timer * 60,
+    };
 
- 
-   let data = {
-    classID: item?._id,
-    classScheduleID: item?.schedule?._id,
-    codeAttempts: codeAttempts,
-    attendanceCode: newOtp,
-    codeExpiryTime: timer*60
+    try {
+      let response = await axiosWrapper(
+        'POST',
+        API_URLS.INSTRUCTOR_START_CLASS,
+        data,
+        token,
+        false,
+        'json',
+        false,
+      );
 
-   }
+      setCheckAttendanceMarked(true);
+      dispatch(setRefreshClasses(true));
+      let attendanceData = {
+        _id: response.data._id,
+      };
+      setAttendanceId(attendanceData);
 
-
-
-   
-  
-
-    try{
-
-      let response = await axiosWrapper('POST', API_URLS.INSTRUCTOR_START_CLASS, data, token, false, 'json', false);
-      
-    setCheckAttendanceMarked(true)
-      dispatch(setRefreshClasses(true))
-      let attendanceData ={
-        _id:response.data._id
-      }
-      setAttendanceId(attendanceData)
-      
-
-
-    startTimer(timer*60);
-
-    }
-    catch(e){
-     
-    }
-    finally{
-      setLoader(false)
+      startTimer(timer * 60);
+    } catch (e) {
+    } finally {
+      setLoader(false);
     }
   };
 
-  const startTimer = (seconds) => {
+  const startTimer = seconds => {
     setTimer(seconds);
   };
 
@@ -167,16 +145,13 @@ useEffect(() => {
     .toString()
     .padStart(2, '0')} : ${(timer % 60).toString().padStart(2, '0')}`;
 
-
   return (
-    <MainLayout
-     loader={loader}
-    >
-      <Header 
-        title={"Generate Code"}
-        showBackButton={true} 
-        DrawerHeader={false} 
-        />
+    <MainLayout loader={loader}>
+      <Header
+        title={'Generate Code'}
+        showBackButton={true}
+        DrawerHeader={false}
+      />
       <ScreenWrapper style={styles.container}>
         <View style={styles.otpContainer}>
           <Text style={styles.otpText}>{otp}</Text>
@@ -186,59 +161,56 @@ useEffect(() => {
           Please share this code with students to mark their attendance.
         </Text>
 
-        <View style={{rowGap:UtilityMethods.hp(2)}}>
+        <View style={{rowGap: UtilityMethods.hp(2)}}>
+          <ShowDropdown
+            data={attemptsData}
+            value={attempts}
+            setValue={value => {
+              setAttempts(value);
+              setCodeAttempError('');
+            }}
+            placeTxt="3 Times"
+            label="Code Attempts"
+            style={styles.dropdown}
+            error={codeAttempError}
+            editable={!checkAttendanceMarked}
+          />
+          <ShowDropdown
+            data={expiryData}
+            value={expiryTime}
+            setValue={value => {
+              setExpiryTime(value);
 
-      
-        <ShowDropdown
-          data={attemptsData}
-          value={attempts}
-          setValue={(value) => {
-            setAttempts(value);
-            setCodeAttempError("")
-          }}
-          placeTxt="3 Times"
-          label="Code Attempts"
-          style={styles.dropdown}
-          error={codeAttempError}
-          editable={!checkAttendanceMarked}
-
-        />
-        <ShowDropdown
-          data={expiryData}
-          value={expiryTime}
-          setValue={(value) => {
-            setExpiryTime(value);
-            
-           
-            setCodeExpiryError("")
-          }}
-          placeTxt="Code Expiry Time"
-          label="Code Expiry Time"
-          style={styles.dropdown}
-          renderLeftIcon={() =>
-          (<View style={{marginRight:UtilityMethods.wp(2)}}> 
-            <Icons.ClockIcon  />
-          </View>)}
-
-          error={codeExpiryError}
-          editable={!checkAttendanceMarked}
-        />
+              setCodeExpiryError('');
+            }}
+            placeTxt="Code Expiry Time"
+            label="Code Expiry Time"
+            style={styles.dropdown}
+            renderLeftIcon={() => (
+              <View style={{marginRight: UtilityMethods.wp(2)}}>
+                <Icons.ClockIcon />
+              </View>
+            )}
+            error={codeExpiryError}
+            editable={!checkAttendanceMarked}
+          />
         </View>
         <Button
-          text={"Generate New Code"}
-        
+          text={'Generate New Code'}
           Icon={<Icons.Reload />}
           style={styles.generateButton(checkAttendanceMarked)}
           onPress={generateOtp}
           disabled={checkAttendanceMarked}
         />
         <Button
-          text={"Show Attendance List"}
+          text={'Show Attendance List'}
           Icon={<Icons.List />}
           style={styles.listButton}
-          onPress={() => navigation.navigate(Routes.ATTENDENCE_LIST_SCREEN,{
-            data: attendanceData?attendanceData:attendanceId
-          })}
+          onPress={() =>
+            navigation.navigate(Routes.ATTENDENCE_LIST_SCREEN, {
+              data: attendanceData ? attendanceData : attendanceId,
+            })
+          }
           textStyle={styles.listButtonText}
         />
       </ScreenWrapper>

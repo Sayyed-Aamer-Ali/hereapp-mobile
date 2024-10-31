@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Colors, Fonts } from '../../assets';
-import { UtilityMethods, FontSize } from '../../utility';
-import { API_URLS } from '../../services/apiPathList';
-import { useSelector } from 'react-redux';
-import { LoaderModal } from '../LoaderModal';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {Colors, Fonts} from '../../assets';
+import {UtilityMethods, FontSize} from '../../utility';
+import {API_URLS} from '../../services/apiPathList';
+import {useSelector} from 'react-redux';
+import {LoaderModal} from '../LoaderModal';
 import axiosWrapper from '../../services/AxiosWrapper';
-import moment from  "moment-timezone";
+import moment from 'moment-timezone';
 
-const AttendanceHistoryComponent = ({ status, className, dateTime,schedule }) => {
-  
- 
-  
-
-
+const AttendanceHistoryComponent = ({
+  status,
+  className,
+  dateTime,
+  schedule,
+}) => {
   return (
     <View style={styles.container}>
-   
       <View style={styles.row}>
         <Text style={styles.label}>Attendance Status:</Text>
         <Text style={styles.value}>{status}</Text>
@@ -28,9 +27,7 @@ const AttendanceHistoryComponent = ({ status, className, dateTime,schedule }) =>
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
         <Text style={styles.value}>
-
-{moment.tz(dateTime,"America/Chicago").format('YYYY/MM/DD hh:mm A')}
-         
+          {moment.tz(dateTime, 'America/Chicago').format('YYYY/MM/DD hh:mm A')}
         </Text>
       </View>
     </View>
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
     padding: UtilityMethods.wp(4),
     marginVertical: UtilityMethods.hp(1),
     shadowColor: Colors.BLACK,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,

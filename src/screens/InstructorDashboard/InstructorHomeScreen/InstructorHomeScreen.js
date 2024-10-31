@@ -1,23 +1,38 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Text, View,RefreshControl } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { ClassDetailBox, CustomFlatList, EmptyComponent, Header, LogoutModal, MainLayout, ShowDropdown } from '../../../components';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Text, View, RefreshControl} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  ClassDetailBox,
+  CustomFlatList,
+  EmptyComponent,
+  Header,
+  LogoutModal,
+  MainLayout,
+  ShowDropdown,
+} from '../../../components';
 import styles from './styles';
-import { genders, instructorClasses } from '../../../Data/DummyData';
-import { resetAuth, setFcmToken, setUser } from '../../../redux/Reducers/AuthReducer';
+import {genders, instructorClasses} from '../../../Data/DummyData';
+import {
+  resetAuth,
+  setFcmToken,
+  setUser,
+} from '../../../redux/Reducers/AuthReducer';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import { API_URLS } from '../../../services/apiPathList';
+import {API_URLS} from '../../../services/apiPathList';
 import Routes from '../../../navigation/Routes';
-import { checkAttendanceStatus, getCurrentDateInFormat, shouldDisableButton, sortClassesByDateTime, sortClassesByDayAndTime } from '../../../utility/FormateDate';
-import { setRefreshClasses } from '../../../redux/Reducers/TempData';
-import { UtilityMethods } from '../../../utility';
+import {
+  checkAttendanceStatus,
+  getCurrentDateInFormat,
+  shouldDisableButton,
+  sortClassesByDateTime,
+  sortClassesByDayAndTime,
+} from '../../../utility/FormateDate';
+import {setRefreshClasses} from '../../../redux/Reducers/TempData';
+import {UtilityMethods} from '../../../utility';
 
-
-
-const Home = ({ navigation }) => {
- 
-  const [loader, setLoader] = useState(false)
- let classes = useRef(null);
+const Home = ({navigation}) => {
+  const [loader, setLoader] = useState(false);
+  let classes = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const fcmToken = useSelector(state => state.auth.fcmToken);
@@ -27,85 +42,82 @@ const Home = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [emptyData, setEmptyData] = useState({
-    title: user?.isApproved === 'PENDING' ? "Pending Approval" : "No Classes Found!",
-    description: user?.isApproved === 'PENDING' ? "An email was sent to your institution admin to approve your account." : "Sorry we cannot find any registered classes for you."
-  })
-
+    title:
+      user?.isApproved === 'PENDING' ? 'Pending Approval' : 'No Classes Found!',
+    description:
+      user?.isApproved === 'PENDING'
+        ? 'An email was sent to your institution admin to approve your account.'
+        : 'Sorry we cannot find any registered classes for you.',
+  });
 
   useEffect(() => {
     setTimeout(async () => {
-      UtilityMethods.requestPermission((res) => {
-        if(res)
-        updateDeviceTokenForNotificaiton(res)
+      UtilityMethods.requestPermission(res => {
+        if (res) updateDeviceTokenForNotificaiton(res);
       });
     }, 10);
   }, []);
 
-
-  const updateDeviceTokenForNotificaiton = async (res) => {
+  const updateDeviceTokenForNotificaiton = async res => {
     let payload = {
       fcmToken: res,
-      isInAppNotificationEnabled: true
-    }
+      isInAppNotificationEnabled: true,
+    };
 
     try {
       if (!fcmToken && fcmToken !== res) {
-        let response = await axiosWrapper('PATCH', API_URLS.EDIT_PROFILE, payload, token, false, 'json', false);
-        dispatch(setFcmToken(res))
+        let response = await axiosWrapper(
+          'PATCH',
+          API_URLS.EDIT_PROFILE,
+          payload,
+          token,
+          false,
+          'json',
+          false,
+        );
+        dispatch(setFcmToken(res));
       }
-     
-
-    } catch (error) {
-     
-    }
-  }
-
-
-
+    } catch (error) {}
+  };
 
   const handleLogout = () => {
     setModalVisible(false);
-    dispatch(resetAuth())
+    dispatch(resetAuth());
   };
 
   const handleCancel = () => {
     setModalVisible(false);
   };
 
- 
-
-
   const handleRefreshClasses = useCallback(() => {
     if (refreshClasses) {
-    
       getInstructorClasses(); // Call the function here
     }
-  }, [refreshClasses, getInstructorClasses])
-
-
-
-
+  }, [refreshClasses, getInstructorClasses]);
 
   useEffect(() => {
-    getUserDetail()
-    getInstructorClasses()
+    getUserDetail();
+    getInstructorClasses();
   }, []);
 
-  const getUserDetail = async () =>{
-    let userData = await axiosWrapper("GET",API_URLS.GET_USER(user?._id),null, token);
-    dispatch(setUser(userData?.data))
-  }
-
-
+  const getUserDetail = async () => {
+    let userData = await axiosWrapper(
+      'GET',
+      API_URLS.GET_USER(user?._id),
+      null,
+      token,
+    );
+    dispatch(setUser(userData?.data));
+  };
 
   useEffect(() => {
     handleRefreshClasses();
   }, [handleRefreshClasses]);
-  
+
   const getInstructorClasses = async (isRefresh = true) => {
-   classes.current = [];
-     setLoader(true);
-  
+    classes.current = [];
+    setLoader(true);
+
     try {
       // Fetch the list of classes
       let response = await axiosWrapper(
@@ -115,31 +127,28 @@ const Home = ({ navigation }) => {
         token,
         false,
         'json',
-        false
+        false,
       );
-  
-       classes.current = response.data;
 
-      if(!classes.current || classes.current.length === 0) {
-         
+      classes.current = response.data;
 
-      classes.current = [];
+      if (!classes.current || classes.current.length === 0) {
+        classes.current = [];
         return;
       }
 
-       classes.current = sortClassesByDayAndTime(classes.current);
-  
+      classes.current = sortClassesByDayAndTime(classes.current);
+
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
-        classes.current.map(async (classItem) => {
+        classes.current.map(async classItem => {
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {
                 classID: classItem?._id,
-                classScheduleID: classItem?.schedule?._id
-              }
-            
-            
+                classScheduleID: classItem?.schedule?._id,
+              };
+
               const attendanceResponse = await axiosWrapper(
                 'POST',
                 API_URLS.CLASS_ATTENDANCE_STATUS,
@@ -147,26 +156,40 @@ const Home = ({ navigation }) => {
                 token,
                 false,
                 'json',
-                false
+                false,
               );
-               
+
               // Add the attendance status to the class object
-              return { ...classItem, attendanceStatus: attendanceResponse,showButtonDisabled:checkAttendanceStatus(
-                attendanceResponse,
-                user?.role
-              ) };
+              return {
+                ...classItem,
+                attendanceStatus: attendanceResponse,
+                showButtonDisabled: checkAttendanceStatus(
+                  attendanceResponse,
+                  user?.role,
+                ),
+              };
             } catch (error) {
-              console.error(`Error fetching attendance status for class ${classItem.id}`, error);
-              return { ...classItem, attendanceStatus: null,showButtonDisabled:true  }; // Handle error
+              console.error(
+                `Error fetching attendance status for class ${classItem.id}`,
+                error,
+              );
+              return {
+                ...classItem,
+                attendanceStatus: null,
+                showButtonDisabled: true,
+              }; // Handle error
             }
           } else {
-           
             // No API call, return class as is
-            return { ...classItem, attendanceStatus: null,showButtonDisabled:true };
+            return {
+              ...classItem,
+              attendanceStatus: null,
+              showButtonDisabled: true,
+            };
           }
-        })
+        }),
       );
-  
+
       // Set the state with the classes that now include attendance status
       classes.current = classesWithAttendanceStatus;
     } catch (error) {
@@ -177,22 +200,22 @@ const Home = ({ navigation }) => {
       setRefreshing(false);
     }
   };
-  
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getUserDetail()
+    getUserDetail();
     getInstructorClasses();
   }, []);
 
-  const handleNavigation = (item) =>{
-    navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN,{item})
-  }
-
+  const handleNavigation = item => {
+    navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN, {item});
+  };
 
   return (
     <MainLayout loader={loader}>
       <View style={styles.cont}>
-        <Header title="Home"
+        <Header
+          title="Home"
           showBackButton={false}
           isLogout={true}
           logoutOnPress={() => setModalVisible(true)}
@@ -203,25 +226,27 @@ const Home = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           ListEmptyComponent={() => (
-            <EmptyComponent 
-            title={emptyData?.title}
-            desc={emptyData?.description}
+            <EmptyComponent
+              title={emptyData?.title}
+              desc={emptyData?.description}
             />
           )}
           ListHeaderComponent={
             <View style={styles.headerCont}>
               <Text style={styles.welcome}>Welcome {user?.firstName},</Text>
-              <Text style={styles.desc}>Please select a class to take attendance</Text>
+              <Text style={styles.desc}>
+                Please select a class to take attendance
+              </Text>
               <Text style={styles.headerText}>Classes to be held</Text>
             </View>
           }
           data={classes.current}
-          keyExtractor={(item,index) => index?.toString()}
-          renderItem={({ item }) => (
+          keyExtractor={(item, index) => index?.toString()}
+          renderItem={({item}) => (
             <ClassDetailBox
               item={item}
               buttonText="Take Attendance"
-              onPress={()=>handleNavigation(item)}
+              onPress={() => handleNavigation(item)}
             />
           )}
         />
@@ -233,10 +258,7 @@ const Home = ({ navigation }) => {
         />
       </View>
     </MainLayout>
-
-
-
   );
-}
+};
 
 export default Home;

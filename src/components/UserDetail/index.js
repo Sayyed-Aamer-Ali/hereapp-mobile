@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Colors, Fonts } from '../../assets';
-import { UtilityMethods, FontSize } from '../../utility';
+import {View, Text, StyleSheet} from 'react-native';
+import {Colors, Fonts} from '../../assets';
+import {UtilityMethods, FontSize} from '../../utility';
 
-const UserDetails = ({ userData }) => {
+const UserDetails = ({userData}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -12,23 +12,23 @@ const UserDetails = ({ userData }) => {
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Last Name:</Text>
-        <Text style={[styles.value,]}>{userData.lastName || '-'}</Text>
+        <Text style={[styles.value]}>{userData.lastName || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>NetID:</Text>
-        <Text style={[styles.value,]}>{userData.netID || '-'}</Text>
+        <Text style={[styles.value]}>{userData.netID || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Phone:</Text>
-        <Text style={[styles.value,]}>{userData.phoneNumber || '-'}</Text>
+        <Text style={[styles.value]}>{userData.phoneNumber || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>School:</Text>
-        <Text style={[styles.value,]}>{userData.schoolName || '-'}</Text>
+        <Text style={[styles.value]}>{userData.schoolName || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Address:</Text>
-        <Text style={[styles.value,]}>{userData.address || '-'}</Text>
+        <Text style={[styles.value]}>{userData.address || '-'}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Postal Code:</Text>
@@ -43,7 +43,7 @@ export default UserDetails;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.WHITE,
-    marginVertical:UtilityMethods.hp(4)
+    marginVertical: UtilityMethods.hp(4),
   },
   row: {
     flexDirection: 'row',
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.REGULAR,
     color: Colors.GRAY,
     // width:'40%',
-    marginRight:UtilityMethods.wp(12)
+    marginRight: UtilityMethods.wp(12),
   },
   value: {
     fontSize: FontSize.VALUE(16),
     fontFamily: Fonts.MEDIUM,
     color: Colors.LIGHT_GRAY,
-    textAlign:'right',
-    maxWidth:'60%',
+    textAlign: 'right',
+    maxWidth: '60%',
   },
 });

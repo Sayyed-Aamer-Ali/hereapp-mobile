@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Images } from '../../assets';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {Images} from '../../assets';
 
-const Checkbox = ({ label, value, onValueChange }) => {
+const Checkbox = ({label, value, onValueChange}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onValueChange(!value)} activeOpacity={0.8}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onValueChange(!value)}
+      activeOpacity={0.8}>
       <View style={[styles.checkbox, value && styles.checkboxActive]}>
         {/* {value && <Image source={Images.TICK} style={styles.checkboxImage} />} */}
       </View>

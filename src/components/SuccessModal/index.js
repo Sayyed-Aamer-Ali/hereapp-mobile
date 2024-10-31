@@ -1,21 +1,22 @@
 import React from 'react';
-import { Modal, View, Text, Image, StyleSheet } from 'react-native';
-import { Colors, Fonts, Images, Icons } from '../../assets'; // Ensure to import your images and icons correctly
-import { Button } from '../../components'; // Ensure Button is imported correctly
-import { UtilityMethods, FontSize } from '../../utility';
+import {Modal, View, Text, Image, StyleSheet} from 'react-native';
+import {Colors, Fonts, Images, Icons} from '../../assets'; // Ensure to import your images and icons correctly
+import {Button} from '../../components'; // Ensure Button is imported correctly
+import {UtilityMethods, FontSize} from '../../utility';
 
-const SuccessModal = ({ visible, onClose }) => {
+const SuccessModal = ({visible, onClose}) => {
   return (
     <Modal
       transparent={true}
       animationType="fade"
       visible={visible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Image source={Images.CHECK_MARK} style={styles.checkMark} />
-          <Text style={styles.message}>Your attendance has been marked successfully.</Text>
+          <Text style={styles.message}>
+            Your attendance has been marked successfully.
+          </Text>
           <Button
             text="Go to Home"
             Icon={<Icons.Right />}
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     padding: UtilityMethods.wp(6),
     alignItems: 'center',
     shadowColor: Colors.BLACK,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,

@@ -1,27 +1,38 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import React, {useRef, useState} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import styles from './styles';
-import { Colors, Icons } from '../../../assets';
-import { CommonStyles, FontSize, UtilityMethods, Validator } from '../../../utility';
-import { Button, CustomizedInput, Header, MainLayout, ScreenWrapper } from '../../../components';
+import {Colors, Icons} from '../../../assets';
+import {
+  CommonStyles,
+  FontSize,
+  UtilityMethods,
+  Validator,
+} from '../../../utility';
+import {
+  Button,
+  CustomizedInput,
+  Header,
+  MainLayout,
+  ScreenWrapper,
+} from '../../../components';
 import Routes from '../../../navigation/Routes';
-import { useDispatch } from 'react-redux';
-import { useToast } from "react-native-toast-notifications";
+import {useDispatch} from 'react-redux';
+import {useToast} from 'react-native-toast-notifications';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import { API_URLS } from '../../../services/apiPathList';
+import {API_URLS} from '../../../services/apiPathList';
 import AlertService from '../../../services/AlertService';
-import { clearRememberMeCreds } from '../../../redux/Reducers/AuthReducer';
+import {clearRememberMeCreds} from '../../../redux/Reducers/AuthReducer';
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({navigation}) => {
   const toast = useToast();
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const [email, setEmail] = useState({
-    inputType: "text",
-    title: "Email",
-    value: "",
-    type: "email",
-    error: "",
-    placeholder: "Enter Email Address",
+    inputType: 'text',
+    title: 'Email',
+    value: '',
+    type: 'email',
+    error: '',
+    placeholder: 'Enter Email Address',
   });
   const lastNameRef = useRef();
   const emailRef = useRef();
@@ -30,84 +41,91 @@ const SignUp = ({ navigation }) => {
   const passwordRef = useRef();
 
   const [firstName, setFirstName] = useState({
-    inputType: "text",
-    title: "First Name",
-    value: "",
-    type: "text",
-    error: "",
-    placeholder: "Enter First Name",
-    leftIcon: <Icons.User />
+    inputType: 'text',
+    title: 'First Name',
+    value: '',
+    type: 'text',
+    error: '',
+    placeholder: 'Enter First Name',
+    leftIcon: <Icons.User />,
   });
 
   const [lastName, setLastName] = useState({
-    inputType: "text",
-    title: "Last Name",
-    value: "",
-    type: "text",
-    error: "",
-    placeholder: "Enter Last Name",
-    leftIcon: <Icons.User />
+    inputType: 'text',
+    title: 'Last Name',
+    value: '',
+    type: 'text',
+    error: '',
+    placeholder: 'Enter Last Name',
+    leftIcon: <Icons.User />,
   });
 
   const [phoneNumber, setPhoneNumber] = useState({
-    inputType: "text",
-    title: "Phone",
-    value: "",
-    type: "text",
-    error: "",
-    placeholder: "Enter Phone Number",
-    leftIcon: <Icons.Phone />
+    inputType: 'text',
+    title: 'Phone',
+    value: '',
+    type: 'text',
+    error: '',
+    placeholder: 'Enter Phone Number',
+    leftIcon: <Icons.Phone />,
   });
 
   const [netId, setNetId] = useState({
-    inputType: "text",
-    title: "NetID",
-    value: "",
-    type: "text",
-    error: "",
-    placeholder: "Enter NetID",
-    leftIcon: <Icons.nedID width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+    inputType: 'text',
+    title: 'NetID',
+    value: '',
+    type: 'text',
+    error: '',
+    placeholder: 'Enter NetID',
+    leftIcon: (
+      <Icons.nedID width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+    ),
   });
 
   const [schoolName, setSchoolName] = useState({
-    inputType: "text",
-    title: "School Name",
-    value: "",
-    type: "text",
-    error: "",
-    placeholder: "Enter School Name",
-    leftIcon: <Icons.graduationCap  width={UtilityMethods.wp(6)} height={UtilityMethods.wp(6)} />
+    inputType: 'text',
+    title: 'School Name',
+    value: '',
+    type: 'text',
+    error: '',
+    placeholder: 'Enter School Name',
+    leftIcon: (
+      <Icons.graduationCap
+        width={UtilityMethods.wp(6)}
+        height={UtilityMethods.wp(6)}
+      />
+    ),
   });
 
   const [password, setPassword] = useState({
-    inputType: "text",
-    title: "Password",
-    value: "",
-    type: "password",
-    error: "",
-    placeholder: "Enter Password",
+    inputType: 'text',
+    title: 'Password',
+    value: '',
+    type: 'password',
+    error: '',
+    placeholder: 'Enter Password',
   });
 
   const [rememberMe, setRememberMe] = useState({
-    inputType: "checkbox",
-    title: "Remember Me",
+    inputType: 'checkbox',
+    title: 'Remember Me',
     value: false,
-    type: "checkbox",
-    error: "",
+    type: 'checkbox',
+    error: '',
   });
 
   const [privacyPolicy, setPrivacyPolicy] = useState({
-    inputType: "checkbox",
-    title: "Privacy Policy",
+    inputType: 'checkbox',
+    title: 'Privacy Policy',
     value: false,
-    type: "checkbox",
-    error: "",
+    type: 'checkbox',
+    error: '',
   });
 
   const [error, setError] = useState({});
   const dispatch = useDispatch();
 
-  const validatePhone = (phone) => {
+  const validatePhone = phone => {
     const regex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
     return regex.test(phone);
   };
@@ -115,61 +133,66 @@ const SignUp = ({ navigation }) => {
   const onPressSignUp = () => {
     let error = {};
 
-    let emailValidate = Validator("email", email.value);
-    let passwordValidate = Validator("password", password.value);
+    let emailValidate = Validator('email', email.value);
+    let passwordValidate = Validator('password', password.value);
 
-    if (email.value?.trim() === "") {
-      setEmail({ ...email, error: "Email is required" });
-      error["email"] = "Email is required";
+    if (email.value?.trim() === '') {
+      setEmail({...email, error: 'Email is required'});
+      error['email'] = 'Email is required';
     }
-    if (password.value?.trim() === "") {
-      setPassword({ ...password, error: "Password is required" });
-      error["password"] = "Password is required";
+    if (password.value?.trim() === '') {
+      setPassword({...password, error: 'Password is required'});
+      error['password'] = 'Password is required';
     }
-    if (firstName.value?.trim()  === "") {
-      setFirstName({ ...firstName, error: "First Name is required" });
-      error["firstName"] = "First Name is required";
+    if (firstName.value?.trim() === '') {
+      setFirstName({...firstName, error: 'First Name is required'});
+      error['firstName'] = 'First Name is required';
     }
-    if (lastName.value?.trim() === "") {
-      setLastName({ ...lastName, error: "Last Name is required" });
-      error["lastName"] = "Last Name is required";
+    if (lastName.value?.trim() === '') {
+      setLastName({...lastName, error: 'Last Name is required'});
+      error['lastName'] = 'Last Name is required';
     }
-    if (phoneNumber.value?.trim() === "") {
-      setPhoneNumber({ ...phoneNumber, error: "Phone Number is required" });
-      error["phoneNumber"] = "Phone Number is required";
-    } 
-    else if (
+    if (phoneNumber.value?.trim() === '') {
+      setPhoneNumber({...phoneNumber, error: 'Phone Number is required'});
+      error['phoneNumber'] = 'Phone Number is required';
+    } else if (
       // !validatePhone(phoneNumber.value)
       phoneNumber.value?.trim().length < 10
     ) {
-      setPhoneNumber({ ...phoneNumber, error: "Phone Number is not correct" });
-      error["phoneNumber"] = "Phone Number is not correct";
+      setPhoneNumber({...phoneNumber, error: 'Phone Number is not correct'});
+      error['phoneNumber'] = 'Phone Number is not correct';
     }
-    if (netId.value?.trim() === "") {
-      setNetId({ ...netId, error: "NetID is required" });
-      error["netId"] = "NetID is required";
+    if (netId.value?.trim() === '') {
+      setNetId({...netId, error: 'NetID is required'});
+      error['netId'] = 'NetID is required';
     }
-    if (schoolName.value?.trim() === "") {
-      setSchoolName({ ...schoolName, error: "School Name is required" });
-      error["schoolName"] = "School Name is required";
+    if (schoolName.value?.trim() === '') {
+      setSchoolName({...schoolName, error: 'School Name is required'});
+      error['schoolName'] = 'School Name is required';
     }
     if (!rememberMe.value) {
-      return AlertService.toastPrompt('You must agree to the terms and conditions','error')
+      return AlertService.toastPrompt(
+        'You must agree to the terms and conditions',
+        'error',
+      );
     }
 
     if (!privacyPolicy.value) {
-      return AlertService.toastPrompt('You must agree to the privacy policy','error')
+      return AlertService.toastPrompt(
+        'You must agree to the privacy policy',
+        'error',
+      );
     }
 
     setError(error);
 
-    if (email.value !== "" && emailValidate) {
-      setEmail({ ...email, error: emailValidate });
-      error["email"] = emailValidate;
+    if (email.value !== '' && emailValidate) {
+      setEmail({...email, error: emailValidate});
+      error['email'] = emailValidate;
     }
-    if (password.value !== "" && passwordValidate) {
-      setPassword({ ...password, error: passwordValidate });
-      error["password"] = passwordValidate;
+    if (password.value !== '' && passwordValidate) {
+      setPassword({...password, error: passwordValidate});
+      error['password'] = passwordValidate;
     }
 
     setError(error);
@@ -183,112 +206,123 @@ const SignUp = ({ navigation }) => {
         phoneNumber: `+${phoneNumber.value}`,
         netID: netId.value,
         schoolName: schoolName.value,
-        role: "STUDENT",
+        role: 'STUDENT',
         // isLogin: true,
       };
 
-      registerAPICall(user)
-
+      registerAPICall(user);
     }
   };
 
-  const registerAPICall = async (data) =>{
+  const registerAPICall = async data => {
     try {
-      setLoader(true)
-      let response = await axiosWrapper("POST", API_URLS.REGISTER_URL, data, null, false, 'json', false);
-      if(response){
+      setLoader(true);
+      let response = await axiosWrapper(
+        'POST',
+        API_URLS.REGISTER_URL,
+        data,
+        null,
+        false,
+        'json',
+        false,
+      );
+      if (response) {
         dispatch(clearRememberMeCreds());
         navigation.navigate(Routes.OTP_VERIFICATION, {
-          user: {...response.data,password:password?.value?.trim()},
-          successMessage:'user registered successfully'
+          user: {...response.data, password: password?.value?.trim()},
+          successMessage: 'user registered successfully',
         });
       }
-
     } catch (error) {
-      AlertService.toastPrompt(error, 'error')
-    }finally{
-      setLoader(false)
+      AlertService.toastPrompt(error, 'error');
+    } finally {
+      setLoader(false);
     }
-  }
+  };
 
-  const handleNavigation = (path) =>{
-    navigation.navigate(path)
-  }
+  const handleNavigation = path => {
+    navigation.navigate(path);
+  };
 
   return (
     <MainLayout loader={loader}>
-      <Header title={"Sign Up"} rightIcons={false} />
+      <Header title={'Sign Up'} rightIcons={false} />
       <ScreenWrapper style={styles.cont}>
         <View style={styles.inPutCont}>
           <CustomizedInput
             fieldInfo={firstName}
-            onChange={(text) => {
-              setFirstName({ ...firstName, value: text, error: "" });
+            onChange={text => {
+              setFirstName({...firstName, value: text, error: ''});
             }}
-            onSubmitEditing={()=>lastNameRef.current?.focus()}
+            onSubmitEditing={() => lastNameRef.current?.focus()}
           />
           <CustomizedInput
             ref={lastNameRef}
             fieldInfo={lastName}
-            onChange={(text) => {
-              setLastName({ ...lastName, value: text, error: "" });
+            onChange={text => {
+              setLastName({...lastName, value: text, error: ''});
             }}
-            onSubmitEditing={()=>emailRef.current?.focus()}
+            onSubmitEditing={() => emailRef.current?.focus()}
           />
           <CustomizedInput
-          ref={emailRef}
+            ref={emailRef}
             fieldInfo={email}
-            onChange={(text) => {
-              setEmail({ ...email, value: text.replace(/\s/g, ''), error: "" });
-              let ExtractId = text.split("@");
-              setNetId({ ...netId, value: ExtractId[0], error: "" });
+            onChange={text => {
+              setEmail({...email, value: text.replace(/\s/g, ''), error: ''});
+              let ExtractId = text.split('@');
+              setNetId({...netId, value: ExtractId[0], error: ''});
             }}
-            onSubmitEditing={()=>phoneRef.current?.focus()}
+            onSubmitEditing={() => phoneRef.current?.focus()}
           />
           <CustomizedInput
             fieldInfo={netId}
-            onChange={(text) => {
-              setNetId({ ...netId, value: text, error: "" });
+            onChange={text => {
+              setNetId({...netId, value: text, error: ''});
             }}
             editable={false}
           />
-         
+
           <CustomizedInput
             ref={phoneRef}
             fieldInfo={phoneNumber}
-            onChange={(text,unmasked) => {
-              setPhoneNumber({ ...phoneNumber, value: unmasked, error: "" });
+            onChange={(text, unmasked) => {
+              setPhoneNumber({...phoneNumber, value: unmasked, error: ''});
             }}
             keyboardType="number-pad"
             isPhoneNumber={true}
-            onSubmitEditing={()=>schoolNameRef.current?.focus()}
+            onSubmitEditing={() => schoolNameRef.current?.focus()}
           />
-           <CustomizedInput
+          <CustomizedInput
             ref={schoolNameRef}
             fieldInfo={schoolName}
-            onChange={(text) => {
-              setSchoolName({ ...schoolName, value: text, error: "" });
+            onChange={text => {
+              setSchoolName({...schoolName, value: text, error: ''});
             }}
-            onSubmitEditing={()=>passwordRef.current?.focus()}
+            onSubmitEditing={() => passwordRef.current?.focus()}
           />
           <CustomizedInput
             ref={passwordRef}
             fieldInfo={password}
-            onChange={(text) => {
-              setPassword({ ...password, value: text.replace(/\s/g, ''), error: "" });
+            onChange={text => {
+              setPassword({
+                ...password,
+                value: text.replace(/\s/g, ''),
+                error: '',
+              });
             }}
           />
 
           <View style={styles.rowCont}>
             <CustomizedInput
               fieldInfo={rememberMe}
-              onChange={(text) => {
-                setRememberMe({ ...rememberMe, value: text });
+              onChange={text => {
+                setRememberMe({...rememberMe, value: text});
               }}
             />
             <View style={[CommonStyles.ROW_VIEW]}>
               <Text style={styles.regText}>I agree to the</Text>
-              <TouchableOpacity onPress={()=>handleNavigation(Routes.TERMS_AND_CONDITIONS)}>
+              <TouchableOpacity
+                onPress={() => handleNavigation(Routes.TERMS_AND_CONDITIONS)}>
                 <Text style={styles.underLineText}>terms & conditions.</Text>
               </TouchableOpacity>
             </View>
@@ -297,37 +331,42 @@ const SignUp = ({ navigation }) => {
           <View style={styles.rowCont}>
             <CustomizedInput
               fieldInfo={privacyPolicy}
-              onChange={(text) => {
-                setPrivacyPolicy({ ...privacyPolicy, value: text });
+              onChange={text => {
+                setPrivacyPolicy({...privacyPolicy, value: text});
               }}
             />
             <View style={[CommonStyles.ROW_VIEW]}>
               <Text style={styles.regText}>I agree to the</Text>
-              <TouchableOpacity onPress={()=>handleNavigation(Routes.PRIVACY_POLICY)}>
+              <TouchableOpacity
+                onPress={() => handleNavigation(Routes.PRIVACY_POLICY)}>
                 <Text style={styles.underLineText}>privacy policy.</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
         <Button
-          text={"Sign Up"}
-          style={{ marginTop: UtilityMethods.hp(4) }}
+          text={'Sign Up'}
+          style={{marginTop: UtilityMethods.hp(4)}}
           onPress={() => onPressSignUp()}
         />
         <View style={styles.LinkedView}>
-          <Text style={[styles.regText, { fontSize: FontSize.VALUE(16) }]}>
+          <Text style={[styles.regText, {fontSize: FontSize.VALUE(16)}]}>
             Already have an account?
           </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={[styles.regText, { color: Colors.RED, fontSize: FontSize.VALUE(16) }]}>
+            <Text
+              style={[
+                styles.regText,
+                {color: Colors.RED, fontSize: FontSize.VALUE(16)},
+              ]}>
               Login Now
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{ height: UtilityMethods.hp(3) }} />
+        <View style={{height: UtilityMethods.hp(3)}} />
       </ScreenWrapper>
     </MainLayout>
   );
-}
+};
 
 export default SignUp;

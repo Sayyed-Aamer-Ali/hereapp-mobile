@@ -1,33 +1,28 @@
-import { StyleSheet } from "react-native";
-import {  FontSize, UtilityMethods } from "../../../utility";
-import { Colors, Fonts } from "../../../assets";
-
-
-
+import {StyleSheet} from 'react-native';
+import {FontSize, UtilityMethods} from '../../../utility';
+import {Colors, Fonts} from '../../../assets';
 
 const styles = StyleSheet.create({
-
-  contentContainerStyle:{
-    paddingHorizontal:UtilityMethods.wp(6),
-    paddingVertical:UtilityMethods.hp(2)
+  contentContainerStyle: {
+    paddingHorizontal: UtilityMethods.wp(6),
+    paddingVertical: UtilityMethods.hp(2),
   },
-  title:{
-    color:Colors.BLACK,
+  title: {
+    color: Colors.BLACK,
     fontFamily: Fonts.REGULAR,
-    fontSize:FontSize.VALUE(14)
+    fontSize: FontSize.VALUE(14),
   },
-  otpContainer:{
-    marginVertical:UtilityMethods.hp(4),
+  otpContainer: {
+    marginVertical: UtilityMethods.hp(4),
   },
-  error:{
-    fontSize:FontSize.VALUE(16),
-    color:Colors.RED,
-    marginTop:UtilityMethods.hp(1.5),
-    marginBottom:UtilityMethods.hp(2)
+  error: {
+    fontSize: FontSize.VALUE(16),
+    color: Colors.RED,
+    marginTop: UtilityMethods.hp(1.5),
+    marginBottom: UtilityMethods.hp(2),
   },
   container: {
     paddingVertical: UtilityMethods.hp(2),
-
   },
   noteTitle: {
     fontSize: FontSize.VALUE(16),

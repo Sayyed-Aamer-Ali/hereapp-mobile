@@ -1,16 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { Colors, Icons, Fonts } from '../../assets';
-import { FontSize, UtilityMethods } from '../../utility';
+import {View, Text, TouchableOpacity, StyleSheet, Modal} from 'react-native';
+import {Colors, Icons, Fonts} from '../../assets';
+import {FontSize, UtilityMethods} from '../../utility';
 
-const LogoutModal = ({ visible, onConfirm, onCancel }) => {
+const LogoutModal = ({visible, onConfirm, onCancel}) => {
   return (
     <Modal
       transparent={true}
       visible={visible}
-    //   animationType="fadeIn"
-      onRequestClose={onCancel}
-    >
+      //   animationType="fadeIn"
+      onRequestClose={onCancel}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <View style={styles.iconContainer}>
@@ -21,11 +20,19 @@ const LogoutModal = ({ visible, onConfirm, onCancel }) => {
             Are you sure that you want to Logout?
           </Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onCancel}>
-              <Text style={[styles.buttonText, styles.cancelButtonText]}>No</Text>
+            <TouchableOpacity
+              style={[styles.button, styles.cancelButton]}
+              onPress={onCancel}>
+              <Text style={[styles.buttonText, styles.cancelButtonText]}>
+                No
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.confirmButton]} onPress={onConfirm}>
-              <Text style={[styles.buttonText, styles.confirmButtonText]}>Yes</Text>
+            <TouchableOpacity
+              style={[styles.button, styles.confirmButton]}
+              onPress={onConfirm}>
+              <Text style={[styles.buttonText, styles.confirmButtonText]}>
+                Yes
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
