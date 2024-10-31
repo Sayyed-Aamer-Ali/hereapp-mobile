@@ -29,7 +29,7 @@ const AttendanceHistoryComponent = ({ status, className, dateTime,schedule }) =>
         <Text style={styles.label}>Date & Time:</Text>
         <Text style={styles.value}>
 
-{moment.tz(dateTime,"America/Chicago").format('YYYY/MMM/DD hh:mm A')}
+{moment.tz(dateTime,"America/Chicago").format('YYYY/MM/DD hh:mm A')}
          
         </Text>
       </View>
