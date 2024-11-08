@@ -188,6 +188,7 @@ const EditProfile = ({navigation}) => {
 
       if (editImage) {
         let response = await uploadImage(editImage);
+
         payload.profilePicture = response.data?.[0].path || '';
       }
       let response = await axiosWrapper(

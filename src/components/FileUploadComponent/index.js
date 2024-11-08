@@ -15,7 +15,9 @@ import {API_URLS} from '../../services/apiPathList';
 import {opacity} from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const FileUploadComponent = ({file, setFile, error}) => {
+  const [loader, setLoader] = useState(false);
   const handleFilePick = async () => {
+    setLoader(true);
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
@@ -25,11 +27,13 @@ const FileUploadComponent = ({file, setFile, error}) => {
       // setFile(pre => [...pre, result?.[0]]);
       formateData(result[0]);
     } catch (err) {
+      setLoader(false);
       if (DocumentPicker.isCancel(err)) {
         // User canceled the picker
       } else {
         throw err;
       }
+    } finally {
     }
   };
 
@@ -57,6 +61,8 @@ const FileUploadComponent = ({file, setFile, error}) => {
       setFile(pre => [...pre, response?.data[0]?.path]);
     } catch (error) {
       throw new Error(error);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -74,9 +80,9 @@ const FileUploadComponent = ({file, setFile, error}) => {
       />
 
       <TouchableOpacity
-        style={styles.iconButton(file.length > 0)}
+        style={styles.iconButton(file.length > 0 || loader)}
         onPress={handleFilePick}
-        disabled={file.length > 0 ? true : false}>
+        disabled={file.length > 0 || loader ? true : false}>
         <Icons.Attach />
       </TouchableOpacity>
 

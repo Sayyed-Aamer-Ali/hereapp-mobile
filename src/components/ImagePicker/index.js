@@ -67,10 +67,8 @@ const ImagePicker = ({filedInfo, editImage, setEditImage, onChnage}) => {
           type: response.mime,
         }
       : {
-          uri: response.sourceURL ? response.sourceURL : response.path,
-          name: response.filename
-            ? response.filename
-            : getFileName(response.path),
+          uri:  response.path,
+          name:  getFileName(response.path),
           type: response.mime,
         };
   };

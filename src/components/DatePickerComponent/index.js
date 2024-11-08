@@ -26,10 +26,9 @@ const DatePickerComponent = ({
   };
 
   const handleConfirm = selectedDate => {
-    // if(moment(selectedDate).isSame(new Date(), 'day'))
-    // {
-
-    //   selectedDate=new Date(new Date().setDate(new Date().getDate() + 1));
+    console.log('selectedDate', selectedDate);
+    // if (moment(selectedDate).isSame(new Date(), 'day')) {
+    //   selectedDate = new Date(new Date().setDate(new Date().getDate()));
     // }
 
     setDate(selectedDate);

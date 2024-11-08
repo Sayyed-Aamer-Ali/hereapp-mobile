@@ -45,6 +45,8 @@ const ClassDetailBox = ({
               data?.classDetail?.excusedAbsenceAllowance
           ) {
             setIsButtonDisabled(true);
+          } else {
+            setIsButtonDisabled(false);
           }
         }
         // setIsButtonDisabled(false);

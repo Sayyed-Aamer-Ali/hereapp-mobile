@@ -1,5 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, SectionList, StyleSheet, Alert} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {
+  Text,
+  View,
+  SectionList,
+  StyleSheet,
+  Alert,
+  RefreshControl,
+} from 'react-native';
 import {
   ClassDetailBox,
   CustomFlatList,
@@ -32,6 +39,7 @@ import {setAllMissedClassesName} from '../../../redux/Reducers/TempData';
 const ExcuseAttandence = ({navigation}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const [refreshing, setRefreshing] = useState(false);
 
   const token = useSelector(state => state.auth.token);
 
@@ -57,6 +65,11 @@ const ExcuseAttandence = ({navigation}) => {
     {index: 1, title: 'Request for a Particular Date', data: []},
   ]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getAllMissedClasses();
+  }, [selectedDate]);
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search.value);
@@ -66,10 +79,6 @@ const ExcuseAttandence = ({navigation}) => {
       clearTimeout(handler);
     };
   }, [search.value]);
-
-  const filteredParticularDates = particularDatesdummyExcuseData.filter(item =>
-    item.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
-  );
 
   useEffect(() => {
     getAllMissedClasses();
@@ -109,10 +118,17 @@ const ExcuseAttandence = ({navigation}) => {
 
       setDateSections([
         {index: 0, title: 'Recently Missed Classes', data: [data.slice(0, 1)]},
-        {index: 1, title: 'Request for a Particular Date', data: []},
+        {
+          index: 1,
+          title: 'Request for a Particular Date',
+          data: selectedDate
+            ? [filterAndSortClassesBySpecificDate(response.data, selectedDate)]
+            : [{}],
+        },
       ]);
     } catch (error) {
     } finally {
+      setRefreshing(false);
       setLoader(false);
     }
   };
@@ -137,7 +153,19 @@ const ExcuseAttandence = ({navigation}) => {
           <DatePickerComponent
             date={selectedDate}
             setDate={date => {
-              filterDateSpecificClasses(date);
+              if (date) {
+                filterDateSpecificClasses(date);
+              } else {
+                setSelectedDate(null);
+                setDateSections(prevState => {
+                  return prevState.map(item => {
+                    if (item.index === 1) {
+                      return {...item, data: [{}]};
+                    }
+                    return item;
+                  });
+                });
+              }
             }}
             placeholder="Select a date"
             maximumDate={new Date(new Date().setDate(new Date().getDate() - 1))}
@@ -220,7 +248,10 @@ const ExcuseAttandence = ({navigation}) => {
       />
 
       <SectionList
-        bounces={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        bounces={true}
         sections={dataSections}
         style={{flex: 1}}
         stickySectionHeadersEnabled={false}

@@ -35,7 +35,7 @@ const AttendanceListScreen = ({navigation, route}) => {
       newSocket.on('attendanceMarked', data => {
         try {
           const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-
+          console.log('parsedData', parsedData);
           setAttendanceList(prevList => [...prevList, parsedData]);
         } catch (error) {
           console.error('Error parsing data:', error);

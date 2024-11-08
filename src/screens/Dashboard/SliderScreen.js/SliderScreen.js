@@ -3,6 +3,7 @@ import {
   Alert,
   Image,
   Pressable,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -48,6 +49,7 @@ const SliderScreen = ({navigation}) => {
   };
 
   return (
+   
     <View style={styles.cont}>
       <View style={styles.headerCont}>
         <Pressable
@@ -94,6 +96,7 @@ const SliderScreen = ({navigation}) => {
         onCancel={handleCancel}
       />
     </View>
+  
   );
 };
 

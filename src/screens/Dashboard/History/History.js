@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Image} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, RefreshControl} from 'react-native';
 import {EmptyComponent, Header, MainLayout} from '../../../components';
 import {attendanceData} from '../../../Data/DummyData';
 import AttendanceHistoryComponent from '../../../components/AttendanceHistoryComponent';
@@ -12,12 +12,18 @@ import moment from 'moment-timezone';
 
 const History = () => {
   const [attendanceList, setAttendanceList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [loader, setLoader] = useState(false);
   const token = useSelector(state => state.auth.token);
 
   const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
+    getAttendanceList();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     getAttendanceList();
   }, []);
 
@@ -40,6 +46,7 @@ const History = () => {
     } catch (error) {
       console.error('Error getting attendance list:', error);
     } finally {
+      setRefreshing(false);
       setLoader(false);
     }
   };
@@ -48,8 +55,9 @@ const History = () => {
     <AttendanceHistoryComponent
       status={item?.status}
       className={item?.attendanceDetail?.classDetail?.name}
-      dateTime={item?.attendanceDetail?.classDetail?.createdAt}
-      schedule={item?.attendanceDetail?.classDetail.schedule[0]}
+      dateTime={item?.attendanceDetail?.attendanceStartedAt}
+      schedule={item?.attendanceDetail?.classDetail.schedule}
+      scheduleId={item?.attendanceDetail?.classScheduleID}
     />
   );
 
@@ -63,6 +71,9 @@ const History = () => {
 
       <FlatList
         data={attendanceList}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={renderItem}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.listContentContainer}

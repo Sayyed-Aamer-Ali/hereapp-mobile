@@ -24,9 +24,12 @@ import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
 import {API_URLS} from '../../../services/apiPathList';
 import formatDate, {
+  filterAndSortClassesByDate,
   filterAndSortClassesBySpecificDate,
+  sortClassesByDate,
 } from '../../../utility/FormateDate';
 import {Colors} from '../../../assets';
+import {setAllMissedClassesName} from '../../../redux/Reducers/TempData';
 
 const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
   const title = route?.params?.title;
@@ -36,6 +39,7 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
   let date = route?.params?.date;
 
   const [missedClasses, setMissedClasses] = useState(route?.params?.data);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(null);
   const dispatch = useDispatch();
@@ -69,6 +73,8 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
 
   useEffect(() => {
     if (searchField) {
+      console.log('searchField', searchField);
+
       setSearch({...search, value: searchField});
       let filteredParticularDates = missedClasses.filter(item =>
         item.classDetail?.name
@@ -102,6 +108,69 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
       setSelectedDate(date);
     }
   }, [date]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getAllMissedClasses();
+  }, [search, selectedDate]);
+
+  const getAllMissedClasses = async () => {
+    let baseUrl = API_URLS.FETCH_ALL_MISSED_CLASSES;
+    try {
+      let response = await axiosWrapper(
+        'GET',
+        baseUrl,
+        null,
+        token,
+        false,
+        'json',
+        false,
+      );
+
+      let sortClasses = sortClassesByDate(response.data);
+
+      let filteroutNames = response.data.map(item => {
+        return item.classDetail.name;
+      });
+      let uniqueNames = [...new Set(filteroutNames)];
+
+      dispatch(
+        setAllMissedClassesName({
+          AllMissedClassesName: uniqueNames,
+          AllMissedClasses: response.data,
+        }),
+      );
+
+      if (search.value.length > 0) {
+        let filteredParticularDates = response.data.filter(item =>
+          item.classDetail?.name
+            .toLowerCase()
+            .includes(search.value.toLowerCase()),
+        );
+
+        setMissedClasses(filteredParticularDates);
+        return;
+      }
+
+      if (index == 1) {
+        if (selectedDate) {
+          let data = filterAndSortClassesBySpecificDate(
+            response.data,
+            selectedDate,
+          );
+
+          setMissedClasses(data);
+        }
+        return;
+      }
+
+      setMissedClasses(sortClasses);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <MainLayout loader={loader}>
@@ -148,6 +217,9 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
 
         <CustomFlatList
           listStyle={styles.listStyle}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={() => (
             <EmptyComponent
               title={'No Classes Found!'}

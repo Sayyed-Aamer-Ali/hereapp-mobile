@@ -7,13 +7,26 @@ import {useSelector} from 'react-redux';
 import {LoaderModal} from '../LoaderModal';
 import axiosWrapper from '../../services/AxiosWrapper';
 import moment from 'moment-timezone';
+import {formatSchedule, getFormattedDate} from '../../utility/FormateDate';
 
 const AttendanceHistoryComponent = ({
   status,
   className,
   dateTime,
   schedule,
+  scheduleId,
 }) => {
+  let filterShedule = schedule.filter(item => item._id === scheduleId);
+  let scheduleItem = filterShedule[0];
+  let timeSlot = undefined;
+  if (scheduleItem) {
+    const {formattedTimeSlot} = formatSchedule(
+      scheduleItem ? scheduleItem : '',
+    );
+    timeSlot = formattedTimeSlot;
+  }
+
+  // console.log('fornatedSchedule', fornatedSchedule);
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -27,7 +40,8 @@ const AttendanceHistoryComponent = ({
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
         <Text style={styles.value}>
-          {moment.tz(dateTime, 'America/Chicago').format('YYYY/MM/DD hh:mm A')}
+          {/* {moment.tz(dateTime, 'America/Chicago').format('YYYY/MM/DD')} */}
+          {getFormattedDate(dateTime)} {timeSlot}
         </Text>
       </View>
     </View>

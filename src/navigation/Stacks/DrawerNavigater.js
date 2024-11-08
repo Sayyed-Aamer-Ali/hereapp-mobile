@@ -36,8 +36,7 @@ const DrawerNavigator = () => {
         drawerHideStatusBarOnOpen:
           Platform.OS === 'ios'
             ? true
-            : haveDigitalOnScreenButtons
-            ? true
+          
             : false,
 
         drawerStyle: styles.drawerStyle(haveDigitalOnScreenButtons),
@@ -56,14 +55,12 @@ const styles = StyleSheet.create({
   drawerStyle: haveDigitalOnScreenButtons => ({
     flex: 1,
     backgroundColor: Colors.WHITE,
-    // width: "80%",
     borderTopEndRadius: UtilityMethods.wp(6),
     borderBottomEndRadius: UtilityMethods.wp(6),
     marginTop:
       Platform.OS === 'ios'
         ? 0
-        : haveDigitalOnScreenButtons
-        ? 0
+        
         : StatusBar.currentHeight,
   }),
   sceneStyle: {

@@ -3,7 +3,8 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {UtilityMethods, FontSize} from '../../utility';
 import {Colors, Fonts} from '../../assets';
-import moment from 'moment-timezone';
+import moment from 'moment';
+import moments from 'moment-timezone';
 
 const StudentAttendanceListCard = ({student, locationPress, showLocation}) => {
   const getNetID = email => {
@@ -36,9 +37,13 @@ const StudentAttendanceListCard = ({student, locationPress, showLocation}) => {
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time</Text>
         <Text style={styles.value}>
-          {moment
-            .tz(student.attendanceMarkedAt, 'America/Chicago')
-            .format('YYYY/MM/DD hh:mm A')}
+          {student?.isSocket
+            ? moments
+                .tz(student.attendanceMarkedAt, 'America/Chicago')
+                .format('YYYY/MM/DD hh:mm A')
+            : moment
+                .utc(student.attendanceMarkedAt)
+                .format('YYYY/MM/DD hh:mm A')}
         </Text>
       </View>
       {showLocation && (
