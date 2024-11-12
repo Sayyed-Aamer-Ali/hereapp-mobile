@@ -73,8 +73,6 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
 
   useEffect(() => {
     if (searchField) {
-      console.log('searchField', searchField);
-
       setSearch({...search, value: searchField});
       let filteredParticularDates = missedClasses.filter(item =>
         item.classDetail?.name

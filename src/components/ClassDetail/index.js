@@ -35,7 +35,7 @@ const ClassDetails = ({section, instructor, date, timeSlot}) => {
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.label}>Class Date</Text>
-            <Text style={styles.value}>{moment().format('DD/MM/YYYY')}</Text>
+            <Text style={styles.value}>{moment().format('YYYY/MM/DD')}</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.label}>Time Slot</Text>

@@ -169,6 +169,7 @@ const ExcuseAttandence = ({navigation}) => {
             }}
             placeholder="Select a date"
             maximumDate={new Date(new Date().setDate(new Date().getDate() - 1))}
+            getBeforeDate={true}
           />
         )}
       </>
@@ -176,8 +177,6 @@ const ExcuseAttandence = ({navigation}) => {
   };
 
   const filterDateSpecificClasses = date => {
-    console.log(getFormattedDate(date));
-
     setSelectedDate(date);
     let data = filterAndSortClassesBySpecificDate(allMissedClasses, date);
     setDateSections(prevState => {

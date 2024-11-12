@@ -14,6 +14,7 @@ const DatePickerComponent = ({
   setDate,
   maximumDate,
   minimumDate,
+  getBeforeDate,
 }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -26,10 +27,9 @@ const DatePickerComponent = ({
   };
 
   const handleConfirm = selectedDate => {
-    console.log('selectedDate', selectedDate);
-    // if (moment(selectedDate).isSame(new Date(), 'day')) {
-    //   selectedDate = new Date(new Date().setDate(new Date().getDate()));
-    // }
+    if (moment(selectedDate).isSame(new Date(), 'day') && maximumDate) {
+      selectedDate = new Date(new Date().setDate(new Date().getDate() - 1));
+    }
 
     setDate(selectedDate);
     hideDatePicker();

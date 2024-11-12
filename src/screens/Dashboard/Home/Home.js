@@ -133,10 +133,6 @@ const Home = ({navigation}) => {
                 ),
               };
             } catch (error) {
-              console.error(
-                `Error fetching attendance status for class`,
-                error,
-              );
               return {
                 ...classItem,
                 attendanceStatus: null,
