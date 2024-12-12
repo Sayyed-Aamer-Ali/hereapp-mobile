@@ -1,13 +1,13 @@
-import { Platform, StatusBar, Dimensions } from "react-native";
-import UtilityMethods from "./UtilityMethods";
+import {Platform, StatusBar, Dimensions} from 'react-native';
+import UtilityMethods from './UtilityMethods';
 
-const { height, width } = Dimensions.get("window");
+const {height, width} = Dimensions.get('window');
 const standardLength = width > height ? width : height;
 const offset =
-  width > height ? 0 : Platform.OS === "ios" ? 78 : StatusBar.currentHeight; // iPhone X style SafeAreaView size in portrait
+  width > height ? 0 : Platform.OS === 'ios' ? 78 : StatusBar.currentHeight; // iPhone X style SafeAreaView size in portrait
 
 const deviceHeight =
-  UtilityMethods.isIphoneX() || Platform.OS === "android"
+  UtilityMethods.isIphoneX() || Platform.OS === 'android'
     ? standardLength - offset
     : standardLength;
 

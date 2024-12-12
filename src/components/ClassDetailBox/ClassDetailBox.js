@@ -1,168 +1,145 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Alert, StyleSheet } from 'react-native'
-import { Colors, Fonts, Icons } from '../../assets'
-import { CommonStyles, FontSize, UtilityMethods } from '../../utility'
-import { ShadowCard } from '../ShadowView'
-import Button from '../CustomizedButton'
-import { useSelector } from 'react-redux'
-import formatDate, { formatSchedule, shouldDisableButton } from '../../utility/FormateDate'
-import { useIsFocused } from '@react-navigation/native'
-
-
+import React, {useState, useEffect} from 'react';
+import {View, Text, Alert, StyleSheet} from 'react-native';
+import {Colors, Fonts, Icons} from '../../assets';
+import {CommonStyles, FontSize, UtilityMethods} from '../../utility';
+import {ShadowCard} from '../ShadowView';
+import Button from '../CustomizedButton';
+import {useSelector} from 'react-redux';
+import formatDate, {
+  formatSchedule,
+  getFormattedDate,
+  shouldDisableButton,
+} from '../../utility/FormateDate';
+import {useIsFocused} from '@react-navigation/native';
 
 const ClassDetailBox = ({
   item,
   onPress,
-  buttonText = "tendance",
+  buttonText = 'tendance',
   buttonDisableRequired = true,
   schedule,
   dates,
-  data
+  data,
 }) => {
-
   const [isButtonDisabled, setIsButtonDisabled] = useState(null);
   let isFocused = useIsFocused();
   const user = useSelector(state => state.auth.user);
 
   const [timer, setTimer] = useState(null);
 
-
-
-
-  let attendanceData = item?.attendanceStatus?.data
-
-
-
+  let attendanceData = item?.attendanceStatus?.data;
 
   const {
-    // formattedDate, 
-    formattedTimeSlot } = formatSchedule(schedule ? schedule : item?.schedule);
+    // formattedDate,
+    formattedTimeSlot,
+  } = formatSchedule(schedule ? schedule : item?.schedule);
   useEffect(() => {
     if (buttonDisableRequired) {
       if (item?.showButtonDisabled) {
-
         setIsButtonDisabled(item?.showButtonDisabled);
-      }
-      else {
-
-        if(data)
-          {
-           
-             if(data?.alreadyRequested||data?.usedExcuseAbsenceAllowance>=data?.classDetail?.excusedAbsenceAllowance)
-              {
-               
-                setIsButtonDisabled(true)
-              }
+      } else {
+        if (data) {
+          if (
+            data?.alreadyRequested ||
+            data?.usedExcuseAbsenceAllowance >=
+              data?.classDetail?.excusedAbsenceAllowance
+          ) {
+            setIsButtonDisabled(true);
+          } else {
+            setIsButtonDisabled(false);
           }
+        }
         // setIsButtonDisabled(false);
         // setIsButtonDisabled(shouldDisableButton(item));
       }
     }
-
-  }, [item])
-
+  }, [item]);
 
   useEffect(() => {
     if (attendanceData && isFocused) {
+      let timeleft = UtilityMethods.calculateTimeLeftInSeconds(
+        attendanceData?.attendanceStartedAt,
+        attendanceData?.attendanceExpiresAt,
+      );
 
-      let timeleft = UtilityMethods.calculateTimeLeftInSeconds(attendanceData?.attendanceStartedAt, attendanceData?.attendanceExpiresAt)
-
-     
-      setTimer(timeleft)
-
+      setTimer(timeleft);
     }
-
   }, [attendanceData, isFocused]);
 
-
-
   useEffect(() => {
-
-
     if (timer > 0) {
       const interval = setInterval(() => {
         setTimer(timer - 1);
       }, 1000);
       return () => clearInterval(interval);
+    } else if (timer === 0) {
+      setIsButtonDisabled(true);
     }
-    else if (timer === 0) {
-
-      setIsButtonDisabled(true)
-    }
-
-
   }, [timer]);
 
   return (
-    <ShadowCard cardStyle={styles.contStyle}
-      activeOpacity={1}
-    >
+    <ShadowCard cardStyle={styles.contStyle} activeOpacity={1}>
       <View style={styles.header}>
-        <Text style={styles.title}>
-          {item?.name}
-        </Text>
+        <Text style={styles.title}>{item?.name}</Text>
       </View>
       <View style={styles.body}>
         <View style={[CommonStyles.ROW_VIEW, styles.itemsContainer]}>
           <View style={styles.item1}>
             <Text style={styles.titleText}>
-              {user?.role === 'STUDENT' ? `${item?.createdBy?.firstName || ''} ${item?.createdBy?.lastName || ''}` : item?.enrolledStudents?.length}
+              {user?.role === 'STUDENT'
+                ? `${item?.createdBy?.firstName || ''} ${
+                    item?.createdBy?.lastName || ''
+                  }`
+                : item?.enrolledStudents?.length}
             </Text>
             <Text style={styles.desText}>
-              {user?.role === 'STUDENT' ? 'Class Instructor' : "Enrolled Students"}
+              {user?.role === 'STUDENT'
+                ? 'Class Instructor'
+                : 'Enrolled Students'}
             </Text>
           </View>
           <View style={styles.item2}>
-            <Text style={styles.titleText}>
-              {item?.semester}
-            </Text>
-            <Text style={styles?.desText}>
-              Semester
-            </Text>
+            <Text style={styles.titleText}>{item?.semester}</Text>
+            <Text style={styles?.desText}>Semester</Text>
           </View>
 
           <View style={styles.item1}>
-            <Text style={styles.titleText}>
-              {formattedTimeSlot}
-            </Text>
-            <Text style={styles.desText}>
-              Time Slot
-            </Text>
+            <Text style={styles.titleText}>{formattedTimeSlot}</Text>
+            <Text style={styles.desText}>Time Slot</Text>
           </View>
-          {dates ?
+          {dates ? (
             <View style={styles.item2}>
               <Text style={styles.titleText}>
-                {formatDate(dates)}
+                {/* {formatDate(dates)} */}
+                {getFormattedDate(dates)}
               </Text>
-              <Text style={styles.desText}>
-                Date
-              </Text>
+              <Text style={styles.desText}>Date</Text>
             </View>
-
-            : <View style={styles.item2}>
+          ) : (
+            <View style={styles.item2}>
               <Text style={styles.titleText}>
                 {schedule ? schedule.day : item?.schedule?.day}
               </Text>
-              <Text style={styles.desText}>
-                Day
-              </Text>
-            </View>}
-
+              <Text style={styles.desText}>Day</Text>
+            </View>
+          )}
         </View>
       </View>
-      <Button text={buttonText}
-        Icon={
-          <Icons.Right />
-        }
-        style={{ backgroundColor: isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK, opacity: isButtonDisabled ? 0.8 : 1 }}
+      <Button
+        text={buttonText}
+        Icon={<Icons.Right />}
+        style={{
+          backgroundColor: isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK,
+          opacity: isButtonDisabled ? 0.8 : 1,
+        }}
         onPress={onPress}
         disabled={isButtonDisabled}
       />
     </ShadowCard>
-  )
-}
+  );
+};
 
-export default ClassDetailBox
+export default ClassDetailBox;
 const styles = StyleSheet.create({
   contStyle: {
     width: UtilityMethods.wp(90),
@@ -172,10 +149,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: UtilityMethods.hp(2),
     paddingHorizontal: UtilityMethods.wp(4),
-
   },
   itemsContainer: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
     rowGap: UtilityMethods.hp(1),
   },
@@ -186,12 +162,11 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   header: {
-    justifyContent: "center",
+    justifyContent: 'center',
     alignItems: 'center',
     height: UtilityMethods.hp(4),
     borderBottomWidth: 1,
     borderBottomColor: Colors.BORDER_COLOR,
-
   },
   title: {
     fontSize: FontSize.VALUE(14),
@@ -214,6 +189,5 @@ const styles = StyleSheet.create({
     fontSize: FontSize.VALUE(14),
     fontFamily: Fonts.REGULAR,
     color: Colors.LIGHT_GRAY,
-  }
-
-})
+  },
+});

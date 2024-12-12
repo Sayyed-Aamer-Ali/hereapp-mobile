@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -6,33 +6,30 @@ import {
   ActivityIndicator,
   View,
   ImageBackground,
-} from "react-native";
-import styles from "./styles";
-import { Colors } from "../../assets";
+} from 'react-native';
+import styles from './styles';
+import {Colors} from '../../assets';
 const returnLoadingComponent = () => {
   return <ActivityIndicator size="small" color={Colors.WHITE} />;
 };
 
-const returnNormalView = (text, textStyle, Icon, customButton, disabled,LeftIcon) => {
+const returnNormalView = (
+  text,
+  textStyle,
+  Icon,
+  customButton,
+  disabled,
+  LeftIcon,
+) => {
   return (
-    
-       <View style={styles.buttonWithIcon}>
-          {LeftIcon && 
-            <View style={styles.leftIconView}>
-            {LeftIcon}
-            </View>
-            }
-          <Text style={[styles.buttonText, textStyle]}>{text}</Text>
-          <View style={styles.iconView}>
-          {Icon}
-          </View>
-         
-        </View>
-      
-  
+    <View style={styles.buttonWithIcon}>
+      {LeftIcon && <View style={styles.leftIconView}>{LeftIcon}</View>}
+      <Text style={[styles.buttonText, textStyle]}>{text}</Text>
+      <View style={styles.iconView}>{Icon}</View>
+    </View>
   );
 };
- const Button = ({
+const Button = ({
   style,
   text,
   textStyle,
@@ -49,11 +46,17 @@ const returnNormalView = (text, textStyle, Icon, customButton, disabled,LeftIcon
       activeOpacity={0.7}
       disabled={disabled}
       onPress={onPress}
-      hitSlop={7}
-    >
+      hitSlop={7}>
       {loading
         ? returnLoadingComponent()
-        : returnNormalView(text, textStyle, Icon, customButton, disabled,LeftIcon)}
+        : returnNormalView(
+            text,
+            textStyle,
+            Icon,
+            customButton,
+            disabled,
+            LeftIcon,
+          )}
     </TouchableOpacity>
   );
 };

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 
 const tempDataSlice = createSlice({
-  name: "temp",
+  name: 'temp',
   initialState: {
     tempData: null,
     tempRouteName: null,
@@ -41,11 +41,10 @@ const tempDataSlice = createSlice({
     setRefreshClassesForStudent: (state, action) => {
       state.refreshClassesForStudent = action.payload;
     },
-    
+
     setAllMissedClassesName: (state, action) => {
       state.AllMissedClassesName = action.payload;
     },
-
   },
 });
 export const {

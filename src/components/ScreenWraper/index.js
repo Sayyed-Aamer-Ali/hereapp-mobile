@@ -3,28 +3,27 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
- const ScreenWrapper = ({
+const ScreenWrapper = ({
   children,
   style,
   model = false,
   ref,
   req = true,
-  contentContainerStyle
+  contentContainerStyle,
 }) => {
   return (
     <KeyboardAwareScrollView
       style={[styles.containerMain, style]}
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={[{ flexGrow: 1, },contentContainerStyle]}
+      contentContainerStyle={[{flexGrow: 1}, contentContainerStyle]}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       bounces={false}
-      extraScrollHeight={16}
-      >
+      extraScrollHeight={16}>
       {children}
     </KeyboardAwareScrollView>
   );

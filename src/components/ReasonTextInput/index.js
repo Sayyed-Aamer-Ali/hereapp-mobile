@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
-import { Colors, Fonts } from '../../assets';
-import { FontSize, UtilityMethods } from '../../utility';
+import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {Colors, Fonts} from '../../assets';
+import {FontSize, UtilityMethods} from '../../utility';
 
-const ReasonTextInput = ({ reason, setReason,error="" }) => {
+const ReasonTextInput = ({reason, setReason, error = ''}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reason for Absence</Text>
@@ -14,9 +14,9 @@ const ReasonTextInput = ({ reason, setReason,error="" }) => {
         value={reason}
         onChangeText={setReason}
         multiline
+        maxLength={300}
       />
       {error && <Text style={styles.error}>{error}</Text>}
-
     </View>
   );
 };
@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
     marginHorizontal: UtilityMethods.wp(4),
     // marginVertical: UtilityMethods.hp(2),
   },
-  title:{
-    fontFamily:Fonts.REGULAR,
-    fontSize:FontSize.VALUE(16),
-    color:Colors.GRAY,
-    marginBottom:UtilityMethods.hp(1)
+  title: {
+    fontFamily: Fonts.REGULAR,
+    fontSize: FontSize.VALUE(16),
+    color: Colors.GRAY,
+    marginBottom: UtilityMethods.hp(1),
   },
   textInput: {
     height: UtilityMethods.hp(15),
@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
     color: Colors.BLACK,
     textAlignVertical: 'top',
   },
-  error:{
+  error: {
     marginTop: UtilityMethods.hp(1),
 
     fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
-    fontWeight:Fonts.REGULAR,
-  }
+    fontWeight: Fonts.REGULAR,
+  },
 });
 
 export default ReasonTextInput;

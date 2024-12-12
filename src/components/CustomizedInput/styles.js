@@ -1,17 +1,16 @@
-import { Colors, Fonts } from '../../assets';
-import { UtilityMethods, CommonStyles, FontSize } from '../../utility';
+import {Colors, Fonts} from '../../assets';
+import {UtilityMethods, CommonStyles, FontSize} from '../../utility';
 
-const { StyleSheet, Platform } = require('react-native');
+const {StyleSheet, Platform} = require('react-native');
 
 const styles = StyleSheet.create({
   mainCont: {
     width: '100%',
-   
   },
-  container: (isInValidField) => ({
+  container: isInValidField => ({
     margin: 0,
-  
-   borderWidth: 1,
+
+    borderWidth: 1,
     borderRadius: 100,
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -19,7 +18,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: UtilityMethods.hp(6),
     borderColor: Colors.ICON_BLACK,
-    
 
     // marginTop: UtilityMethods.hp(1.5),
     // paddingBottom: UtilityMethods.hp(0.5),
@@ -34,32 +32,28 @@ const styles = StyleSheet.create({
   TitleStyle: {
     fontSize: FontSize.VALUE(16),
     color: Colors.ICON_BLACK,
-     fontFamily:Fonts.REGULAR,
-
+    fontFamily: Fonts.REGULAR,
   },
   hashText: {
     fontSize: FontSize.VALUE(18),
     color: Colors.RED,
-    fontFamily:Fonts.REGULAR,
+    fontFamily: Fonts.REGULAR,
     marginLeft: UtilityMethods.wp(1),
-
   },
 
-  leftIconCont:{
+  leftIconCont: {
     width: UtilityMethods.wp(12),
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor:"red",
     height: UtilityMethods.hp(6),
-
   },
-  rightIconCont:{
+  rightIconCont: {
     width: UtilityMethods.wp(12),
     justifyContent: 'center',
     alignItems: 'center',
     height: UtilityMethods.hp(6),
   },
-
 
   input: {
     padding: 0,
@@ -67,26 +61,23 @@ const styles = StyleSheet.create({
     width: '100%',
     color: Colors.ICON_BLACK,
     fontSize: FontSize.VALUE(16),
-    fontFamily:Fonts.REGULAR,
+    fontFamily: Fonts.REGULAR,
     textAlignVertical: 'center',
     height: UtilityMethods.hp(6),
-    paddingRight:UtilityMethods.wp(4)
+    paddingRight: UtilityMethods.wp(4),
   },
 
-
-  inputnonEditable:{
+  inputnonEditable: {
     width: '100%',
     height: UtilityMethods.hp(6),
-    paddingRight:UtilityMethods.wp(4),
+    paddingRight: UtilityMethods.wp(4),
     justifyContent: 'center',
-
   },
 
-  inputnonEditableText:(value)=>({
-    color: value?Colors.ICON_BLACK:Colors.PLACEHOLDER_COLOR,
+  inputnonEditableText: value => ({
+    color: value ? Colors.ICON_BLACK : Colors.PLACEHOLDER_COLOR,
     fontSize: FontSize.VALUE(16),
-    fontFamily:Fonts.REGULAR,
-    
+    fontFamily: Fonts.REGULAR,
   }),
 
   eyeIcon: {
@@ -110,7 +101,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     zIndex: 1,
   },
- 
+
   TitleTextWithBorder: {
     ...CommonStyles.SEMI_BOLD,
     fontSize: FontSize.VALUE(20),
@@ -123,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.VALUE(14),
     color: Colors.RED,
     marginLeft: UtilityMethods.wp(1),
-    fontWeight:Fonts.REGULAR,
+    fontWeight: Fonts.REGULAR,
   },
   inputWithBorder: {
     flexDirection: 'row',
@@ -209,14 +200,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
   },
 
-  checkBoxCont:(value)=>({
+  checkBoxCont: value => ({
     width: UtilityMethods.wp(6),
     height: UtilityMethods.wp(6),
-    
-    
   }),
-
-  
 });
 
 export default styles;

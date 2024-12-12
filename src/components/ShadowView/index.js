@@ -1,7 +1,13 @@
-import { View, StyleSheet, Pressable, TouchableOpacity, Platform } from "react-native";
-import React from "react";
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import React from 'react';
 
-import { Colors } from "../../assets";
+import {Colors} from '../../assets';
 
 export const ShadowCard = ({
   children,
@@ -14,12 +20,12 @@ export const ShadowCard = ({
     <TouchableOpacity
       style={[
         {
-
           shadowOffset: {
             width: 0,
             height: 2,
           },
-          shadowColor:Platform.OS === 'ios' ? Colors.BLACK : Colors.TransParentBackground,
+          shadowColor:
+            Platform.OS === 'ios' ? Colors.BLACK : Colors.TransParentBackground,
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
 
@@ -29,8 +35,7 @@ export const ShadowCard = ({
       ]}
       onPress={onPress}
       key={key}
-      activeOpacity={activeOpacity}
-    >
+      activeOpacity={activeOpacity}>
       {children}
     </TouchableOpacity>
   );

@@ -1,8 +1,8 @@
-import { View, Text,FlatList } from "react-native";
-import React from "react";
-import UtilityMethods from "../../utility/UtilityMethods";
+import {View, Text, FlatList} from 'react-native';
+import React from 'react';
+import UtilityMethods from '../../utility/UtilityMethods';
 
- const CustomFlatList = ({
+const CustomFlatList = ({
   item,
   data,
   renderItem,
@@ -22,13 +22,12 @@ import UtilityMethods from "../../utility/UtilityMethods";
   return (
     <FlatList
       data={data}
-     
       keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-      style={[{ flex: 1 }, listStyle]}
+      style={[{flex: 1}, listStyle]}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={[
-        { paddingBottom: UtilityMethods.hp(2), flexGrow: 1 },
+        {paddingBottom: UtilityMethods.hp(2), flexGrow: 1},
         contentContainerStyle,
       ]}
       renderItem={renderItem}

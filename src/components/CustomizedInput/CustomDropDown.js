@@ -1,13 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Text, View} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
 import MaterailIcon from 'react-native-vector-icons/AntDesign';
-import { Colors } from '../../assets';
-import { UtilityMethods } from '../../utility';
+import {Colors} from '../../assets';
+import {UtilityMethods} from '../../utility';
 import styles from './styles';
-
-
-
 
 const CustomDropDown = ({
   type,
@@ -37,7 +34,6 @@ const CustomDropDown = ({
   titleStyle,
   ...props
 }) => {
-
   return (
     <View style={[styles.mainCont, style]}>
       {props?.title && (
@@ -51,8 +47,11 @@ const CustomDropDown = ({
       <View style={[styles.container(isInValidField), InputContStyle]}>
         {LeftIcon && (
           <>
-            <LeftIcon width={UtilityMethods.hp(15)} height={UtilityMethods.hp(15)} />
-            <View style={{ width: 10 }} />
+            <LeftIcon
+              width={UtilityMethods.hp(15)}
+              height={UtilityMethods.hp(15)}
+            />
+            <View style={{width: 10}} />
           </>
         )}
 
@@ -62,31 +61,20 @@ const CustomDropDown = ({
           maxHeight={300}
           value={props?.value}
           onChange={props?.onChangeText}
-          style={[styles.input, inputStyle,]}
-          inputStyle={{ color: Colors.BLACK }}
-          placeholderStyle={{ color: Colors.DARK_GRAY }}
-          labelField={"label"}
-          valueField={"value"}
+          style={[styles.input, inputStyle]}
+          inputStyle={{color: Colors.BLACK}}
+          placeholderStyle={{color: Colors.DARK_GRAY}}
+          labelField={'label'}
+          valueField={'value'}
           renderRightIcon={() => (
-            <MaterailIcon
-              name="down"
-              size={20}
-              color={Colors.BLACK}
-            />
-          )
-          }
+            <MaterailIcon name="down" size={20} color={Colors.BLACK} />
+          )}
         />
-
-
-
-
       </View>
 
       {Error?.length > 0 ? <Text style={styles.ErrorText}>{Error}</Text> : null}
     </View>
   );
 };
-
-
 
 export default CustomDropDown;

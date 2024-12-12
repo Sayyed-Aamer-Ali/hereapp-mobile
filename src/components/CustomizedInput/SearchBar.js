@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useNavigation } from '@react-navigation/native';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {useNavigation} from '@react-navigation/native';
 import CommonStyles from '../../utility';
-import { Colors, Fonts, Images } from '../../assets';
-import { useSelector, useDispatch } from 'react-redux';
-import { FontSize, UtilityMethods } from '../../utility';
+import {Colors, Fonts, Images} from '../../assets';
+import {useSelector, useDispatch} from 'react-redux';
+import {FontSize, UtilityMethods} from '../../utility';
 import styles from './styles';
-import { setRecentSearches } from '../../redux/Reducers/AuthReducer';
+import {setRecentSearches} from '../../redux/Reducers/AuthReducer';
 import Routes from '../../navigation/Routes';
 
 export const SearchBar = ({
@@ -44,9 +44,7 @@ export const SearchBar = ({
   const myref = useRef();
   const googleRef = useRef();
   const dispatch = useDispatch();
-  const recentSearches = useSelector(
-    (state) => state.auth.recentSearches ?? [],
-  );
+  const recentSearches = useSelector(state => state.auth.recentSearches ?? []);
   const navigation = useNavigation();
   const [isVisible, setIsVisible] = useState(false);
   const [containerFlex, setContainerFlex] = useState(0.15);
@@ -105,11 +103,10 @@ export const SearchBar = ({
               }}
               onPress={() => {
                 googleRef.current?.clear();
-              }}
-            >
+              }}>
               <Image
                 style={[
-                  { ...styles.searchIcon, tintColor: Colors.DARK_GRAY },
+                  {...styles.searchIcon, tintColor: Colors.DARK_GRAY},
                   searchIconStyle,
                 ]}
                 source={Images.CLOSE}
@@ -119,11 +116,11 @@ export const SearchBar = ({
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             if (details) {
-              const { name, address_components } = details;
-              const { lat, lng } = details.geometry.location;
+              const {name, address_components} = details;
+              const {lat, lng} = details.geometry.location;
 
               // Extract city from address components
-              const cityObj = address_components.find((component) =>
+              const cityObj = address_components.find(component =>
                 component.types.includes('locality'),
               );
               const city = cityObj ? cityObj.long_name : null;
@@ -178,7 +175,7 @@ export const SearchBar = ({
         />
       ) : (
         <Pressable style={[styles.SearchBar, style]} onPress={onPress}>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
             {/* Search Icon */}
             <View style={styles.rightIconView}>
               <Image
@@ -194,7 +191,7 @@ export const SearchBar = ({
               onKeyPress={onKeyPress}
               editable={editable}
               value={searchQuery}
-              onChangeText={(value) => setSearchQuery(value)}
+              onChangeText={value => setSearchQuery(value)}
               autoFocus={autoFocus}
               placeholder={placeholder}
               placeholderTextColor={

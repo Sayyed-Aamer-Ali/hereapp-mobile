@@ -1,7 +1,7 @@
-import { Colors } from "../../assets";
-import { UtilityMethods, CommonStyles, FontSize } from "../../utility";
+import {Colors} from '../../assets';
+import {UtilityMethods, CommonStyles, FontSize} from '../../utility';
 
-const { StyleSheet } = require("react-native");
+const {StyleSheet} = require('react-native');
 
 const styles = StyleSheet.create({
   backgroundColor: Colors.RED,

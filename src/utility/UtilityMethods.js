@@ -1,14 +1,22 @@
-import { CommonActions } from '@react-navigation/native';
-import messaging from "@react-native-firebase/messaging";
-import { Alert, Dimensions, Linking, PixelRatio, Platform, Share, PermissionsAndroid } from 'react-native';
-import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { navigationRef } from '../App';
+import {CommonActions} from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
+import {
+  Alert,
+  Dimensions,
+  Linking,
+  PixelRatio,
+  Platform,
+  Share,
+  PermissionsAndroid,
+} from 'react-native';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {navigationRef} from '../App';
 import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
 import momettimezone from 'moment-timezone';
 import Geolocation from '@react-native-community/geolocation';
 import AlertService from '../services/AlertService';
-import { AlertWithTwoButtons } from '../components';
+import {AlertWithTwoButtons} from '../components';
 
 let screenWidth = Dimensions.get('window').width;
 let screenHeight = Dimensions.get('window').height;
@@ -22,11 +30,11 @@ let iosAppUrl = 'apple.com';
  * @class UtilityMethods
  */
 class UtilityMethodsClass {
-  hp = (height) => {
+  hp = height => {
     const elemHeight = typeof height === 'number' ? height : parseFloat(height);
     return PixelRatio.roundToNearestPixel((screenHeight * elemHeight) / 100);
   };
-  wp = (width) => {
+  wp = width => {
     const elemWidth = typeof width === 'number' ? width : parseFloat(width);
     return PixelRatio.roundToNearestPixel((screenWidth * elemWidth) / 100);
   };
@@ -46,7 +54,7 @@ class UtilityMethodsClass {
   /**
    * Parse JSON string or throw error
    */
-  parseJSON = (data) => {
+  parseJSON = data => {
     data = data || '';
     try {
       return JSON.parse(data);
@@ -61,7 +69,7 @@ class UtilityMethodsClass {
   /**
    * Safely parse JSON strings (no errors)
    */
-  toJSON = (data) => {
+  toJSON = data => {
     data = data || '';
     try {
       return JSON.parse(data);
@@ -77,7 +85,7 @@ class UtilityMethodsClass {
   /**
    * Check empty object
    */
-  checkEmptyObject = (obj) => {
+  checkEmptyObject = obj => {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) return false;
     }
@@ -87,7 +95,7 @@ class UtilityMethodsClass {
   /**
    * Check if the variable is undefined
    */
-  isUndefined = (data) => {
+  isUndefined = data => {
     if (data === 'undefined') {
       return true;
     }
@@ -100,7 +108,7 @@ class UtilityMethodsClass {
    * @param {*} bytes
    * @memberof UtilityMethods
    */
-  bytesToSize = (bytes) => {
+  bytesToSize = bytes => {
     if (bytes === 0) return '0 B';
 
     var k = 1024;
@@ -116,7 +124,6 @@ class UtilityMethodsClass {
    * @memberof UtilityMethods
    */
 
-
   /**
    * Helper Function for validating Phone Numbers
    *
@@ -124,14 +131,13 @@ class UtilityMethodsClass {
    * @memberof UtilityMethods
    */
 
-
   /**
    * Helper Function for capitalize First Letter of Text
    *
    * @param {*} string
    * @memberof UtilityMethods
    */
-  capitalizeFirstLetter = (string) => {
+  capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
@@ -141,8 +147,6 @@ class UtilityMethodsClass {
    * @param {*} str
    * @memberof UtilityMethods
    */
-  ;
-
   /**
    * Helper Function for generating a random string
    *
@@ -155,7 +159,9 @@ class UtilityMethodsClass {
     ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
     let result = '';
     for (let i = 0; i < length; i++) {
-      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+      result += randomChars.charAt(
+        Math.floor(Math.random() * randomChars.length),
+      );
     }
     return result;
   }
@@ -167,7 +173,7 @@ class UtilityMethodsClass {
    */
   hasNotch = () => {
     let d = Dimensions.get('window');
-    const { height, width } = d;
+    const {height, width} = d;
     return (
       // This has to be iOS duh
       Platform.OS === 'ios' &&
@@ -201,7 +207,7 @@ class UtilityMethodsClass {
   };
 
   hex2rgba = (hex, alpha = 1) => {
-    const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+    const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
     return `rgba(${r},${g},${b},${alpha})`;
   };
 
@@ -209,7 +215,7 @@ class UtilityMethodsClass {
     return Platform.OS === 'ios' ? iosAppUrl : androidAppUrl;
   };
 
-  resetAndNavigate = (route) => {
+  resetAndNavigate = route => {
     navigationRef.dispatch(
       CommonActions.reset({
         routes: [
@@ -221,7 +227,7 @@ class UtilityMethodsClass {
     );
   };
 
-  resetAndNavigateUsingMultipleRoutes = (routes) => {
+  resetAndNavigateUsingMultipleRoutes = routes => {
     navigationRef.dispatch(
       CommonActions.reset({
         routes,
@@ -233,17 +239,13 @@ class UtilityMethodsClass {
     return Platform.OS === 'ios';
   };
 
-  shareData = async (data) => {
+  shareData = async data => {
     try {
       await Share.share(data);
     } catch (error) {
       Alert.alert('Alert!', error.message);
     }
   };
-
-
-
-
 
   isIphoneX() {
     const dimen = Dimensions.get('window');
@@ -284,21 +286,18 @@ class UtilityMethodsClass {
   }
 
   selectImage = (selectType, callback, multiple) => {
-
     if (selectType === 'camera') {
       ImagePicker.openCamera({
         cropping: true,
-        mediaType: 'photo',
+
         compressImageQuality: 1,
         compressImageMaxWidth: 1024,
         compressImageMaxHeight: 1024,
-      }).then((image) => {
-        callback(image);
-      }).catch((error) => {
-
-
-      }
-      );
+      })
+        .then(image => {
+          callback(image);
+        })
+        .catch(error => {});
     } else {
       ImagePicker.openPicker({
         multiple: multiple,
@@ -307,16 +306,15 @@ class UtilityMethodsClass {
         compressImageQuality: 0.2,
         compressImageMaxWidth: 1024,
         compressImageMaxHeight: 1024,
-      }).then((images) => {
-        callback(images);
-      }).catch((error) => {
-      }
-      );
+      })
+        .then(images => {
+          callback(images);
+        })
+        .catch(error => {});
     }
   };
 
-
-  getUnixTimeStampOfUTCWithZeroTime = (value) => {
+  getUnixTimeStampOfUTCWithZeroTime = value => {
     let momentFormattedDate = moment(value).format('YYYY-MM-DDT00:00:00Z');
     let utcDate = moment(momentFormattedDate).utc();
     let unixUtcDate = moment(utcDate).unix();
@@ -324,7 +322,7 @@ class UtilityMethodsClass {
     return unixUtcDate;
   };
 
-  getUnixTimeStampOfUTCWithActualTime = (value) => {
+  getUnixTimeStampOfUTCWithActualTime = value => {
     let momentFormattedDate = moment(value).format('YYYY-MM-DDTHH:mm:ssZ');
     let utcDate = moment(momentFormattedDate).utc();
     let unixUtcDate = moment(utcDate).unix();
@@ -332,36 +330,33 @@ class UtilityMethodsClass {
     return unixUtcDate;
   };
 
-  getUserCurrentLocation = (callback) => {
+  getUserCurrentLocation = callback => {
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         callback({
           position: position,
-          sucess: true
+          sucess: true,
         });
       },
-      (error) => {
+      error => {
         if (error.code === 1) {
           callback({
             error: 'Permission Denied',
             sucess: false,
-          })
-        }
-        else {
+          });
+        } else {
           callback({
             error: 'Location not found',
             sucess: false,
-          })
+          });
         }
       },
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 20000 }
+      {enableHighAccuracy: false, timeout: 20000, maximumAge: 20000},
     );
-
-
-  }
+  };
 
   generateAlphanumericOtp = () => {
-    return Array.from({ length: 3 }, () => {
+    return Array.from({length: 3}, () => {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       return characters.charAt(Math.floor(Math.random() * characters.length));
     }).join('');
@@ -379,44 +374,31 @@ class UtilityMethodsClass {
   }
 
   calculateTimeLeftInSeconds(start, end) {
-
     const timeZone = 'America/Chicago';
     // Parse the start and end times using moment
-    const startTime = moment.utc(start).format("hh:mm:ss:a");
-    const endTime = moment.utc(end).format("hh:mm:ss:a");
-    const currentTime = momettimezone.tz(timeZone).format("hh:mm:ss:a");
-
-
-
-
-
-
-
-
-
-
+    const startTime = moment.utc(start).format('hh:mm:ss:a');
+    const endTime = moment.utc(end).format('hh:mm:ss:a');
+    const currentTime = momettimezone.tz(timeZone).format('hh:mm:ss:a');
 
     // const date = momettimezone.tz(new Date(), userTimezone);
 
-
     // Check if the current time is within the start and end time
 
-    if (moment(currentTime, "hh:mm:ss:a").isBetween(moment(startTime, "hh:mm:ss:a"), moment(endTime, "hh:mm:ss:a"))) {
+    if (
+      moment(currentTime, 'hh:mm:ss:a').isBetween(
+        moment(startTime, 'hh:mm:ss:a'),
+        moment(endTime, 'hh:mm:ss:a'),
+      )
+    ) {
       // Calculate the difference in seconds
-      const differenceInSeconds = moment(endTime, "hh:mm:ss:a").diff(moment(currentTime, "hh:mm:ss:a"), 'seconds');
+      const differenceInSeconds = moment(endTime, 'hh:mm:ss:a').diff(
+        moment(currentTime, 'hh:mm:ss:a'),
+        'seconds',
+      );
       return differenceInSeconds;
-    }
-    else {
-
+    } else {
       return 0;
     }
-
-
-
-
-
-
-
   }
   // requestPermission = (callback) => {
   //   if (Platform.OS == "ios") {
@@ -447,60 +429,60 @@ class UtilityMethodsClass {
   //   }
   // };
 
-  requestPermission = (callback) => {
+  requestPermission = callback => {
     const askForPermission = () => {
-      if (Platform.OS === "ios") {
+      if (Platform.OS === 'ios') {
         messaging()
           .requestPermission()
-          .then((response) => {
+          .then(response => {
             if (response) {
-              this.getFCMToken((res) => {
+              this.getFCMToken(res => {
                 callback(res);
               });
             } else {
               // If permission is denied, show alert and ask to open settings
               Alert.alert(
-                "Permission Required",
-                "You need to enable notifications in Settings.",
+                'Permission Required',
+                'You need to enable notifications in Settings.',
                 [
                   {
-                    text: "Settings",
+                    text: 'Settings',
                     onPress: () => {
                       Linking.openSettings();
-                    }
+                    },
                   },
                   {
-                    text: "Cancel",
-                    onPress: () => callback("")
-                  }
-                ]
+                    text: 'Cancel',
+                    onPress: () => callback(''),
+                  },
+                ],
               );
             }
           })
-          .catch((error) => {
-            callback("Error", error);
+          .catch(error => {
+            callback('Error', error);
           });
       } else {
-        request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((result) => {
+        request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then(result => {
           if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
-            this.getFCMToken((res) => {
+            this.getFCMToken(res => {
               callback(res);
             });
           } else {
             // If permission is denied, re-request permission
             Alert.alert(
-              "Permission Required",
-              "We need your permission to send notifications. Please grant it.",
+              'Permission Required',
+              'We need your permission to send notifications. Please grant it.',
               [
                 {
-                  text: "Settings",
+                  text: 'Settings',
                   onPress: Linking.openSettings,
                 },
                 {
-                  text: "Cancel",
-                  onPress: () => callback("")
-                }
-              ]
+                  text: 'Cancel',
+                  onPress: () => callback(''),
+                },
+              ],
             );
           }
         });
@@ -539,37 +521,37 @@ class UtilityMethodsClass {
   //     });
   // };
 
-
-  getFCMToken = async (callback) => {
+  getFCMToken = async callback => {
     try {
       // Check if permission is granted
       const enabled = await messaging().hasPermission();
 
       if (enabled) {
         // For iOS, ensure the device is registered for remote messages
-        if (Platform.OS === "ios" && !messaging().isDeviceRegisteredForRemoteMessages) {
+        if (
+          Platform.OS === 'ios' &&
+          !messaging().isDeviceRegisteredForRemoteMessages
+        ) {
           await messaging().registerDeviceForRemoteMessages();
         }
         // Get the FCM token
         const token = await messaging().getToken();
         callback(token);
       } else {
-        callback(""); // Permission not granted
+        callback(''); // Permission not granted
       }
     } catch (error) {
-      console.error("Error getting FCM token:", error);
-      callback(""); // Return empty string in case of error
+      console.error('Error getting FCM token:', error);
+      callback(''); // Return empty string in case of error
     }
   };
 
-
-  getForegroundMessage = (callback) => {
+  getForegroundMessage = callback => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      callback(remoteMessage)
+      callback(remoteMessage);
     });
     return unsubscribe;
-  }
-
+  };
 }
 
 const UtilityMethods = new UtilityMethodsClass();

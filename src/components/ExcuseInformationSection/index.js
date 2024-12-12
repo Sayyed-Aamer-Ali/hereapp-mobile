@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Fonts, Colors } from '../../assets';
-import { FontSize, UtilityMethods } from '../../utility';
+import {View, Text, StyleSheet} from 'react-native';
+import {Fonts, Colors} from '../../assets';
+import {FontSize, UtilityMethods} from '../../utility';
 import moment from 'moment';
-import { formatSchedule } from '../../utility/FormateDate';
+import {formatSchedule, getFormattedDate} from '../../utility/FormateDate';
 
-const ExcuseInformationSection = ({ className, classSection, dateTime,day }) => {
-  const { 
-    // formattedDate, 
-    formattedTimeSlot } = formatSchedule(dateTime);
+const ExcuseInformationSection = ({className, classSection, dateTime, day}) => {
+  const {
+    // formattedDate,
+    formattedTimeSlot,
+  } = formatSchedule(dateTime);
 
   return (
     <View style={styles.container}>
@@ -20,8 +21,8 @@ const ExcuseInformationSection = ({ className, classSection, dateTime,day }) => 
 
       <Text style={styles.label}>Date and Time:</Text>
       <Text style={styles.value}>
-        {moment(day).format("d/MM/YYYY")} , {formattedTimeSlot}
-         </Text>
+        {getFormattedDate(day)} , {formattedTimeSlot}
+      </Text>
     </View>
   );
 };
@@ -29,8 +30,8 @@ const ExcuseInformationSection = ({ className, classSection, dateTime,day }) => 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: UtilityMethods.wp(4),
-    paddingTop:UtilityMethods.hp(2),
-    paddingBottom:UtilityMethods.hp(2)
+    paddingTop: UtilityMethods.hp(2),
+    paddingBottom: UtilityMethods.hp(2),
   },
   label: {
     fontFamily: Fonts.REGULAR,
@@ -42,9 +43,8 @@ const styles = StyleSheet.create({
     fontSize: FontSize.VALUE(16),
     color: Colors.BLACK,
     marginBottom: UtilityMethods.hp(1),
-    lineHeight:FontSize.VALUE(19),
-    marginTop:UtilityMethods.hp(0.5)
-
+    lineHeight: FontSize.VALUE(19),
+    marginTop: UtilityMethods.hp(0.5),
   },
 });
 

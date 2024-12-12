@@ -1,6 +1,6 @@
-import { View, Text, ScrollView } from "react-native";
-import React from "react";
-import UtilityMethods from "../../utility/UtilityMethods";
+import {View, Text, ScrollView} from 'react-native';
+import React from 'react';
+import UtilityMethods from '../../utility/UtilityMethods';
 
 export const CustomScroll = ({
   children,
@@ -10,13 +10,12 @@ export const CustomScroll = ({
 }) => {
   return (
     <ScrollView
-      style={[{ flex: 1 }, style]}
+      style={[{flex: 1}, style]}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={[{ flexGrow: 1 }, containerStyle]}
+      contentContainerStyle={[{flexGrow: 1}, containerStyle]}
       showsVerticalScrollIndicator={false}
       scrollEnabled={scrollEnabled}
-      keyboardShouldPersistTaps="always"
-    >
+      keyboardShouldPersistTaps="always">
       {children}
     </ScrollView>
   );

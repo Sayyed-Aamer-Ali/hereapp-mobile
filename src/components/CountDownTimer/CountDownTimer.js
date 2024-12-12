@@ -1,9 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Colors, Fonts } from '../../assets';
-import { CommonStyles, FontSize } from '../../utility';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {Colors, Fonts} from '../../assets';
+import {CommonStyles, FontSize} from '../../utility';
 
-const CountdownTimer = ({ setonCounterFinished, contStyle, countDownTime, reset, counterStarted, expiredPress }) => {
+const CountdownTimer = ({
+  setonCounterFinished,
+  contStyle,
+  countDownTime,
+  reset,
+  counterStarted,
+  expiredPress,
+}) => {
   const [seconds, setSeconds] = useState(countDownTime);
   const intervalRef = useRef(null);
 
