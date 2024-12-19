@@ -179,14 +179,16 @@ const Home = ({navigation}) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          ListEmptyComponent={() => (
-            <EmptyComponent
-              title={'No Classes Found!'}
-              desc={
-                'Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.'
-              }
-            />
-          )}
+          ListEmptyComponent={() =>
+            !loader && (
+              <EmptyComponent
+                title={'No Classes Found!'}
+                desc={
+                  'Sorry we cannot find any registered classes for you. Please contact your instructor to add you to their class lists.'
+                }
+              />
+            )
+          }
           ListHeaderComponent={
             <View style={styles.headerCont}>
               <Text style={styles.headerText}>My Classes</Text>

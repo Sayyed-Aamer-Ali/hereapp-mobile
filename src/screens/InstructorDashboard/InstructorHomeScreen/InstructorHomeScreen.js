@@ -225,12 +225,14 @@ const Home = ({navigation}) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          ListEmptyComponent={() => (
-            <EmptyComponent
-              title={emptyData?.title}
-              desc={emptyData?.description}
-            />
-          )}
+          ListEmptyComponent={() =>
+            !loader && (
+              <EmptyComponent
+                title={emptyData?.title}
+                desc={emptyData?.description}
+              />
+            )
+          }
           ListHeaderComponent={
             <View style={styles.headerCont}>
               <Text style={styles.welcome}>Welcome {user?.firstName},</Text>

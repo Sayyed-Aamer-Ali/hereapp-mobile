@@ -38,6 +38,7 @@ const axiosWrapper = async (
       ...axiosConfig,
       responseType,
     };
+
     if (token) config.headers['Authorization'] = `Bearer ${token}`;
     if (isFormData) {
       config.headers['Content-Type'] = 'multipart/form-data';
