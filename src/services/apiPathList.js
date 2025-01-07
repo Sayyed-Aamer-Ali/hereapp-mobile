@@ -25,7 +25,7 @@ const FETCH_ALL_MISSED_CLASSES =
   BaseUrl + 'api/attendance-management/fetch-missed-classes';
 
 const EXCUSE_ABSENCE =
-  BaseUrl + 'api/attendance-management//request-excused-attendance';
+  BaseUrl + 'api/attendance-management/request-excused-attendance';
 
 const ATTENDENCE_HISTORY =
   BaseUrl + 'api/attendance-management/get-attendance-report-of-student';
