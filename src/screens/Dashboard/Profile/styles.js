@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {CommonStyles, UtilityMethods} from '../../../utility';
-import {Colors} from '../../../assets';
+import {CommonStyles, FontSize, UtilityMethods} from '../../../utility';
+import {Colors, Fonts} from '../../../assets';
 
 const styles = StyleSheet.create({
   cont: {
@@ -20,6 +20,20 @@ const styles = StyleSheet.create({
   },
   changePassowrdText: {
     color: Colors.BLACK,
+  },
+  deleteButton: {
+    marginTop: UtilityMethods.hp(1),
+    backgroundColor: Colors.WHITE,
+    borderColor: '#D3D3D3',
+    borderWidth: 1,
+    height: UtilityMethods.hp(6),
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: FontSize.VALUE(16),
+    fontFamily: Fonts.SEMI_BOLD,
   },
 });
 export default styles;

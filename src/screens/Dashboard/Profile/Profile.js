@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  TouchableHighlight,
+  Alert,
+} from 'react-native';
 import {
   Button,
   Header,
@@ -12,7 +19,7 @@ import {CommonStyles, Constants} from '../../../utility';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {Colors, Icons} from '../../../assets';
-import {setUser} from '../../../redux/Reducers/AuthReducer';
+import {resetAuth, setUser} from '../../../redux/Reducers/AuthReducer';
 import UserDetails from '../../../components/UserDetail';
 import Routes from '../../../navigation/Routes';
 import {useIsFocused} from '@react-navigation/native';
@@ -23,6 +30,7 @@ import {API_URLS} from '../../../services/apiPathList';
 const Profile = ({navigation}) => {
   const user = useSelector(state => state.auth.user);
   const token = useSelector(state => state.auth.token);
+  const [isPressed, setIsPressed] = useState(false);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [editImage, setEditImage] = useState(null);
@@ -108,6 +116,34 @@ const Profile = ({navigation}) => {
     }
   };
 
+  const getBackgroundColor = () => {
+    return isPressed ? Colors.RED : Colors.WHITE;
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account?',
+      [
+        {
+          text: 'Cancel',
+
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            deleteAccount();
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
+  const deleteAccount = async () => {
+    dispatch(resetAuth());
+  };
   return (
     <MainLayout loader={loader}>
       <Header title="Profile" showBackButton={false} DrawerHeader={true} />
@@ -138,6 +174,24 @@ const Profile = ({navigation}) => {
             textStyle={styles.changePassowrdText}
             onPress={() => handleNavigation(Routes.CHANGE_PASSWORD)}
           />
+          <TouchableOpacity
+            style={{
+              ...styles.deleteButton,
+              backgroundColor: getBackgroundColor(),
+              borderWidth: isPressed ? 0 : 1,
+            }}
+            activeOpacity={1}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+            onPress={() => handleDeleteAccount()}>
+            <Text
+              style={{
+                ...styles.text,
+                color: isPressed ? Colors.WHITE : '#D3D3D3',
+              }}>
+              Delete Account
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScreenWrapper>
     </MainLayout>
