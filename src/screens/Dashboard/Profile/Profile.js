@@ -126,12 +126,12 @@ const Profile = ({navigation}) => {
       'Are you sure you want to delete your account?',
       [
         {
-          text: 'Cancel',
+          text: 'No',
 
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Yes',
           onPress: () => {
             deleteAccount();
           },
@@ -142,7 +142,31 @@ const Profile = ({navigation}) => {
   };
 
   const deleteAccount = async () => {
-    dispatch(resetAuth());
+    let payloadData = {
+      status: true,
+    };
+    try {
+      setLoader(true);
+
+      let response = await axiosWrapper(
+        'PUT',
+        API_URLS.DELETE_ACCOUNT,
+        payloadData,
+        token,
+        false,
+        'json',
+        true,
+      );
+
+      if (response) {
+        dispatch(resetAuth());
+      }
+    } catch (error) {
+      console.log(error);
+      AlertService.toastPrompt('Something went wrong...', 'error');
+    } finally {
+      setLoader(false);
+    }
   };
   return (
     <MainLayout loader={loader}>
@@ -174,24 +198,12 @@ const Profile = ({navigation}) => {
             textStyle={styles.changePassowrdText}
             onPress={() => handleNavigation(Routes.CHANGE_PASSWORD)}
           />
-          <TouchableOpacity
-            style={{
-              ...styles.deleteButton,
-              backgroundColor: getBackgroundColor(),
-              borderWidth: isPressed ? 0 : 1,
-            }}
-            activeOpacity={1}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-            onPress={() => handleDeleteAccount()}>
-            <Text
-              style={{
-                ...styles.text,
-                color: isPressed ? Colors.WHITE : '#D3D3D3',
-              }}>
-              Delete Account
-            </Text>
-          </TouchableOpacity>
+
+          <Button
+            text={'Delete Account'}
+            onPress={() => handleDeleteAccount()}
+            style={styles.deleteButton}
+          />
         </View>
       </ScreenWrapper>
     </MainLayout>

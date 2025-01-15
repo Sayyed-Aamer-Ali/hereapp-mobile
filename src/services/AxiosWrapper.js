@@ -47,7 +47,7 @@ const axiosWrapper = async (
       config.headers['Content-Type'] = 'application/json';
       if (data) config.data = data;
     }
-
+    // console.log('config :>> ', config);
     const response = await axios(config);
 
     if ((response?.data?.message || response?.message) && showToast) {
@@ -63,9 +63,16 @@ const axiosWrapper = async (
     if (msg && showToast) {
       AlertService.toastPrompt(msg, 'error');
     }
-    if (msg === 'Unauthorized') {
+    if (
+      msg === 'Unauthorized' ||
+      msg == "Couldn't find your account, please create an account"
+    ) {
       store.dispatch(resetAuth());
-      AlertService.toastPrompt('You are not an authorized user', 'error');
+      if (msg == "Couldn't find your account, please create an account") {
+        AlertService.toastPrompt(msg, 'error');
+      } else {
+        AlertService.toastPrompt('You are not an authorized user', 'error');
+      }
     }
     return Promise.reject(isObj ? {msg, data: error?.response.data} : msg);
   }

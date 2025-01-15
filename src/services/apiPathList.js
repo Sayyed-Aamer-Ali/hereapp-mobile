@@ -32,6 +32,7 @@ const ATTENDENCE_HISTORY =
 
 const GET_NOTIFICATION = BaseUrl + 'api/notifications/get-user-notifications';
 const READ_NOTIFICATION = BaseUrl + 'api/notifications/read-notifications';
+const DELETE_ACCOUNT = BaseUrl + 'api/user/delete-account';
 
 export const API_URLS = {
   UPLOAD_IMAGE,
@@ -54,5 +55,6 @@ export const API_URLS = {
   ATTENDENCE_HISTORY,
   GET_NOTIFICATION,
   READ_NOTIFICATION,
+  DELETE_ACCOUNT,
   // Excuse attendance
 };
