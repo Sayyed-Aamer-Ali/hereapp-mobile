@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import DeviceInfo from 'react-native-device-info';
-import {Text, View, RefreshControl} from 'react-native';
+import {Text, View, RefreshControl, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ClassDetailBox,
@@ -122,15 +122,18 @@ const Home = ({navigation}) => {
                 false,
               );
 
+              const status = checkAttendanceStatus(
+                attendanceResponse,
+                user?.role,
+                user?._id,
+              );
+
               // Add the attendance status to the class object
               return {
                 ...classItem,
                 attendanceStatus: attendanceResponse,
-                showButtonDisabled: checkAttendanceStatus(
-                  attendanceResponse,
-                  user?.role,
-                  user?._id,
-                ),
+                showButtonDisabled: status.showButtonDisabled,
+                alertMessage: status.message,
               };
             } catch (error) {
               return {
@@ -144,7 +147,8 @@ const Home = ({navigation}) => {
             return {
               ...classItem,
               attendanceStatus: null,
-              showButtonDisabled: true,
+              showButtonDisabled: false,
+              alertMessage: 'Class not available. Please check the schedule.',
             };
           }
         }),
@@ -162,7 +166,12 @@ const Home = ({navigation}) => {
   };
 
   const handleAttendance = item => {
+    if (item?.alertMessage) {
+      Alert.alert('Alert', item?.alertMessage);
+      return;
+    }
     navigation.navigate(Routes.ATTENDANCE, {item});
+    // navigation.navigate(Routes.ATTENDANCE, {item});
   };
 
   const onRefresh = useCallback(() => {
@@ -201,6 +210,13 @@ const Home = ({navigation}) => {
             <ClassDetailBox
               item={item}
               buttonText="Mark Attendance"
+              showButton={
+                item?.alertMessage ==
+                  'You have already marked your attendance!' ||
+                item.alertMessage == 'Attendance code expired!'
+                  ? false
+                  : true
+              }
               onPress={() => handleAttendance(item)}
             />
           )}

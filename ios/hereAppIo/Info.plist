@@ -42,19 +42,18 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Here App requires access to your camera</string>
-	<key>NSHumanReadableCopyright</key>
-	<string></string>
+	<string>Here App requires access to your camera to upload a profile picture</string>
+	
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Here App requires access to your location</string>
+	<string>Here App requires access to your location to mark your attendance</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Here App requires access to your location</string>
+	<string>Here App requires access to your location to mark your attendance</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Here App requires access to your location to mark your attendance</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Here App requires to access Audio recording to record and uplod videos</string>
+	<string>Here App requires to access your microphone to upload a profile picture</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Here App would like to upload photos from your photo gallery</string>
+	<string>Here App would like to access your photo library to upload a profile picture</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

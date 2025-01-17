@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Text, View, RefreshControl} from 'react-native';
+import {Text, View, RefreshControl, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ClassDetailBox,
@@ -159,14 +159,20 @@ const Home = ({navigation}) => {
                 false,
               );
 
+              const status = checkAttendanceStatus(
+                attendanceResponse,
+                user?.role,
+                user?._id,
+              );
+              console.log('status', status);
+              console.log('attendanceResponse', attendanceResponse);
+
               // Add the attendance status to the class object
               return {
                 ...classItem,
                 attendanceStatus: attendanceResponse,
-                showButtonDisabled: checkAttendanceStatus(
-                  attendanceResponse,
-                  user?.role,
-                ),
+                showButtonDisabled: status.showButtonDisabled,
+                alertMessage: status.message,
               };
             } catch (error) {
               console.error(
@@ -184,7 +190,8 @@ const Home = ({navigation}) => {
             return {
               ...classItem,
               attendanceStatus: null,
-              showButtonDisabled: true,
+              showButtonDisabled: false,
+              alertMessage: 'Class not available. Please check the schedule.',
             };
           }
         }),
@@ -208,6 +215,10 @@ const Home = ({navigation}) => {
   }, []);
 
   const handleNavigation = item => {
+    if (item?.alertMessage) {
+      Alert.alert('Alert', item?.alertMessage);
+      return;
+    }
     navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN, {item});
   };
 
