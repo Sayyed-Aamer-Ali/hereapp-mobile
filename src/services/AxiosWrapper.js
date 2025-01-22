@@ -63,12 +63,21 @@ const axiosWrapper = async (
     if (msg && showToast) {
       AlertService.toastPrompt(msg, 'error');
     }
+    let errorCode = error?.response?.status;
+
     if (
       msg === 'Unauthorized' ||
-      msg == "Couldn't find your account, please create an account"
+      msg == "Couldn't find your account, please create an account" ||
+      msg == 'Your account is suspended or deleted. Please contact admin!' ||
+      errorCode === 401
     ) {
       store.dispatch(resetAuth());
       if (msg == "Couldn't find your account, please create an account") {
+        AlertService.toastPrompt(msg, 'error');
+      }
+      if (
+        msg == 'Your account is suspended or deleted. Please contact admin!'
+      ) {
         AlertService.toastPrompt(msg, 'error');
       } else {
         AlertService.toastPrompt('You are not an authorized user', 'error');

@@ -57,7 +57,7 @@ const OtpVerification = ({navigation, route}) => {
         'json',
         true,
       );
-      console.log('response', response);
+      // console.log('response', response);
     } catch (error) {}
   };
 

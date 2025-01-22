@@ -164,8 +164,6 @@ const Home = ({navigation}) => {
                 user?.role,
                 user?._id,
               );
-              console.log('status', status);
-              console.log('attendanceResponse', attendanceResponse);
 
               // Add the attendance status to the class object
               return {
