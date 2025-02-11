@@ -77,3 +77,5 @@ buck-out/
 *.log
 *.tmp
 *.temp
+
+.env

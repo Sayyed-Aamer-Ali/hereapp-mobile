@@ -178,7 +178,10 @@ export const sortClassesByDayAndTime = classes => {
 export const checkAttendanceStatus = (classItem, userType, userId) => {
   if (userType === 'STUDENT') {
     if (classItem?.message == 'Attendance code not generated yet!') {
-      return true;
+      return {
+        showButtonDisabled: false,
+        message: 'Attendance code not generated yet!',
+      };
     } else if (userId && classItem?.data?.presentStudents) {
       {
         let chekUser = classItem?.data?.presentStudents.find(
@@ -186,20 +189,39 @@ export const checkAttendanceStatus = (classItem, userType, userId) => {
         );
 
         if (chekUser) {
-          return true;
+          return {
+            showButtonDisabled: true,
+            message: 'You have already marked your attendance!',
+          };
         }
         if (
           classItem?.data?.codeAttemptsBy?.length >=
           classItem?.data?.codeAttempts
         ) {
-          return true;
+          {
+            return {
+              showButtonDisabled: true,
+              message: 'Attendance code expired!',
+            };
+          }
         } else {
-          return false;
+          return {
+            showButtonDisabled: false,
+            message: null,
+          };
         }
       }
     } else {
-      return false;
+      return {
+        showButtonDisabled: true,
+        message: 'Attendance code not generated yet!',
+      };
     }
+  } else {
+    return {
+      showButtonDisabled: false,
+      message: null,
+    };
   }
 };
 

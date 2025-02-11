@@ -33,7 +33,9 @@ const Header = ({
   };
 
   useEffect(() => {
-    getNotifications();
+    if (token) {
+      getNotifications();
+    }
   }, []);
 
   const getNotifications = async () => {

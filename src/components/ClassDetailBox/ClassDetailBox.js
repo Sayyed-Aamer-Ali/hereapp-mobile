@@ -20,8 +20,10 @@ const ClassDetailBox = ({
   schedule,
   dates,
   data,
+  showButton = true,
 }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(null);
+  const [showAttendanceButton, setShowAttendanceButton] = useState(showButton);
   let isFocused = useIsFocused();
   const user = useSelector(state => state.auth.user);
 
@@ -56,7 +58,7 @@ const ClassDetailBox = ({
   }, [item]);
 
   useEffect(() => {
-    if (attendanceData && isFocused) {
+    if (attendanceData) {
       let timeleft = UtilityMethods.calculateTimeLeftInSeconds(
         attendanceData?.attendanceStartedAt,
         attendanceData?.attendanceExpiresAt,
@@ -64,7 +66,7 @@ const ClassDetailBox = ({
 
       setTimer(timeleft);
     }
-  }, [attendanceData, isFocused]);
+  }, [attendanceData]);
 
   useEffect(() => {
     if (timer > 0) {
@@ -74,6 +76,7 @@ const ClassDetailBox = ({
       return () => clearInterval(interval);
     } else if (timer === 0) {
       setIsButtonDisabled(true);
+      setShowAttendanceButton(false);
     }
   }, [timer]);
 
@@ -125,16 +128,20 @@ const ClassDetailBox = ({
           )}
         </View>
       </View>
-      <Button
-        text={buttonText}
-        Icon={<Icons.Right />}
-        style={{
-          backgroundColor: isButtonDisabled ? Colors.LIGHT_COLOR : Colors.BLACK,
-          opacity: isButtonDisabled ? 0.8 : 1,
-        }}
-        onPress={onPress}
-        disabled={isButtonDisabled}
-      />
+      {showAttendanceButton && (
+        <Button
+          text={buttonText}
+          Icon={<Icons.Right />}
+          style={{
+            backgroundColor: isButtonDisabled
+              ? Colors.LIGHT_COLOR
+              : Colors.BLACK,
+            opacity: isButtonDisabled ? 0.8 : 1,
+          }}
+          onPress={onPress}
+          disabled={isButtonDisabled}
+        />
+      )}
     </ShadowCard>
   );
 };

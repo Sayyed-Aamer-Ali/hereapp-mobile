@@ -375,22 +375,19 @@ class UtilityMethodsClass {
 
   calculateTimeLeftInSeconds(start, end) {
     const timeZone = 'America/Chicago';
-    // Parse the start and end times using moment
+
     const startTime = moment.utc(start).format('hh:mm:ss:a');
     const endTime = moment.utc(end).format('hh:mm:ss:a');
     const currentTime = momettimezone.tz(timeZone).format('hh:mm:ss:a');
 
-    // const date = momettimezone.tz(new Date(), userTimezone);
-
-    // Check if the current time is within the start and end time
-
     if (
-      moment(currentTime, 'hh:mm:ss:a').isBetween(
+      moment(currentTime, 'hh:mm:ss:a').isSameOrAfter(
         moment(startTime, 'hh:mm:ss:a'),
+      ) &&
+      moment(currentTime, 'hh:mm:ss:a').isSameOrBefore(
         moment(endTime, 'hh:mm:ss:a'),
       )
     ) {
-      // Calculate the difference in seconds
       const differenceInSeconds = moment(endTime, 'hh:mm:ss:a').diff(
         moment(currentTime, 'hh:mm:ss:a'),
         'seconds',

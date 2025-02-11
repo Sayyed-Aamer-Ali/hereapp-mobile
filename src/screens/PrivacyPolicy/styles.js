@@ -3,8 +3,8 @@ import {Colors, Fonts} from '../../assets';
 import {UtilityMethods, FontSize} from '../../utility';
 const styles = StyleSheet.create({
   container: {
-    padding: UtilityMethods.wp(5),
-    backgroundColor: Colors.WHITE,
+    flex: 1,
+    marginTop: UtilityMethods.hp(2),
   },
   header: {
     flexDirection: 'row',

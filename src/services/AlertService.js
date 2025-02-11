@@ -2,17 +2,38 @@ import {Alert, Platform, ToastAndroid} from 'react-native';
 import {Toast} from 'react-native-toast-notifications';
 
 class alertService {
+  static toastVisible = false;
   toastPrompt = (msg, type = 'success') => {
-    if (type === 'error')
-      Toast.show(msg, {duration: 2000, type: 'danger', placement: 'bottom'});
-    else
-      Toast.show(msg, {
-        type: 'success',
-        placement: 'bottom',
-        duration: 4000,
-        offset: 30,
-        animationType: 'zoom-in',
-      });
+    if (!this.toastVisible) {
+      this.toastVisible = true;
+
+      if (type === 'error')
+        Toast.show(msg, {
+          duration: 2000,
+          type: 'danger',
+          placement: 'bottom',
+          onClose: () => {
+            this.toastVisible = false;
+          },
+          onPress: () => {
+            this.toastVisible = false;
+          },
+        });
+      else
+        Toast.show(msg, {
+          type: 'success',
+          placement: 'bottom',
+          duration: 2000,
+          offset: 30,
+          animationType: 'zoom-in',
+          onClose: () => {
+            this.toastVisible = false;
+          },
+          onPress: () => {
+            this.toastVisible = false;
+          },
+        });
+    }
   };
   show(title, message) {
     Alert.alert(title, message, [
