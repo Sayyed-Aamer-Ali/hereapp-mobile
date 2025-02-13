@@ -164,7 +164,6 @@ const ExcuseAttendanceSectionScreen = ({navigation, route}) => {
 
       setMissedClasses(sortClasses);
     } catch (error) {
-      console.log('error', error);
     } finally {
       setRefreshing(false);
     }

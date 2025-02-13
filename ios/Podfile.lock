@@ -1081,7 +1081,7 @@ PODS:
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
-  - react-native-webview (13.13.1):
+  - react-native-webview (13.13.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1777,7 +1777,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-webview: f4790a62afcddad45b40ca12572645e2cc257550
+  react-native-webview: 22d32fe40fc2b879dcb3e09bdfa75e30600c0432
   React-nativeconfig: 21d89c65ca39875fad2c5c465e0e013e514eba21
   React-NativeModulesApple: e2e180dae4486b2978fcf3564cc4c8de4b453a68
   React-perflogger: 3d31e0d1e8ad891e43a09ac70b7b17a79773003a
@@ -1824,4 +1824,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: dbd379e1436ea0822e90eaefcf62162d68416e90
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

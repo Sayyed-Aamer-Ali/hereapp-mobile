@@ -13,11 +13,12 @@ import DocumentPicker from 'react-native-document-picker';
 import axiosWrapper from '../../services/AxiosWrapper';
 import {API_URLS} from '../../services/apiPathList';
 import {opacity} from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+import {LoaderModal} from '../LoaderModal';
 
 const FileUploadComponent = ({file, setFile, error}) => {
   const [loader, setLoader] = useState(false);
   const handleFilePick = async () => {
-    setLoader(true);
+    // setLoader(true);
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
@@ -49,6 +50,7 @@ const FileUploadComponent = ({file, setFile, error}) => {
 
   let uploadDoc = async file => {
     try {
+      setLoader(true);
       const formData = new FormData();
       formData.append('files', file);
       let response = await axiosWrapper(
@@ -78,6 +80,7 @@ const FileUploadComponent = ({file, setFile, error}) => {
         placeholderTextColor={Colors.LIGHT_GRAY}
         editable={false}
       />
+      <LoaderModal loading={loader} />
 
       <TouchableOpacity
         style={styles.iconButton(file.length > 0 || loader)}
