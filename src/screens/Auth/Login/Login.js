@@ -1,7 +1,15 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+  Linking,
+} from 'react-native';
 import styles from './styles';
 import {Colors, Fonts, Icons, Images} from '../../../assets';
+import {SIGNUP_URL_FROM_ENV} from '@env';
 import {
   CommonStyles,
   Constants,
@@ -32,6 +40,7 @@ import {setRefreshClasses} from '../../../redux/Reducers/TempData';
 
 const Login = ({navigation, route}) => {
   const toast = useToast();
+  console.log('SIGNUP_URL_FROM_ENV', SIGNUP_URL_FROM_ENV);
   const [loader, setLoader] = useState(false);
   const userType = route.params?.selectedUser || '';
   const passwordRef = useRef(null);
@@ -70,7 +79,11 @@ const Login = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const onPressDontAccount = () => {
-    navigation.navigate(Routes.SIGNUP);
+    if (userType == 'Instructor') {
+      Linking.openURL(SIGNUP_URL_FROM_ENV);
+    } else {
+      navigation.navigate(Routes.SIGNUP);
+    }
   };
 
   const onPressLogin = () => {
@@ -258,31 +271,30 @@ const Login = ({navigation, route}) => {
           }}
           onPress={() => onPressLogin()}
         />
-        {userType != 'Instructor' ? (
-          <View style={styles.LinkedView}>
+
+        <View style={styles.LinkedView}>
+          <Text
+            style={[
+              styles.regText,
+              {
+                fontSize: FontSize.VALUE(16),
+              },
+            ]}>
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={() => onPressDontAccount()}>
             <Text
               style={[
                 styles.regText,
                 {
+                  color: Colors.RED,
                   fontSize: FontSize.VALUE(16),
                 },
               ]}>
-              Don't have an account?
+              Sign Up
             </Text>
-            <TouchableOpacity onPress={() => onPressDontAccount()}>
-              <Text
-                style={[
-                  styles.regText,
-                  {
-                    color: Colors.RED,
-                    fontSize: FontSize.VALUE(16),
-                  },
-                ]}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
+          </TouchableOpacity>
+        </View>
       </ScreenWrapper>
     </MainLayout>
   );
