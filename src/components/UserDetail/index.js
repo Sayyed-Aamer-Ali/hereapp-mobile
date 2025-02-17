@@ -22,10 +22,7 @@ const UserDetails = ({userData}) => {
         <Text style={styles.label}>Phone:</Text>
         <Text style={[styles.value]}>{userData.phoneNumber || '-'}</Text>
       </View>
-      <View style={styles.row}>
-        <Text style={styles.label}>School:</Text>
-        <Text style={[styles.value]}>{userData.schoolName || '-'}</Text>
-      </View>
+
       <View style={styles.row}>
         <Text style={styles.label}>Address:</Text>
         <Text style={[styles.value]}>{userData.address || '-'}</Text>

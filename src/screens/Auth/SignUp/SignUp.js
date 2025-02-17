@@ -152,11 +152,9 @@ const SignUp = ({navigation}) => {
       setLastName({...lastName, error: 'Last Name is required'});
       error['lastName'] = 'Last Name is required';
     }
-    if (phoneNumber.value?.trim() === '') {
-      setPhoneNumber({...phoneNumber, error: 'Phone Number is required'});
-      error['phoneNumber'] = 'Phone Number is required';
-    } else if (
-      // !validatePhone(phoneNumber.value)
+
+    if (
+      phoneNumber.value?.trim() !== '' &&
       phoneNumber.value?.trim().length < 10
     ) {
       setPhoneNumber({...phoneNumber, error: 'Phone Number is not correct'});
@@ -166,10 +164,7 @@ const SignUp = ({navigation}) => {
       setNetId({...netId, error: 'NetID is required'});
       error['netId'] = 'NetID is required';
     }
-    if (schoolName.value?.trim() === '') {
-      setSchoolName({...schoolName, error: 'School Name is required'});
-      error['schoolName'] = 'School Name is required';
-    }
+
     if (!rememberMe.value) {
       return AlertService.toastPrompt(
         'You must agree to the terms and conditions',
@@ -290,16 +285,9 @@ const SignUp = ({navigation}) => {
             }}
             keyboardType="number-pad"
             isPhoneNumber={true}
-            onSubmitEditing={() => schoolNameRef.current?.focus()}
-          />
-          <CustomizedInput
-            ref={schoolNameRef}
-            fieldInfo={schoolName}
-            onChange={text => {
-              setSchoolName({...schoolName, value: text, error: ''});
-            }}
             onSubmitEditing={() => passwordRef.current?.focus()}
           />
+
           <CustomizedInput
             ref={passwordRef}
             fieldInfo={password}

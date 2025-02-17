@@ -36,6 +36,7 @@ const EditProfile = ({navigation}) => {
     type: 'text',
     error: '',
     placeholder: 'Enter First Name',
+    required: true,
     leftIcon: <Icons.User />,
   });
 
@@ -45,6 +46,7 @@ const EditProfile = ({navigation}) => {
     value: user.lastName || '',
     type: 'text',
     error: '',
+    required: true,
     placeholder: 'Enter Last Name',
     leftIcon: <Icons.User />,
   });
@@ -71,7 +73,7 @@ const EditProfile = ({navigation}) => {
 
   const [postalCode, setPostalCode] = useState({
     inputType: 'text',
-    title: 'Postal Code',
+    title: 'Zip Code',
     value: user.postalCode || '',
     type: 'text',
     error: '',
@@ -84,6 +86,7 @@ const EditProfile = ({navigation}) => {
     title: 'NetID',
     value: user.netID || 'netID',
     type: 'text',
+    required: true,
     error: '',
     placeholder: 'Enter NetID',
     leftIcon: (
@@ -131,38 +134,40 @@ const EditProfile = ({navigation}) => {
       error['lastName'] = 'Last Name is required';
     }
 
-    if (phoneNumber.value === '') {
-      setPhoneNumber({...phoneNumber, error: 'Phone Number is required'});
-      error['phoneNumber'] = 'Phone Number is required';
-    } else if (phoneNumber?.value?.length < 10) {
+    // if (phoneNumber.value === '') {
+    //   setPhoneNumber({...phoneNumber, error: 'Phone Number is required'});
+    //   error['phoneNumber'] = 'Phone Number is required';
+    // }
+
+    if (phoneNumber.value !== '' && phoneNumber?.value?.length < 10) {
       setPhoneNumber({...phoneNumber, error: 'Phone Number is not correct'});
       error['phoneNumber'] = 'Phone Number is not correct';
     }
 
-    if (address.value === '') {
-      setAddress({...address, error: 'Address is required'});
-      error['address'] = 'Address is required';
-    }
+    // if (address.value === '') {
+    //   setAddress({...address, error: 'Address is required'});
+    //   error['address'] = 'Address is required';
+    // }
 
-    if (postalCode.value === '') {
-      setPostalCode({...postalCode, error: 'Postal Code is required'});
-      error['postalCode'] = 'Postal Code is required';
-    }
+    // if (postalCode.value === '') {
+    //   setPostalCode({...postalCode, error: 'Postal Code is required'});
+    //   error['postalCode'] = 'Postal Code is required';
+    // }
 
     if (netId.value === '') {
       setNetId({...netId, error: 'NetID is required'});
       error['netId'] = 'NetID is required';
     }
 
-    if (schoolName.value === '') {
-      setSchoolName({...schoolName, error: 'School Name is required'});
-      error['schoolName'] = 'School Name is required';
-    }
+    // if (schoolName.value === '') {
+    //   setSchoolName({...schoolName, error: 'School Name is required'});
+    //   error['schoolName'] = 'School Name is required';
+    // }
 
-    if (profileImage.value === '') {
-      setProfileImage({...profileImage, error: 'Profile Image is required'});
-      error['profileImage'] = 'Profile Image is required';
-    }
+    // if (profileImage.value === '') {
+    //   setProfileImage({...profileImage, error: 'Profile Image is required'});
+    //   error['profileImage'] = 'Profile Image is required';
+    // }
 
     setError(error);
 
@@ -279,7 +284,7 @@ const EditProfile = ({navigation}) => {
             }}
             editable={false}
           />
-          <CustomizedInput
+          {/* <CustomizedInput
             ref={schoolNameRef}
             fieldInfo={schoolName}
             onChange={text => {
@@ -287,7 +292,7 @@ const EditProfile = ({navigation}) => {
             }}
             onSubmitEditing={() => addressRef.current?.focus()}
             maxLength={80}
-          />
+          /> */}
           <CustomizedInput
             ref={addressRef}
             fieldInfo={address}

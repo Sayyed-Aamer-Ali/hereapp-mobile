@@ -26,6 +26,8 @@ const InputText = forwardRef(
     const navigation = useNavigation();
     const [show, setShow] = useState(false);
 
+    console.log('fieldInfo', fieldInfo);
+
     const iputRef = useRef(null);
 
     // const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -64,7 +66,9 @@ const InputText = forwardRef(
             <Text style={[styles.TitleStyle, titleStyle]}>
               {fieldInfo?.title}
             </Text>
-            <Text style={[styles.hashText, titleStyle]}>*</Text>
+            {fieldInfo?.required && (
+              <Text style={[styles.hashText, titleStyle]}>*</Text>
+            )}
           </View>
         )}
         <View
