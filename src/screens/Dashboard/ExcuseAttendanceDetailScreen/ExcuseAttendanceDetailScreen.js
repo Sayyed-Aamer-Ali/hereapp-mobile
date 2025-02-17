@@ -38,10 +38,10 @@ const ExcuseAttendanceDetailScreen = ({navigation, route}) => {
       error = true;
     }
 
-    if (file.length === 0) {
-      setFileError('Please upload a file');
-      error = true;
-    }
+    // if (file.length === 0) {
+    //   setFileError('Please upload a file');
+    //   error = true;
+    // }
 
     if (!error) {
       setLoader(true);
@@ -49,8 +49,12 @@ const ExcuseAttendanceDetailScreen = ({navigation, route}) => {
       let attendanceData = {
         attendanceID: data._id,
         reason: reason,
-        attachment: file[0],
+        // attachment: file[0],
       };
+
+      if (file.length > 0) {
+        attendanceData.attachment = file[0];
+      }
 
       try {
         let response = await axiosWrapper(

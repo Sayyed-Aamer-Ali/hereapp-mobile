@@ -55,6 +55,7 @@ const axiosWrapper = async (
     }
     return response.data ? response.data : response;
   } catch (error) {
+    // console.log(error?.response?.data, 'Im error', url);
     let msg =
       error?.response?.data?.validation?.body?.message ||
       error?.response?.data?.desc ||
