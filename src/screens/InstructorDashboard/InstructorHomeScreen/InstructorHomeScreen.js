@@ -96,8 +96,9 @@ const Home = ({navigation}) => {
         'json',
         false,
       );
-      onPressLogout();
+
       setModalVisible(false);
+      dispatch(resetAuth());
     } catch (error) {
       console.log('error', error);
     } finally {
