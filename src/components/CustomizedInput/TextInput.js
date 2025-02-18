@@ -26,8 +26,6 @@ const InputText = forwardRef(
     const navigation = useNavigation();
     const [show, setShow] = useState(false);
 
-    console.log('fieldInfo', fieldInfo);
-
     const iputRef = useRef(null);
 
     // const USPhoneNumberMask = ['+','(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
