@@ -48,9 +48,10 @@ const Home = ({navigation}) => {
     let payload = {
       fcmToken: res,
       isInAppNotificationEnabled: true,
+      isLogin: true,
     };
     try {
-      if (!fcmToken && fcmToken !== res) {
+      if (res) {
         let response = await axiosWrapper(
           'PATCH',
           API_URLS.EDIT_PROFILE,
@@ -60,9 +61,12 @@ const Home = ({navigation}) => {
           'json',
           false,
         );
+
         dispatch(setFcmToken(res));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const handleRefreshClasses = useCallback(() => {

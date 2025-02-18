@@ -62,10 +62,11 @@ const Home = ({navigation}) => {
     let payload = {
       fcmToken: res,
       isInAppNotificationEnabled: true,
+      isLogin: true,
     };
 
     try {
-      if (!fcmToken && fcmToken !== res) {
+      if (res) {
         let response = await axiosWrapper(
           'PATCH',
           API_URLS.EDIT_PROFILE,
@@ -80,9 +81,28 @@ const Home = ({navigation}) => {
     } catch (error) {}
   };
 
-  const handleLogout = () => {
-    setModalVisible(false);
-    dispatch(resetAuth());
+  const handleLogout = async () => {
+    setLoader(true);
+    let payload = {
+      isLogin: false,
+    };
+    try {
+      let response = await axiosWrapper(
+        'PATCH',
+        API_URLS.EDIT_PROFILE,
+        payload,
+        token,
+        false,
+        'json',
+        false,
+      );
+      onPressLogout();
+      setModalVisible(false);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setLoader(false);
+    }
   };
 
   const handleCancel = () => {

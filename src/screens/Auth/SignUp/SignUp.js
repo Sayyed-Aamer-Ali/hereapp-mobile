@@ -33,6 +33,7 @@ const SignUp = ({navigation}) => {
     type: 'email',
     error: '',
     placeholder: 'Enter Email Address',
+    required: true,
   });
   const lastNameRef = useRef();
   const emailRef = useRef();
@@ -48,6 +49,7 @@ const SignUp = ({navigation}) => {
     error: '',
     placeholder: 'Enter First Name',
     leftIcon: <Icons.User />,
+    required: true,
   });
 
   const [lastName, setLastName] = useState({
@@ -58,6 +60,7 @@ const SignUp = ({navigation}) => {
     error: '',
     placeholder: 'Enter Last Name',
     leftIcon: <Icons.User />,
+    required: true,
   });
 
   const [phoneNumber, setPhoneNumber] = useState({
@@ -104,6 +107,7 @@ const SignUp = ({navigation}) => {
     type: 'password',
     error: '',
     placeholder: 'Enter Password',
+    required: true,
   });
 
   const [rememberMe, setRememberMe] = useState({
@@ -198,7 +202,7 @@ const SignUp = ({navigation}) => {
         password: password?.value?.trim(),
         firstName: firstName.value,
         lastName: lastName.value,
-        phoneNumber: `+${phoneNumber.value}`,
+        phoneNumber: phoneNumber.value ? `+${phoneNumber.value}` : '',
         netID: netId.value,
         schoolName: schoolName.value,
         role: 'STUDENT',

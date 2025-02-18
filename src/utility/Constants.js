@@ -29,7 +29,7 @@ const Constants = {
     },
     {
       id: 7,
-      name: 'Excused Attendance',
+      name: 'Excused Absence',
       icon: <Icons.ExcusedAttandance />,
       route: Routes.EXCUSE_ATTENDANCE,
       // route:'Home'

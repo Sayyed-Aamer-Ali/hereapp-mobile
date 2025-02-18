@@ -18,15 +18,39 @@ import {Constants} from '../../../utility';
 import styles from './styles';
 import Routes from '../../../navigation/Routes';
 import {FastImageComponent, LogoutModal} from '../../../components';
+import axiosWrapper from '../../../services/AxiosWrapper';
+import {API_URLS} from '../../../services/apiPathList';
+import {LoaderModal} from '../../../components/LoaderModal';
 
 const SliderScreen = ({navigation}) => {
   const dispatch = useDispatch();
   let user = useSelector(state => state.auth.user);
   const [modalVisible, setModalVisible] = useState(false);
+  const token = useSelector(state => state.auth.token);
+  const [loader, setLoader] = useState(false);
 
-  const handleLogout = () => {
-    onPressLogout();
-    setModalVisible(false);
+  const handleLogout = async () => {
+    setLoader(true);
+    let payload = {
+      isLogin: false,
+    };
+    try {
+      let response = await axiosWrapper(
+        'PATCH',
+        API_URLS.EDIT_PROFILE,
+        payload,
+        token,
+        false,
+        'json',
+        false,
+      );
+      onPressLogout();
+      setModalVisible(false);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setLoader(false);
+    }
   };
 
   const handleCancel = () => {
@@ -49,8 +73,8 @@ const SliderScreen = ({navigation}) => {
   };
 
   return (
-   
     <View style={styles.cont}>
+      <LoaderModal loading={loader} />
       <View style={styles.headerCont}>
         <Pressable
           style={styles.ImageCont}
@@ -96,7 +120,6 @@ const SliderScreen = ({navigation}) => {
         onCancel={handleCancel}
       />
     </View>
-  
   );
 };
 

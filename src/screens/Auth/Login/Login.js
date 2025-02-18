@@ -40,7 +40,7 @@ import {setRefreshClasses} from '../../../redux/Reducers/TempData';
 
 const Login = ({navigation, route}) => {
   const toast = useToast();
-  console.log('SIGNUP_URL_FROM_ENV', SIGNUP_URL_FROM_ENV);
+
   const [loader, setLoader] = useState(false);
   const userType = route.params?.selectedUser || '';
   const passwordRef = useRef(null);
