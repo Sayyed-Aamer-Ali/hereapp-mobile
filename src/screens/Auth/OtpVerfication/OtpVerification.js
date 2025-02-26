@@ -220,8 +220,10 @@ const OtpVerification = ({navigation, route}) => {
 
         <Button
           text={'Verify'}
+          disabled={showReset}
           style={{
             marginTop: UtilityMethods.hp(4),
+            opacity: showReset ? 0.5 : 1,
           }}
           onPress={() => {
             onPressVerify();
