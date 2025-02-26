@@ -201,7 +201,7 @@ const OtpVerification = ({navigation, route}) => {
               reset={otpReset}
             />
             <CountdownTimer
-              countDownTime={60}
+              countDownTime={180}
               reset={resetCounter}
               counterStarted={() => {
                 setResetCounter(false);

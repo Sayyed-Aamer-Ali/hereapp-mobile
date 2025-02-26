@@ -28,7 +28,7 @@ const UserDetails = ({userData}) => {
         <Text style={[styles.value]}>{userData.address || '-'}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.label}>Postal Code:</Text>
+        <Text style={styles.label}>ZIP Code:</Text>
         <Text style={styles.value}>{userData.postalCode || '-'}</Text>
       </View>
     </View>

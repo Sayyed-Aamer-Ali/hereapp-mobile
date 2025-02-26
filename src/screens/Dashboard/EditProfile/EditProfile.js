@@ -73,7 +73,7 @@ const EditProfile = ({navigation}) => {
 
   const [postalCode, setPostalCode] = useState({
     inputType: 'text',
-    title: 'Zip Code',
+    title: 'ZIP Code',
     value: user.postalCode || '',
     type: 'text',
     error: '',
@@ -187,7 +187,7 @@ const EditProfile = ({navigation}) => {
         address: address.value,
         postalCode: postalCode.value,
       };
-      if (!phoneNumber.value.includes('+')) {
+      if (!phoneNumber.value.includes('+') && phoneNumber.value !== '') {
         payload.phoneNumber = `+1${phoneNumber.value}`;
       }
 

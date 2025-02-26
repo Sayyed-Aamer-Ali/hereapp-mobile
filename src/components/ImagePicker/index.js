@@ -67,8 +67,8 @@ const ImagePicker = ({filedInfo, editImage, setEditImage, onChnage}) => {
           type: response.mime,
         }
       : {
-          uri:  response.path,
-          name:  getFileName(response.path),
+          uri: response.path,
+          name: getFileName(response.path),
           type: response.mime,
         };
   };
@@ -115,7 +115,7 @@ const ImagePicker = ({filedInfo, editImage, setEditImage, onChnage}) => {
       </View>
       <View style={styles.titleCont}>
         <Text style={[styles.TitleStyle]}>{filedInfo?.title}</Text>
-        {!filedInfo?.atEdit && <Text style={[styles.hashText]}>*</Text>}
+        {/* {!filedInfo?.atEdit && <Text style={[styles.hashText]}>*</Text>} */}
       </View>
       {filedInfo?.error && (
         <Text style={[styles.ErrorText]}>{filedInfo?.error}</Text>
