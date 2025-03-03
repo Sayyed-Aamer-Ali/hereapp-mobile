@@ -154,10 +154,10 @@ const EditProfile = ({navigation}) => {
     //   error['postalCode'] = 'Postal Code is required';
     // }
 
-    if (netId.value === '') {
-      setNetId({...netId, error: 'NetID is required'});
-      error['netId'] = 'NetID is required';
-    }
+    // if (netId.value === '') {
+    //   setNetId({...netId, error: 'NetID is required'});
+    //   error['netId'] = 'NetID is required';
+    // }
 
     // if (schoolName.value === '') {
     //   setSchoolName({...schoolName, error: 'School Name is required'});
@@ -277,13 +277,13 @@ const EditProfile = ({navigation}) => {
             isPhoneNumber={true}
             onSubmitEditing={() => schoolNameRef.current?.focus()}
           />
-          <CustomizedInput
+          {/* <CustomizedInput
             fieldInfo={netId}
             onChange={text => {
               setNetId({...netId, value: text, error: ''});
             }}
             editable={false}
-          />
+          /> */}
           {/* <CustomizedInput
             ref={schoolNameRef}
             fieldInfo={schoolName}

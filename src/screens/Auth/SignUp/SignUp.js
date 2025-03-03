@@ -164,10 +164,10 @@ const SignUp = ({navigation}) => {
       setPhoneNumber({...phoneNumber, error: 'Phone Number is not correct'});
       error['phoneNumber'] = 'Phone Number is not correct';
     }
-    if (netId.value?.trim() === '') {
-      setNetId({...netId, error: 'NetID is required'});
-      error['netId'] = 'NetID is required';
-    }
+    // if (netId.value?.trim() === '') {
+    //   setNetId({...netId, error: 'NetID is required'});
+    //   error['netId'] = 'NetID is required';
+    // }
 
     if (!rememberMe.value) {
       return AlertService.toastPrompt(
@@ -273,13 +273,13 @@ const SignUp = ({navigation}) => {
             }}
             onSubmitEditing={() => phoneRef.current?.focus()}
           />
-          <CustomizedInput
+          {/* <CustomizedInput
             fieldInfo={netId}
             onChange={text => {
               setNetId({...netId, value: text, error: ''});
             }}
             editable={false}
-          />
+          /> */}
 
           <CustomizedInput
             ref={phoneRef}

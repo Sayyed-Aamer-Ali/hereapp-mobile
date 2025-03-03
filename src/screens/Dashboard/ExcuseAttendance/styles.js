@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
   },
 
   sectionView: index => ({
-    height: index === 0 ? UtilityMethods.hp(30) : null,
+    flex: 1,
+    // height: index === 0 ? UtilityMethods.hp(30) : null,
   }),
 
   emptyListView: {

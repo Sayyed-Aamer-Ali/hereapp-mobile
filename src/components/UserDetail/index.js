@@ -7,17 +7,17 @@ const UserDetails = ({userData}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.label}>Full Name:</Text>
+        <Text style={styles.label}>First Name:</Text>
         <Text style={styles.value}>{userData.firstName || '-'} </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Last Name:</Text>
         <Text style={[styles.value]}>{userData.lastName || '-'}</Text>
       </View>
-      <View style={styles.row}>
+      {/* <View style={styles.row}>
         <Text style={styles.label}>NetID:</Text>
         <Text style={[styles.value]}>{userData.netID || '-'}</Text>
-      </View>
+      </View> */}
       <View style={styles.row}>
         <Text style={styles.label}>Phone:</Text>
         <Text style={[styles.value]}>{userData.phoneNumber || '-'}</Text>

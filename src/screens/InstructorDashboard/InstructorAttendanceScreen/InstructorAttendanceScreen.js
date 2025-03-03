@@ -29,8 +29,8 @@ const InstructorAttendenceScreen = ({navigation, route}) => {
 
   const [otp, setOtp] = useState('XXX');
   const [loader, setLoader] = useState(false);
-  const [attempts, setAttempts] = useState('');
-  const [expiryTime, setExpiryTime] = useState(null);
+  const [attempts, setAttempts] = useState('3 Times');
+  const [expiryTime, setExpiryTime] = useState('1 Minute');
   const [timer, setTimer] = useState(0);
   const [codeAttempError, setCodeAttempError] = useState('');
   const [codeExpiryError, setCodeExpiryError] = useState('');

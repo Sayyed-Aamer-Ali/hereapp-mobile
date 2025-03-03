@@ -62,7 +62,6 @@ const ExcuseAttandence = ({navigation}) => {
 
   const [dataSections, setDateSections] = useState([
     {index: 0, title: 'Recently Missed Classes', data: []},
-    {index: 1, title: 'Request for a Particular Date', data: []},
   ]);
 
   const onRefresh = useCallback(() => {
@@ -114,17 +113,10 @@ const ExcuseAttandence = ({navigation}) => {
         }),
       );
 
-      let data = filterAndSortClassesByDate(response.data);
+      // let data = filterAndSortClassesByDate(response.data);
 
       setDateSections([
-        {index: 0, title: 'Recently Missed Classes', data: [data.slice(0, 1)]},
-        {
-          index: 1,
-          title: 'Request for a Particular Date',
-          data: selectedDate
-            ? [filterAndSortClassesBySpecificDate(response.data, selectedDate)]
-            : [{}],
-        },
+        {index: 0, title: 'Recently Missed Classes', data: [sortClasses]},
       ]);
     } catch (error) {
     } finally {
