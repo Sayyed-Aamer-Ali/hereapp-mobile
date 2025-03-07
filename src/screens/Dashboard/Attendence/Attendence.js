@@ -187,7 +187,7 @@ const Attendance = ({navigation, route}) => {
 
         studentDetails: response?.data,
       };
-
+      console.log('emitDatra', emitDatra);
       newSocket.emit('markAttendance', emitDatra);
       // dispatch(setRefreshClassesForStudent(true));
 
@@ -273,6 +273,7 @@ const Attendance = ({navigation, route}) => {
         setLocation(addressFromMap);
       })
       .catch(e => {
+        console.log('Error fetching address', e);
         setLocation({
           address: 'Location Not Found',
           city: '',

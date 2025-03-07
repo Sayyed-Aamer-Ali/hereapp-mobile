@@ -203,7 +203,7 @@ const SignUp = ({navigation}) => {
         firstName: firstName.value,
         lastName: lastName.value,
         phoneNumber: phoneNumber.value ? `+${phoneNumber.value}` : '',
-        netID: netId.value,
+        // netID: netId.value,
         schoolName: schoolName.value,
         role: 'STUDENT',
         // isLogin: true,
