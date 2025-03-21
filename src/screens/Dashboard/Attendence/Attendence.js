@@ -72,7 +72,7 @@ const Attendance = ({navigation, route}) => {
 
   useEffect(() => {
     if (attendanceData?.classDetail.geoTracking == 'enable') {
-      Geocoder.init('AIzaSyB6XRs-qCpdktWttSDGLKMaiTiYdsUowdM');
+      Geocoder.init('AIzaSyD88sGphWmdEHxfQPQtFei1vwc_7J1Gp1U');
       UtilityMethods.getUserCurrentLocation(location => {
         setLocation(location);
 
@@ -187,7 +187,7 @@ const Attendance = ({navigation, route}) => {
 
         studentDetails: response?.data,
       };
-      console.log('emitDatra', emitDatra);
+
       newSocket.emit('markAttendance', emitDatra);
       // dispatch(setRefreshClassesForStudent(true));
 

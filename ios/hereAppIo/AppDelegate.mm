@@ -8,7 +8,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
-  [GMSServices provideAPIKey:@"AIzaSyBKt0XNvM-3m4PJQuFMwSoKEDnKAK6w1yo"]; 
+  [GMSServices provideAPIKey:@"AIzaSyD88sGphWmdEHxfQPQtFei1vwc_7J1Gp1U"]; 
   self.moduleName = @"hereAppIo";
   
   // You can add your custom initial props in the dictionary below.

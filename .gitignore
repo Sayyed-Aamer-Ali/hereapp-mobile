@@ -79,3 +79,4 @@ buck-out/
 *.temp
 
 .env
+.qodo

@@ -62,6 +62,7 @@ const OtpVerification = ({navigation, route}) => {
   };
 
   const verifyOTP = async () => {
+    console.log('user', user);
     try {
       setLoader(true);
       let data = {
@@ -84,18 +85,6 @@ const OtpVerification = ({navigation, route}) => {
     } catch (error) {
     } finally {
       setLoader(false);
-    }
-  };
-
-  const verifyOTPDummy = () => {
-    if (otp.value === '12345') {
-      loginAPICallForDummy({
-        email: user.email,
-        password: user.password,
-        isMobile: true,
-      });
-    } else {
-      AlertService.toastPrompt('Invalid OTP', 'error');
     }
   };
 
