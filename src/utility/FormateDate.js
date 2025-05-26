@@ -90,7 +90,7 @@ export const getCurrentDateInFormat = () => {
 
 export const shouldDisableButton = data => {
   // Set the current time in CST
-  const currentTime = moments().tz('America/Chicago');
+  const currentTime = moments().tz('Asia/Kolkata');
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
@@ -104,17 +104,17 @@ export const shouldDisableButton = data => {
 
   // Set start and end times also to CST
   const startTime = moments()
-    .tz('America/Chicago')
+    .tz('Asia/Kolkata')
     .set({hour: startHours, minute: startMinutes, second: 0, millisecond: 0});
   const endTime = moments()
-    .tz('America/Chicago')
+    .tz('Asia/Kolkata')
     .set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
 
   return currentTime.isAfter(endTime) || currentTime.isBefore(startTime);
 };
 
 export const sortClassesByDayAndTime = classes => {
-  const now = moments().tz('America/Chicago'); // Use CST time
+  const now = moments().tz('Asia/Kolkata'); // Use CST time
   const currentDay = now.format('dddd');
 
   return classes.sort((a, b) => {
@@ -133,22 +133,22 @@ export const sortClassesByDayAndTime = classes => {
     const aStartTime = moments.tz(
       `${a.schedule.startTime}`,
       'HH:mm',
-      'America/Chicago',
+      'Asia/Kolkata',
     );
     const aEndTime = moments.tz(
       `${a.schedule.endTime}`,
       'HH:mm',
-      'America/Chicago',
+      'Asia/Kolkata',
     );
     const bStartTime = moments.tz(
       `${b.schedule.startTime}`,
       'HH:mm',
-      'America/Chicago',
+      'Asia/Kolkata',
     );
     const bEndTime = moments.tz(
       `${b.schedule.endTime}`,
       'HH:mm',
-      'America/Chicago',
+      'Asia/Kolkata',
     );
 
     const isACurrentlyRunning =
@@ -226,7 +226,7 @@ export const checkAttendanceStatus = (classItem, userType, userId) => {
 };
 
 export const filterAndSortClassesByDate = classData => {
-  const today = moments().tz('America/Chicago').startOf('day');
+  const today = moments().tz('Asia/Kolkata').startOf('day');
 
   return classData
     .filter(item => {
@@ -235,16 +235,16 @@ export const filterAndSortClassesByDate = classData => {
     })
     .sort((a, b) => {
       return moments
-        .tz(b.attendanceExpiresAt, 'America/Chicago')
-        .diff(moments.tz(a.attendanceExpiresAt, 'America/Chicago'));
+        .tz(b.attendanceExpiresAt, 'Asia/Kolkata')
+        .diff(moments.tz(a.attendanceExpiresAt, 'Asia/Kolkata'));
     });
 };
 
 export const sortClassesByDate = classData => {
   return classData.sort((a, b) => {
     return moments
-      .tz(b.attendanceExpiresAt, 'America/Chicago')
-      .diff(moments.tz(a.attendanceExpiresAt, 'America/Chicago'));
+      .tz(b.attendanceExpiresAt, 'Asia/Kolkata')
+      .diff(moments.tz(a.attendanceExpiresAt, 'Asia/Kolkata'));
   });
 };
 

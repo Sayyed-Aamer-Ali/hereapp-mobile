@@ -374,7 +374,7 @@ class UtilityMethodsClass {
   }
 
   calculateTimeLeftInSeconds(start, end) {
-    const timeZone = 'America/Chicago';
+    const timeZone = 'Asia/Kolkata';
 
     const startTime = moment.utc(start).format('hh:mm:ss:a');
     const endTime = moment.utc(end).format('hh:mm:ss:a');

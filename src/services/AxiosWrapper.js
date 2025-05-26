@@ -2,25 +2,49 @@ import axios from 'axios';
 import AlertService from './AlertService';
 import store from '../redux/Store';
 import {resetAuth} from '../redux/Reducers/AuthReducer';
-// Add request interceptor
-// Add response interceptor
-axios.interceptors.response.use(
-  response => {
-    const {config} = response;
-    const {method} = config;
-    return response;
-  },
-  error => {
-    const {config} = error.response;
-    const {method} = config;
-    return Promise.reject(error);
-  },
-);
-const axiosConfig = {
+
+const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-};
+});
+
+// 🛫 Request Interceptor
+axiosInstance.interceptors.request.use(
+  request => {
+    console.log('📤 [Request]');
+    console.log(`➡️ URL: ${request.url}`);
+    console.log(`📡 METHOD: ${request.method.toUpperCase()}`);
+    console.log(`🔐 TOKEN: ${request.headers.Authorization || 'No Token'}`);
+    console.log('📦 BODY:', request.data || 'No Body');
+    return request;
+  },
+  error => {
+    console.log('❌ [Request Error]', error);
+    return Promise.reject(error);
+  }
+);
+
+// 🛬 Response Interceptor
+axiosInstance.interceptors.response.use(
+  response => {
+    console.log('✅ [Response]');
+    console.log(`✅ STATUS: ${response.status}`);
+    console.log('📨 DATA:', response.data);
+    return response;
+  },
+  error => {
+    console.log('❌ [Response Error]');
+    if (error.response) {
+      console.log(`⛔ STATUS: ${error.response.status}`);
+      console.log('🪵 ERROR DATA:', error.response.data);
+    } else {
+      console.log('🧨 ERROR MESSAGE:', error.message);
+    }
+    return Promise.reject(error);
+  }
+);
+
 const axiosWrapper = async (
   method,
   url,
@@ -35,11 +59,12 @@ const axiosWrapper = async (
     const config = {
       method,
       url,
-      ...axiosConfig,
       responseType,
+      headers: {},
     };
 
     if (token) config.headers['Authorization'] = `Bearer ${token}`;
+
     if (isFormData) {
       config.headers['Content-Type'] = 'multipart/form-data';
       config.data = data;
@@ -47,23 +72,25 @@ const axiosWrapper = async (
       config.headers['Content-Type'] = 'application/json';
       if (data) config.data = data;
     }
-    // console.log('config :>> ', config);
-    const response = await axios(config);
+
+    const response = await axiosInstance(config);
 
     if ((response?.data?.message || response?.message) && showToast) {
       AlertService.toastPrompt(response.data.message || response.message);
     }
+
     return response.data ? response.data : response;
   } catch (error) {
-    // console.log(error?.response?.data, 'Im error', url);
     let msg =
       error?.response?.data?.validation?.body?.message ||
       error?.response?.data?.desc ||
       error?.response?.data?.message ||
       error?.message;
+
     if (msg && showToast) {
       AlertService.toastPrompt(msg, 'error');
     }
+
     let errorCode = error?.response?.status;
 
     if (
@@ -73,18 +100,16 @@ const axiosWrapper = async (
       errorCode === 401
     ) {
       store.dispatch(resetAuth());
-      if (msg == "Couldn't find your account, please create an account") {
-        AlertService.toastPrompt(msg, 'error');
-      }
-      if (
-        msg == 'Your account is suspended or deleted. Please contact admin!'
-      ) {
+      if (msg == "Couldn't find your account, please create an account" ||
+          msg == 'Your account is suspended or deleted. Please contact admin!') {
         AlertService.toastPrompt(msg, 'error');
       } else {
         AlertService.toastPrompt('You are not an authorized user', 'error');
       }
     }
-    return Promise.reject(isObj ? {msg, data: error?.response.data} : msg);
+
+    return Promise.reject(isObj ? {msg, data: error?.response?.data} : msg);
   }
 };
+
 export default axiosWrapper;

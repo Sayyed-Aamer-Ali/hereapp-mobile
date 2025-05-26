@@ -173,7 +173,7 @@ const Attendance = ({navigation, route}) => {
       );
 
       let emitDatra = {
-        attendanceMarkedAt: moment().tz('America/Chicago'),
+        attendanceMarkedAt: moment().tz('Asia/Kolkata'),
         isSocket: true,
         location: {
           lat: location?.latitude,

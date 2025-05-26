@@ -39,7 +39,7 @@ const StudentAttendanceListCard = ({student, locationPress, showLocation}) => {
         <Text style={styles.value}>
           {student?.isSocket
             ? moments
-                .tz(student.attendanceMarkedAt, 'America/Chicago')
+                .tz(student.attendanceMarkedAt, 'Asia/Kolkata')
                 .format('YYYY/MM/DD hh:mm A')
             : moment
                 .utc(student.attendanceMarkedAt)

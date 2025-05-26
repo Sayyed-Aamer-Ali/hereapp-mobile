@@ -208,6 +208,7 @@ const SignUp = ({navigation}) => {
         role: 'STUDENT',
         // isLogin: true,
       };
+      console.log(user);
 
       registerAPICall(user);
     }
@@ -225,6 +226,12 @@ const SignUp = ({navigation}) => {
         'json',
         false,
       );
+      console.log(API_URLS.REGISTER_URL,
+        data,
+        null,
+        false,
+        'json',
+        false);
       if (response) {
         dispatch(clearRememberMeCreds());
         navigation.navigate(Routes.OTP_VERIFICATION, {

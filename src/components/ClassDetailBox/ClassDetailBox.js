@@ -30,6 +30,7 @@ const ClassDetailBox = ({
   const [timer, setTimer] = useState(null);
 
   let attendanceData = item?.attendanceStatus?.data;
+  console.log("AAAA", item)
 
   const {
     // formattedDate,

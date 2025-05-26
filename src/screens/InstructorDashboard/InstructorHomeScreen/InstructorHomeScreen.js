@@ -163,6 +163,7 @@ const Home = ({navigation}) => {
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
         classes.current.map(async classItem => {
+          console.log("classItem", classItem)
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {

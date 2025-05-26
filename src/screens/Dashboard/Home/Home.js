@@ -99,16 +99,19 @@ const Home = ({navigation}) => {
         false,
       );
       classes.current = response.data;
+      console.log("URLL", `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`)
 
       if (!classes.current || classes.current.length === 0) {
         classes.current = [];
         return;
       }
+      console.log("CLASS", classes);
 
       classes.current = sortClassesByDayAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
         classes.current.map(async classItem => {
+          console.log("classItem", classItem);
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {
@@ -170,6 +173,7 @@ const Home = ({navigation}) => {
   };
 
   const handleAttendance = item => {
+    console.log("asf",item)
     if (item?.alertMessage) {
       Alert.alert('Alert', item?.alertMessage);
       return;

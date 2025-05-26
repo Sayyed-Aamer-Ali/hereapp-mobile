@@ -136,6 +136,13 @@ const Login = ({navigation, route}) => {
         'json',
         false,
       );
+      console.log('POST',
+        API_URLS.LOGIN_URL,
+        data,
+        null,
+        false,
+        'json',
+        false)
       if (response) {
         if (
           response?.data?.user.role !== userType.toUpperCase() &&
@@ -177,6 +184,7 @@ const Login = ({navigation, route}) => {
       }
     } catch (error) {
       let msg = error;
+      console.log(error)
       if (msg === 'Please verify your account!') {
         let response = await getOTP();
         if (response) {
