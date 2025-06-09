@@ -113,66 +113,103 @@ export const shouldDisableButton = data => {
   return currentTime.isAfter(endTime) || currentTime.isBefore(startTime);
 };
 
-export const sortClassesByDayAndTime = classes => {
-  const now = moments().tz('Asia/Kolkata'); // Use CST time
-  const currentDay = now.format('dddd');
+export const sortClassesBySemesterAndTime = classes => {
+  const now = moments().tz('Asia/Kolkata');
+  const currentDate = now;
+  const semesterOrder = ['Spring', 'Summer', 'Fall']; // For comparison
 
-  return classes.sort((a, b) => {
+  // Get current semester string
+  const getCurrentSemester = () => {
+    const month = currentDate.month() + 1; // 1-12
+    const year = currentDate.year();
+    if (month >= 1 && month <= 4) return {semester: 'Spring', year};
+    if (month >= 5 && month <= 7) return {semester: 'Summer', year};
+    return {semester: 'Fall', year};
+  };
+  const {semester: currentSem, year: currentYear} = getCurrentSemester();
+  const currentSemOrder = semesterOrder.indexOf(currentSem);
+
+  // Helper to extract semester info
+  const getSemesterInfo = (semesterStr) => {
+    const match = semesterStr?.match(/(Spring|Summer|Fall)\s(\d{4})/);
+    if (!match) return { order: -1, year: 0, semester: '', str: semesterStr };
+    const semester = match[1];
+    const year = parseInt(match[2], 10);
+    const order = semesterOrder.indexOf(semester);
+    return { order, year, semester, str: semesterStr };
+  };
+
+  // Compare function for semester chronology
+  const compareSemesterChrono = (a, b) => {
+    if (a.year !== b.year) return a.year - b.year;
+    return semesterOrder.indexOf(a.semester) - semesterOrder.indexOf(b.semester);
+  };
+
+  // Compare function for semester reverse chronology
+  const compareSemesterReverse = (a, b) => {
+    if (a.year !== b.year) return b.year - a.year;
+    return semesterOrder.indexOf(b.semester) - semesterOrder.indexOf(a.semester);
+  };
+
+  // Split classes into future/current and past
+  const futureAndCurrent = [];
+  const past = [];
+
+  classes.forEach(cls => {
+    const info = getSemesterInfo(cls.semester);
+    if (
+      info.year > currentYear ||
+      (info.year === currentYear && info.order > currentSemOrder) ||
+      (info.year === currentYear && info.order === currentSemOrder)
+    ) {
+      futureAndCurrent.push(cls);
+    } else {
+      past.push(cls);
+    }
+  });
+
+  // Sort future/current semesters in chronological order
+  futureAndCurrent.sort((a, b) => {
+    const aInfo = getSemesterInfo(a.semester);
+    const bInfo = getSemesterInfo(b.semester);
+    const cmp = compareSemesterChrono(aInfo, bInfo);
+    if (cmp !== 0) return cmp;
+    // Within semester, sort by day and time
     const daysOfWeek = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
     ];
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
     const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
-
-    const aStartTime = moments.tz(
-      `${a.schedule.startTime}`,
-      'HH:mm',
-      'Asia/Kolkata',
-    );
-    const aEndTime = moments.tz(
-      `${a.schedule.endTime}`,
-      'HH:mm',
-      'Asia/Kolkata',
-    );
-    const bStartTime = moments.tz(
-      `${b.schedule.startTime}`,
-      'HH:mm',
-      'Asia/Kolkata',
-    );
-    const bEndTime = moments.tz(
-      `${b.schedule.endTime}`,
-      'HH:mm',
-      'Asia/Kolkata',
-    );
-
-    const isACurrentlyRunning =
-      a?.schedule?.day === currentDay && now.isBetween(aStartTime, aEndTime);
-    const isBCurrentlyRunning =
-      b?.schedule?.day === currentDay && now.isBetween(bStartTime, bEndTime);
-
-    if (isACurrentlyRunning && !isBCurrentlyRunning) return -1;
-    if (!isACurrentlyRunning && isBCurrentlyRunning) return 1;
-
-    if (isACurrentlyRunning && isBCurrentlyRunning) {
-      return aStartTime.isAfter(bStartTime) ? 1 : -1;
-    }
-
-    if (a?.schedule?.day === currentDay && b?.schedule?.day === currentDay) {
-      return aStartTime.isAfter(bStartTime) ? 1 : -1;
-    }
-    if (a?.schedule?.day === currentDay) return -1;
-    if (b?.schedule?.day === currentDay) return 1;
-    if (aDayIndex !== bDayIndex) {
-      return aDayIndex - bDayIndex;
-    }
-    return aStartTime.isAfter(bStartTime) ? 1 : -1;
+    if (aDayIndex !== bDayIndex) return aDayIndex - bDayIndex;
+    const aStart = a.schedule.startTime || '';
+    const bStart = b.schedule.startTime || '';
+    if (aStart < bStart) return -1;
+    if (aStart > bStart) return 1;
+    return 0;
   });
+
+  // Sort past semesters in reverse chronological order
+  past.sort((a, b) => {
+    const aInfo = getSemesterInfo(a.semester);
+    const bInfo = getSemesterInfo(b.semester);
+    const cmp = compareSemesterReverse(aInfo, bInfo);
+    if (cmp !== 0) return cmp;
+    // Within semester, sort by day and time
+    const daysOfWeek = [
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+    ];
+    const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
+    const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
+    if (aDayIndex !== bDayIndex) return aDayIndex - bDayIndex;
+    const aStart = a.schedule.startTime || '';
+    const bStart = b.schedule.startTime || '';
+    if (aStart < bStart) return -1;
+    if (aStart > bStart) return 1;
+    return 0;
+  });
+
+  // Concatenate: current/future first, then past
+  return [...futureAndCurrent, ...past];
 };
 
 export const checkAttendanceStatus = (classItem, userType, userId) => {

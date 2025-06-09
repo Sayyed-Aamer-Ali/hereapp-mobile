@@ -19,7 +19,7 @@ import formatDate, {
   checkAttendanceStatus,
   getCurrentDateInFormat,
   shouldDisableButton,
-  sortClassesByDayAndTime,
+  sortClassesBySemesterAndTime
 } from '../../../utility/FormateDate';
 import {setRefreshClassesForStudent} from '../../../redux/Reducers/TempData';
 import {UtilityMethods} from '../../../utility';
@@ -107,7 +107,8 @@ const Home = ({navigation}) => {
       }
       console.log("CLASS", classes);
 
-      classes.current = sortClassesByDayAndTime(classes.current);
+      
+      classes.current = sortClassesBySemesterAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
         classes.current.map(async classItem => {
@@ -173,11 +174,11 @@ const Home = ({navigation}) => {
   };
 
   const handleAttendance = item => {
-    console.log("asf",item)
-    if (item?.alertMessage) {
-      Alert.alert('Alert', item?.alertMessage);
-      return;
-    }
+    // console.log("asf",item)
+    // if (item?.alertMessage) {
+    //   Alert.alert('Alert', item?.alertMessage);
+    //   return;
+    // }
     navigation.navigate(Routes.ATTENDANCE, {item});
     // navigation.navigate(Routes.ATTENDANCE, {item});
   };

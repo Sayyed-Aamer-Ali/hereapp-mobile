@@ -104,7 +104,7 @@ const axiosWrapper = async (
           msg == 'Your account is suspended or deleted. Please contact admin!') {
         AlertService.toastPrompt(msg, 'error');
       } else {
-        AlertService.toastPrompt('You are not an authorized user', 'error');
+        AlertService.toastPrompt('Please Sign-In and Verify your Email', 'error');
       }
     }
 

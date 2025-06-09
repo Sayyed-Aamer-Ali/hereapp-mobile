@@ -24,8 +24,7 @@ import {
   checkAttendanceStatus,
   getCurrentDateInFormat,
   shouldDisableButton,
-  sortClassesByDateTime,
-  sortClassesByDayAndTime,
+  sortClassesBySemesterAndTime,
 } from '../../../utility/FormateDate';
 import {setRefreshClasses} from '../../../redux/Reducers/TempData';
 import {UtilityMethods} from '../../../utility';
@@ -158,7 +157,7 @@ const Home = ({navigation}) => {
         return;
       }
 
-      classes.current = sortClassesByDayAndTime(classes.current);
+      classes.current = sortClassesBySemesterAndTime(classes.current);
 
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(

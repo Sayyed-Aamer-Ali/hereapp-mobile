@@ -6,7 +6,7 @@ import {FontSize, UtilityMethods} from '../../utility';
 const ReasonTextInput = ({reason, setReason, error = ''}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reason for Absence</Text>
+      <Text style={styles.title}>Reason for Absence<Text style={{color:"red"}}> *</Text></Text>
       <TextInput
         style={styles.textInput}
         placeholder="Write your reason for absence..."
@@ -29,8 +29,10 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: Fonts.REGULAR,
     fontSize: FontSize.VALUE(16),
-    color: Colors.GRAY,
+    // color: Colors.GRAY,
+    color: Colors.BLACK,
     marginBottom: UtilityMethods.hp(1),
+    fontWeight:"700"
   },
   textInput: {
     height: UtilityMethods.hp(15),

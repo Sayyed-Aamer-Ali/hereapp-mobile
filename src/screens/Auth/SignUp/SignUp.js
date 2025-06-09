@@ -71,6 +71,7 @@ const SignUp = ({navigation}) => {
     error: '',
     placeholder: 'Enter Phone Number',
     leftIcon: <Icons.Phone />,
+    required: true,
   });
 
   const [netId, setNetId] = useState({
@@ -156,11 +157,10 @@ const SignUp = ({navigation}) => {
       setLastName({...lastName, error: 'Last Name is required'});
       error['lastName'] = 'Last Name is required';
     }
-
-    if (
-      phoneNumber.value?.trim() !== '' &&
-      phoneNumber.value?.trim().length < 10
-    ) {
+    if (phoneNumber.value?.trim() === '') {
+      setPhoneNumber({...phoneNumber, error: 'Phone Number is required'});
+      error['phoneNumber'] = 'Phone Number is required';
+    } else if (phoneNumber.value?.trim().length < 10) {
       setPhoneNumber({...phoneNumber, error: 'Phone Number is not correct'});
       error['phoneNumber'] = 'Phone Number is not correct';
     }
