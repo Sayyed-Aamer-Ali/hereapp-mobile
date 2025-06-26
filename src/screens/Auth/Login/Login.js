@@ -184,7 +184,6 @@ const Login = ({navigation, route}) => {
       }
     } catch (error) {
       let msg = error;
-      console.log(error)
       if (msg === 'Please verify your account!') {
         let response = await getOTP();
         if (response) {

@@ -30,7 +30,6 @@ const ClassDetailBox = ({
   const [timer, setTimer] = useState(null);
 
   let attendanceData = item?.attendanceStatus?.data;
-  console.log("AAAA", item)
 
   const {
     // formattedDate,
@@ -80,6 +79,7 @@ const ClassDetailBox = ({
       setShowAttendanceButton(false);
     }
   }, [timer]);
+  console.log(showAttendanceButton)
 
   return (
     <ShadowCard cardStyle={styles.contStyle} activeOpacity={1}>

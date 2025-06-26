@@ -171,6 +171,9 @@ const Attendance = ({navigation, route}) => {
         false,
         attemptsLeft === 1,
       );
+      console.log("DADA", {
+        token, data
+      })
 
       let emitDatra = {
         attendanceMarkedAt: moment().tz('Asia/Kolkata'),

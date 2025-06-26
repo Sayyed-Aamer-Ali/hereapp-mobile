@@ -62,7 +62,6 @@ const OtpVerification = ({navigation, route}) => {
   };
 
   const verifyOTP = async () => {
-    console.log('user', user);
     try {
       setLoader(true);
       let data = {

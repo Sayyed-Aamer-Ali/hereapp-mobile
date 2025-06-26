@@ -179,6 +179,9 @@ const Home = ({navigation}) => {
                 'json',
                 false,
               );
+              console.log("ATT", {
+                data, attendanceResponse
+              })
 
               const status = checkAttendanceStatus(
                 attendanceResponse,
@@ -240,6 +243,7 @@ const Home = ({navigation}) => {
     }
     navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN, {item});
   };
+  console.log(classes)
 
   return (
     <MainLayout loader={loader}>

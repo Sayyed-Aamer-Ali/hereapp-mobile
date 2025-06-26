@@ -121,6 +121,7 @@ const InstructorAttendenceScreen = ({navigation, route}) => {
         'json',
         false,
       );
+      console.log("DADADA", data)
 
       setCheckAttendanceMarked(true);
       dispatch(setRefreshClasses(true));
