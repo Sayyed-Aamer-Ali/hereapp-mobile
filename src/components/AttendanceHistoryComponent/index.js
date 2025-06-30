@@ -40,7 +40,7 @@ const AttendanceHistoryComponent = ({
       <View style={styles.row}>
         <Text style={styles.label}>Date & Time:</Text>
         <Text style={styles.value}>
-          {/* {moment.tz(dateTime, 'Asia/Kolkata').format('YYYY/MM/DD')} */}
+          {/* {moment.tz(dateTime, 'America/Chicago').format('YYYY/MM/DD')} */}
           {getFormattedDate(dateTime)} {timeSlot}
         </Text>
       </View>

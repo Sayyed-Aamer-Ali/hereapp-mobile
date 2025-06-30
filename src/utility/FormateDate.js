@@ -90,7 +90,7 @@ export const getCurrentDateInFormat = () => {
 
 export const shouldDisableButton = data => {
   // Set the current time in CST
-  const currentTime = moments().tz('Asia/Kolkata');
+  const currentTime = moments().tz('America/Chicago');
   const currentDay = currentTime.format('dddd');
 
   if (currentDay !== data?.schedule?.day) {
@@ -104,17 +104,17 @@ export const shouldDisableButton = data => {
 
   // Set start and end times also to CST
   const startTime = moments()
-    .tz('Asia/Kolkata')
+    .tz('America/Chicago')
     .set({hour: startHours, minute: startMinutes, second: 0, millisecond: 0});
   const endTime = moments()
-    .tz('Asia/Kolkata')
+    .tz('America/Chicago')
     .set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
 
   return currentTime.isAfter(endTime) || currentTime.isBefore(startTime);
 };
 
 export const sortClassesBySemesterAndTime = classes => {
-  const now = moments().tz('Asia/Kolkata');
+  const now = moments().tz('America/Chicago');
   const currentDate = now;
   const semesterOrder = ['Spring', 'Summer', 'Fall']; // For comparison
 
@@ -263,7 +263,7 @@ export const checkAttendanceStatus = (classItem, userType, userId) => {
 };
 
 export const filterAndSortClassesByDate = classData => {
-  const today = moments().tz('Asia/Kolkata').startOf('day');
+  const today = moments().tz('America/Chicago').startOf('day');
 
   return classData
     .filter(item => {
@@ -272,16 +272,16 @@ export const filterAndSortClassesByDate = classData => {
     })
     .sort((a, b) => {
       return moments
-        .tz(b.attendanceExpiresAt, 'Asia/Kolkata')
-        .diff(moments.tz(a.attendanceExpiresAt, 'Asia/Kolkata'));
+        .tz(b.attendanceExpiresAt, 'America/Chicago')
+        .diff(moments.tz(a.attendanceExpiresAt, 'America/Chicago'));
     });
 };
 
 export const sortClassesByDate = classData => {
   return classData.sort((a, b) => {
     return moments
-      .tz(b.attendanceExpiresAt, 'Asia/Kolkata')
-      .diff(moments.tz(a.attendanceExpiresAt, 'Asia/Kolkata'));
+      .tz(b.attendanceExpiresAt, 'America/Chicago')
+      .diff(moments.tz(a.attendanceExpiresAt, 'America/Chicago'));
   });
 };
 
