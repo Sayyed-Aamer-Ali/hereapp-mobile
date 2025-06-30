@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import DeviceInfo from 'react-native-device-info';
-import {Text, View, RefreshControl, Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { Text, View, RefreshControl, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   ClassDetailBox,
   CustomFlatList,
@@ -11,22 +11,22 @@ import {
   ModifiedOTPInput,
 } from '../../../components';
 import styles from './styles';
-import {MyClasses} from '../../../Data/DummyData';
+import { MyClasses } from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import {API_URLS} from '../../../services/apiPathList';
+import { API_URLS } from '../../../services/apiPathList';
 import formatDate, {
   checkAttendanceStatus,
   getCurrentDateInFormat,
   shouldDisableButton,
   sortClassesBySemesterAndTime
 } from '../../../utility/FormateDate';
-import {setRefreshClassesForStudent} from '../../../redux/Reducers/TempData';
-import {UtilityMethods} from '../../../utility';
+import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
+import { UtilityMethods } from '../../../utility';
 import AlertService from '../../../services/AlertService';
-import {setFcmToken} from '../../../redux/Reducers/AuthReducer';
+import { setFcmToken } from '../../../redux/Reducers/AuthReducer';
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -107,7 +107,7 @@ const Home = ({navigation}) => {
       }
       console.log("CLASS", classes);
 
-      
+
       classes.current = sortClassesBySemesterAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
@@ -175,10 +175,10 @@ const Home = ({navigation}) => {
 
   const handleAttendance = item => {
     // console.log("asf",item)
-    // if (item?.alertMessage) {
-    //   Alert.alert('Alert', item?.alertMessage);
-    //   return;
-    // }
+    if (item?.alertMessage) {
+      Alert.alert('Alert', item?.alertMessage);
+      return;
+    }
     navigation.navigate(Routes.ATTENDANCE, {item});
     // navigation.navigate(Routes.ATTENDANCE, {item});
   };

@@ -15,7 +15,7 @@ import {useIsFocused} from '@react-navigation/native';
 const ClassDetailBox = ({
   item,
   onPress,
-  buttonText = 'tendance',
+  buttonText = 'attendance',
   buttonDisableRequired = true,
   schedule,
   dates,
@@ -79,7 +79,6 @@ const ClassDetailBox = ({
       setShowAttendanceButton(false);
     }
   }, [timer]);
-  console.log(showAttendanceButton)
 
   return (
     <ShadowCard cardStyle={styles.contStyle} activeOpacity={1}>
