@@ -19,7 +19,8 @@ import formatDate, {
   checkAttendanceStatus,
   getCurrentDateInFormat,
   shouldDisableButton,
-  sortClassesBySemesterAndTime
+  sortClassesBySemesterAndTime,
+  getAttendanceButtonDisabledStates,
 } from '../../../utility/FormateDate';
 import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
 import { UtilityMethods } from '../../../utility';
@@ -188,6 +189,16 @@ const Home = ({ navigation }) => {
     getInstructorClasses();
   }, []);
 
+  // Add this state to store disabled states
+  const [attendanceButtonDisabledStates, setAttendanceButtonDisabledStates] = useState([]);
+
+  useEffect(() => {
+    // Update disabled states whenever classes.current changes
+    if (classes.current && Array.isArray(classes.current)) {
+      setAttendanceButtonDisabledStates(getAttendanceButtonDisabledStates(classes.current));
+    }
+  }, [classes.current]);
+
   return (
     <MainLayout loader={loader}>
       <View style={styles.cont}>
@@ -215,7 +226,7 @@ const Home = ({ navigation }) => {
           }
           data={classes.current}
           keyExtractor={(item, index) => index?.toString()}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <ClassDetailBox
               item={item}
               buttonText="Mark Attendance"
@@ -227,6 +238,9 @@ const Home = ({ navigation }) => {
                   : true
               }
               onPress={() => handleAttendance(item)}
+              // Pass the correct disabled state
+              buttonDisableRequired={true}
+              isButtonDisabled={attendanceButtonDisabledStates[index]}
             />
           )}
         />

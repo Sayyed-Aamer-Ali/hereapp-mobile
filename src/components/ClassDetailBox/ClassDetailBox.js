@@ -21,21 +21,22 @@ const ClassDetailBox = ({
   dates,
   data,
   showButton = true,
+  isButtonDisabled: isButtonDisabledFromProps, // <-- add this prop
 }) => {
-  const [isButtonDisabled, setIsButtonDisabled] = useState(null);
+  // Use the prop if provided, otherwise fallback to local state
+  const [isButtonDisabled, setIsButtonDisabled] = useState(isButtonDisabledFromProps ?? null);
   const [showAttendanceButton, setShowAttendanceButton] = useState(showButton);
   let isFocused = useIsFocused();
   const user = useSelector(state => state.auth.user);
-
   const [timer, setTimer] = useState(null);
-
   let attendanceData = item?.attendanceStatus?.data;
+  const { formattedTimeSlot } = formatSchedule(schedule ? schedule : item?.schedule);
 
-  const {
-    // formattedDate,
-    formattedTimeSlot,
-  } = formatSchedule(schedule ? schedule : item?.schedule);
   useEffect(() => {
+    if (isButtonDisabledFromProps !== undefined) {
+      setIsButtonDisabled(isButtonDisabledFromProps);
+      return;
+    }
     if (buttonDisableRequired) {
       if (item?.showButtonDisabled) {
         setIsButtonDisabled(item?.showButtonDisabled);
@@ -43,19 +44,16 @@ const ClassDetailBox = ({
         if (data) {
           if (
             data?.alreadyRequested ||
-            data?.usedExcuseAbsenceAllowance >=
-              data?.classDetail?.excusedAbsenceAllowance
+            data?.usedExcuseAbsenceAllowance >= data?.classDetail?.excusedAbsenceAllowance
           ) {
             setIsButtonDisabled(true);
           } else {
             setIsButtonDisabled(false);
           }
         }
-        // setIsButtonDisabled(false);
-        // setIsButtonDisabled(shouldDisableButton(item));
       }
     }
-  }, [item]);
+  }, [item, isButtonDisabledFromProps]);
 
   useEffect(() => {
     if (attendanceData) {

@@ -91,10 +91,12 @@ export const getCurrentDateInFormat = () => {
 export const shouldDisableButton = data => {
   // Set the current time in CST
   const currentTime = moments().tz('America/Chicago');
+  const classDay = data?.schedule?.day;
   const currentDay = currentTime.format('dddd');
 
-  if (currentDay !== data?.schedule?.day) {
-    return true;
+  // Only enable if today is the class day
+  if (currentDay !== classDay) {
+    return true; // Disabled
   }
 
   const [startHours, startMinutes] = data.schedule.startTime
@@ -110,7 +112,11 @@ export const shouldDisableButton = data => {
     .tz('America/Chicago')
     .set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
 
-  return currentTime.isAfter(endTime) || currentTime.isBefore(startTime);
+  // Enable only if current time is within the class time slot
+  if (currentTime.isSameOrAfter(startTime) && currentTime.isBefore(endTime)) {
+    return false; // Enabled
+  }
+  return true; // Disabled
 };
 
 export const sortClassesBySemesterAndTime = classes => {
@@ -178,9 +184,44 @@ export const sortClassesBySemesterAndTime = classes => {
     const daysOfWeek = [
       'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
     ];
+    const todayIndex = now.day();
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
     const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
+    // Move past days of week to the bottom (e.g., if today is Tuesday, Monday classes go after all upcoming days)
+    const aIsPastDay = aDayIndex < todayIndex ? 1 : 0;
+    const bIsPastDay = bDayIndex < todayIndex ? 1 : 0;
+    if (aIsPastDay !== bIsPastDay) return aIsPastDay - bIsPastDay;
     if (aDayIndex !== bDayIndex) return aDayIndex - bDayIndex;
+    // If today, apply special logic for time
+    if (aDayIndex === todayIndex && bDayIndex === todayIndex) {
+      // Both classes are for today
+      const getEndMoment = (cls) => {
+        const [endHour, endMinute] = (cls.schedule.endTime || '00:00').split(':').map(Number);
+        return now.clone().set({ hour: endHour, minute: endMinute, second: 0, millisecond: 0 });
+      };
+      const getStartMoment = (cls) => {
+        const [startHour, startMinute] = (cls.schedule.startTime || '00:00').split(':').map(Number);
+        return now.clone().set({ hour: startHour, minute: startMinute, second: 0, millisecond: 0 });
+      };
+      const aEnd = getEndMoment(a);
+      const bEnd = getEndMoment(b);
+      const aStart = getStartMoment(a);
+      const bStart = getStartMoment(b);
+      const nowTime = now;
+      // 1. Ongoing classes first, then upcoming, then past
+      const aIsOngoing = nowTime.isSameOrAfter(aStart) && nowTime.isBefore(aEnd);
+      const bIsOngoing = nowTime.isSameOrAfter(bStart) && nowTime.isBefore(bEnd);
+      if (aIsOngoing !== bIsOngoing) return bIsOngoing - aIsOngoing; // ongoing first
+      // 2. Upcoming classes (start time > now) before past classes (end time < now)
+      const aIsUpcoming = aStart.isAfter(nowTime);
+      const bIsUpcoming = bStart.isAfter(nowTime);
+      if (aIsUpcoming !== bIsUpcoming) return bIsUpcoming - aIsUpcoming; // upcoming before past
+      // 3. If both are in the same group, sort by start time ascending
+      if (aStart.isBefore(bStart)) return -1;
+      if (aStart.isAfter(bStart)) return 1;
+      return 0;
+    }
+    // Not today, sort by start time as before
     const aStart = a.schedule.startTime || '';
     const bStart = b.schedule.startTime || '';
     if (aStart < bStart) return -1;
@@ -305,4 +346,29 @@ export const filterAndSortClassesBySpecificDate = (classData, targetDate) => {
 export const getFormattedDate = date => {
   const formattedDate = moment(date).format('YYYY/MM/DD');
   return formattedDate;
+};
+
+// Returns an array of booleans: only the class currently ongoing (if any) is enabled, all others are disabled
+export const getAttendanceButtonDisabledStates = (classesForToday) => {
+  const currentTime = moments().tz('America/Chicago');
+  const currentDay = currentTime.format('dddd');
+  // Find the index of the first class for today whose time slot matches now
+  let activeIndex = -1;
+  classesForToday.forEach((cls, idx) => {
+    const classDay = cls?.schedule?.day;
+    if (classDay !== currentDay) return;
+    const [startHours, startMinutes] = cls.schedule.startTime.split(':').map(Number);
+    const [endHours, endMinutes] = cls.schedule.endTime.split(':').map(Number);
+    const startTime = moments().tz('America/Chicago').set({hour: startHours, minute: startMinutes, second: 0, millisecond: 0});
+    const endTime = moments().tz('America/Chicago').set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
+    if (activeIndex === -1 && currentTime.isBetween(startTime, endTime, undefined, '[)')) {
+      activeIndex = idx;
+    }
+  });
+  // Only the first matching class is enabled, all others are disabled
+  return classesForToday.map((cls, idx) => {
+    const classDay = cls?.schedule?.day;
+    if (classDay !== currentDay) return true; // Disabled if not today
+    return idx !== activeIndex; // Only the first active class is enabled
+  });
 };
