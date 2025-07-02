@@ -25,6 +25,7 @@ import {
   getCurrentDateInFormat,
   shouldDisableButton,
   sortClassesBySemesterAndTime,
+  getAttendanceButtonDisabledStates,
 } from '../../../utility/FormateDate';
 import {setRefreshClasses} from '../../../redux/Reducers/TempData';
 import {UtilityMethods} from '../../../utility';
@@ -48,6 +49,8 @@ const Home = ({navigation}) => {
         ? 'An email was sent to your institution admin to approve your account.'
         : 'Sorry we cannot find any registered classes for you.',
   });
+  const [attendanceButtonDisabledStates, setAttendanceButtonDisabledStates] =
+    useState([]);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -243,7 +246,13 @@ const Home = ({navigation}) => {
     }
     navigation.navigate(Routes.INSTRUCTOR_ATTENDENCE_SCREEN, {item});
   };
-  console.log(classes)
+
+  useEffect(() => {
+    // Update disabled states whenever classes.current changes
+    if (classes.current && Array.isArray(classes.current)) {
+      setAttendanceButtonDisabledStates(getAttendanceButtonDisabledStates(classes.current));
+    }
+  }, [classes.current]);
 
   return (
     <MainLayout loader={loader}>
@@ -278,15 +287,16 @@ const Home = ({navigation}) => {
           }
           data={classes.current}
           keyExtractor={(item, index) => index?.toString()}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <ClassDetailBox
               item={item}
               buttonText="Take Attendance"
               onPress={() => handleNavigation(item)}
+              buttonDisableRequired={true}
+              isButtonDisabled={attendanceButtonDisabledStates[index]}
             />
           )}
         />
-
         <LogoutModal
           visible={modalVisible}
           onConfirm={handleLogout}
