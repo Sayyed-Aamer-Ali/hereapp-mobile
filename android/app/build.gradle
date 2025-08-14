@@ -82,7 +82,7 @@ android {
         applicationId "com.hereappio"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 10
         versionName "1.0"
     }
     signingConfigs {
@@ -109,7 +109,9 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
-            minifyEnabled enableProguardInReleaseBuilds
+            // minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled true  // Changed from variable to direct 'true' for reliability
+            shrinkResources true  // Added to reduce APK size
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }

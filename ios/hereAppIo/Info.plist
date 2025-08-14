@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key></key>
-	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -28,6 +26,8 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>TSAppUsesNonExemptEncryption</key>
+	<string>NO</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -41,6 +41,11 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
+		<string>INStartCallIntent</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Here App requires access to your camera to upload a profile picture</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -50,7 +55,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Here App requires access to your location to mark your attendance</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Here App requires to access your microphone to upload a profile picture</string>
+	<string>Here App requires access to your microphone to upload a profile picture</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Here App would like to access your photo library to upload a profile picture</string>
 	<key>UIAppFonts</key>
