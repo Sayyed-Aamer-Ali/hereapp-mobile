@@ -66,7 +66,7 @@ const UserType = ({navigation}) => {
         <Button
           text={'Next'}
           onPress={() => {
-            onPressButton();
+            // onPressButton();
           }}
         />
       </View>
