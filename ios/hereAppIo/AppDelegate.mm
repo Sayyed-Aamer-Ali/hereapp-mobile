@@ -7,10 +7,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [FIRApp configure];
-  [GMSServices provideAPIKey:@"AIzaSyD88sGphWmdEHxfQPQtFei1vwc_7J1Gp1U"]; 
-  self.moduleName = @"hereAppIo";
   
+//  [GMSServices provideAPIKey:@"AIzaSyD88sGphWmdEHxfQPQtFei1vwc_7J1Gp1U"]; 
+  self.moduleName = @"hereAppIo";
+  [FIRApp configure];
+//
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};

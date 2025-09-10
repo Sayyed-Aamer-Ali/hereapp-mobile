@@ -357,7 +357,8 @@ class UtilityMethodsClass {
 
   generateAlphanumericOtp = () => {
     return Array.from({length: 3}, () => {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const characters = '0123456789';
       return characters.charAt(Math.floor(Math.random() * characters.length));
     }).join('');
   };
