@@ -39,10 +39,17 @@ const ImagePicker = ({filedInfo, editImage, setEditImage, onChnage}) => {
     UtilityMethods.selectImage(
       'camera',
       response => {
-        onChnage(response.path);
-        const imageData = formateData(response);
-        setEditImage?.(imageData);
+        if (response && response.uri) {
+          onChnage(response.uri);
+          const imageData = formateData(response);
+          setEditImage?.(imageData);
+        }
       },
+      // response => {
+      //   onChnage(response.path);
+      //   const imageData = formateData(response);
+      //   setEditImage?.(imageData);
+      // },
       false,
     );
   };
@@ -50,31 +57,49 @@ const ImagePicker = ({filedInfo, editImage, setEditImage, onChnage}) => {
   const openGallery = () => {
     UtilityMethods.selectImage(
       'gallery',
+      // response => {
+      //   onChnage(response.path);
+      //   const imageData = formateData(response);
+      //   setEditImage?.(imageData);
+      // },
       response => {
-        onChnage(response.path);
-        const imageData = formateData(response);
-        setEditImage?.(imageData);
+        if (response && response.uri) {
+          onChnage(response.uri);
+          const imageData = formateData(response);
+          setEditImage?.(imageData);
+        }
       },
       false,
     );
   };
 
   const formateData = response => {
-    return Platform.OS === 'android'
-      ? {
-          uri: response.path,
-          name: getFileName(response.path),
-          type: response.mime,
-        }
-      : {
-          uri: response.path,
-          name: getFileName(response.path),
-          type: response.mime,
-        };
+    // return Platform.OS === 'android'
+    //   ? {
+    //       uri: response.path,
+    //       name: getFileName(response.path),
+    //       type: response.mime,
+    //     }
+    //   : {
+    //       uri: response.path,
+    //       name: getFileName(response.path),
+    //       type: response.mime,
+    //     };
+    // CRITICAL: Change response.path to response.uri and pass the whole object to getFileName
+    return {
+      uri: response.uri,
+      name: getFileName(response),
+      type: response.type,
+    };
   };
 
-  const getFileName = filePath => {
-    return filePath.split('/').pop();
+  const getFileName = imageObject => {
+    // return filePath.split('/').pop();
+    const uri = imageObject.uri;
+    if (!uri) {
+      return 'unknown_file';
+    }
+    return uri.split('/').pop();
   };
 
   return (

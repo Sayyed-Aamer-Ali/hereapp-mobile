@@ -11,12 +11,13 @@ import {
 } from 'react-native';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {navigationRef} from '../App';
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
 import moment from 'moment';
 import momettimezone from 'moment-timezone';
 import Geolocation from '@react-native-community/geolocation';
 import AlertService from '../services/AlertService';
 import {AlertWithTwoButtons} from '../components';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 let screenWidth = Dimensions.get('window').width;
 let screenHeight = Dimensions.get('window').height;
@@ -287,32 +288,124 @@ class UtilityMethodsClass {
 
   selectImage = (selectType, callback, multiple) => {
     if (selectType === 'camera') {
-      ImagePicker.openCamera({
-        cropping: true,
-
-        compressImageQuality: 1,
-        compressImageMaxWidth: 1024,
-        compressImageMaxHeight: 1024,
-      })
-        .then(image => {
-          callback(image);
-        })
-        .catch(error => {});
+      launchCamera(
+        {
+          mediaType: 'photo',
+          quality: 1,
+          maxHeight: 1024,
+          maxWidth: 1024,
+        },
+        response => {
+          if (response.assets && response.assets.length > 0) {
+            const image = response.assets[0];
+            callback(image);
+          } else if (response.didCancel) {
+            console.log('User cancelled camera');
+          } else if (response.errorCode) {
+            console.log('Camera Error: ', response.errorMessage);
+          }
+        },
+      );
     } else {
-      ImagePicker.openPicker({
-        multiple: multiple,
-        cropping: true,
-        mediaType: 'photo',
-        compressImageQuality: 0.2,
-        compressImageMaxWidth: 1024,
-        compressImageMaxHeight: 1024,
-      })
-        .then(images => {
-          callback(images);
-        })
-        .catch(error => {});
+      launchImageLibrary(
+        {
+          mediaType: 'photo',
+          quality: 0.2,
+          maxHeight: 1024,
+          maxWidth: 1024,
+          selectionLimit: multiple ? 0 : 1,
+        },
+        response => {
+          if (response.assets && response.assets.length > 0) {
+            if (multiple) {
+              callback(response.assets);
+            } else {
+              callback(response.assets[0]);
+            }
+          } else if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.log('ImagePicker Error: ', response.errorMessage);
+          }
+        },
+      );
     }
   };
+
+  // selectImage = (selectType, callback, multiple) => {
+  //   if (selectType === 'camera') {
+  //     // This function handles the camera
+  //     launchCamera(
+  //       {
+  //         mediaType: 'photo',
+  //         quality: 1, // Full quality
+  //         maxHeight: 1024,
+  //         maxWidth: 1024,
+  //       },
+  //       response => {
+  //         if (response.didCancel) {
+  //           console.log('User cancelled camera');
+  //         } else if (response.errorCode) {
+  //           console.log('Camera Error: ', response.errorMessage);
+  //         } else if (response.assets && response.assets.length > 0) {
+  //           // The new library returns an array of assets. We take the first one.
+  //           const image = response.assets[0];
+  //           callback(image);
+  //         }
+  //       },
+  //     );
+  //   } else {
+  //     // This function handles the image/video picker and uses the Android Photo Picker
+  //     launchImageLibrary(
+  //       {
+  //         mediaType: 'photo',
+  //         quality: 0.2, // Compress for a smaller file size
+  //         maxHeight: 1024,
+  //         maxWidth: 1024,
+  //         selectionLimit: multiple ? 0 : 1, // 0 means no limit for multiple selection
+  //       },
+  //       response => {
+  //         if (response.didCancel) {
+  //           console.log('User cancelled image picker');
+  //         } else if (response.errorCode) {
+  //           console.log('ImagePicker Error: ', response.errorMessage);
+  //         } else if (response.assets && response.assets.length > 0) {
+  //           // The new library returns an array of assets
+  //           callback(response.assets);
+  //         }
+  //       },
+  //     );
+  //   }
+  // };
+
+  // selectImage = (selectType, callback, multiple) => {
+  //   if (selectType === 'camera') {
+  //     ImagePicker.openCamera({
+  //       cropping: true,
+
+  //       compressImageQuality: 1,
+  //       compressImageMaxWidth: 1024,
+  //       compressImageMaxHeight: 1024,
+  //     })
+  //       .then(image => {
+  //         callback(image);
+  //       })
+  //       .catch(error => {});
+  //   } else {
+  //     ImagePicker.openPicker({
+  //       multiple: multiple,
+  //       cropping: true,
+  //       mediaType: 'photo',
+  //       compressImageQuality: 0.2,
+  //       compressImageMaxWidth: 1024,
+  //       compressImageMaxHeight: 1024,
+  //     })
+  //       .then(images => {
+  //         callback(images);
+  //       })
+  //       .catch(error => {});
+  //   }
+  // };
 
   getUnixTimeStampOfUTCWithZeroTime = value => {
     let momentFormattedDate = moment(value).format('YYYY-MM-DDT00:00:00Z');

@@ -103,7 +103,7 @@ const Profile = ({navigation}) => {
     try {
       const formData = new FormData();
       formData.append('files', file);
-      let response = axiosWrapper(
+      let response = await axiosWrapper(
         'POST',
         API_URLS.UPLOAD_IMAGE,
         formData,

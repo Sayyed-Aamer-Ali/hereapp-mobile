@@ -142,7 +142,7 @@ const axiosWrapper = async (
       api: {
         method: method,
         url: url,
-        payload: data || {},
+        payload: !isFormData ? data : '' || {},
       },
       response: {
         status: response.status,
@@ -175,7 +175,7 @@ const axiosWrapper = async (
       api: {
         method: method,
         url: url,
-        payload: data || {},
+        payload: !isFormData ? data : '' || {},
       },
       response: {
         status: errorCode,
