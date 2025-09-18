@@ -2,10 +2,10 @@ import axios from 'axios';
 import AlertService from './AlertService';
 import store from '../redux/Store';
 import {resetAuth} from '../redux/Reducers/AuthReducer';
-import crashlytics from '@react-native-firebase/crashlytics';
-import analytics from '@react-native-firebase/analytics';
-import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
+// import crashlytics from '@react-native-firebase/crashlytics';
+// import analytics from '@react-native-firebase/analytics';
+// import firestore from '@react-native-firebase/firestore';
+// import moment from 'moment';
 
 const axiosInstance = axios.create({
   headers: {
@@ -70,15 +70,15 @@ const axiosWrapper = async (
     userName = user.firstName + ' ' + user.lastName;
   }
 
-  const currentDate = moment().tz('America/New_York').format('MM-DD-YYYY');
-  const timestamp = moment()
-    .tz('America/New_York')
-    .format('MM-DD-YYYY HH:mm:ss');
+  // const currentDate = moment().tz('America/New_York').format('MM-DD-YYYY');
+  // const timestamp = moment()
+  //   .tz('America/New_York')
+  //   .format('MM-DD-YYYY HH:mm:ss');
 
-  // Reference to the Firestore collection with the new hierarchy: logs/date/users/userId/api_logs
-  const userLogsCollection = firestore().collection(
-    `logs/${currentDate}/users/${userEmail || userId || 'Unknow'}/api_logs`,
-  );
+  // // Reference to the Firestore collection with the new hierarchy: logs/date/users/userId/api_logs
+  // const userLogsCollection = firestore().collection(
+  //   `logs/${currentDate}/users/${userEmail || userId || 'Unknow'}/api_logs`,
+  // );
 
   try {
     const config = {
@@ -100,33 +100,33 @@ const axiosWrapper = async (
 
     const response = await axiosInstance(config);
 
-    await analytics().logEvent('Here_App_Logs', {
-      api_url: url,
-      api_payload_data: JSON.stringify(data || {}),
-      http_method: method,
-      userId: userId || '',
-      userEmail: userEmail || '',
-      userName: userName || '',
-      http_status_code: response.status,
-      api_response_data: JSON.stringify(response.data || {}),
-    });
+    // await analytics().logEvent('Here_App_Logs', {
+    //   api_url: url,
+    //   api_payload_data: JSON.stringify(data || {}),
+    //   http_method: method,
+    //   userId: userId || '',
+    //   userEmail: userEmail || '',
+    //   userName: userName || '',
+    //   http_status_code: response.status,
+    //   api_response_data: JSON.stringify(response.data || {}),
+    // });
 
-    await userLogsCollection.add({
-      timestamp: timestamp,
-      status: 'success',
-      userId: userId || '',
-      userEmail: userEmail || '',
-      userName: userName || '',
-      api: {
-        method: method,
-        url: url,
-        payload: !isFormData ? data : '' || {},
-      },
-      response: {
-        status: response.status,
-        data: response.data || {},
-      },
-    });
+    // await userLogsCollection.add({
+    //   timestamp: timestamp,
+    //   status: 'success',
+    //   userId: userId || '',
+    //   userEmail: userEmail || '',
+    //   userName: userName || '',
+    //   api: {
+    //     method: method,
+    //     url: url,
+    //     payload: !isFormData ? data : '' || {},
+    //   },
+    //   response: {
+    //     status: response.status,
+    //     data: response.data || {},
+    //   },
+    // });
 
     if ((response?.data?.message || response?.message) && showToast) {
       AlertService.toastPrompt(response.data.message || response.message);
@@ -140,32 +140,32 @@ const axiosWrapper = async (
       error?.response?.data?.message ||
       error?.message;
 
-    await crashlytics().setAttributes({
-      api_url: url,
-      api_payload_data: JSON.stringify(data || {}),
-      userId: userId || '',
-      userEmail: userEmail || '',
-      userName: userName || '',
-      error_data: JSON.stringify(!error || {}),
-    });
-    crashlytics().recordError(error);
+    // await crashlytics().setAttributes({
+    //   api_url: url,
+    //   api_payload_data: JSON.stringify(data || {}),
+    //   userId: userId || '',
+    //   userEmail: userEmail || '',
+    //   userName: userName || '',
+    //   error_data: JSON.stringify(!error || {}),
+    // });
+    // crashlytics().recordError(error);
 
-    await userLogsCollection.add({
-      timestamp: timestamp,
-      status: 'failed',
-      userId: userId || '',
-      userEmail: userEmail || '',
-      userName: userName || '',
-      api: {
-        method: method,
-        url: url,
-        payload: !isFormData ? data : {},
-      },
-      response: {
-        status: error?.response?.status || 'N/A',
-        error_data: JSON.stringify(!error || {}),
-      },
-    });
+    // await userLogsCollection.add({
+    //   timestamp: timestamp,
+    //   status: 'failed',
+    //   userId: userId || '',
+    //   userEmail: userEmail || '',
+    //   userName: userName || '',
+    //   api: {
+    //     method: method,
+    //     url: url,
+    //     payload: !isFormData ? data : {},
+    //   },
+    //   response: {
+    //     status: error?.response?.status || 'N/A',
+    //     error_data: JSON.stringify(!error || {}),
+    //   },
+    // });
 
     if (msg && showToast) {
       AlertService.toastPrompt(msg, 'error');
