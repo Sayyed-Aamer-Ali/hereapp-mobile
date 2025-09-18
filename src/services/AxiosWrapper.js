@@ -59,28 +59,6 @@ const axiosWrapper = async (
   showToast = false,
   isObj = false,
 ) => {
-  // const today = new Date();
-  // const usFormatter = new Intl.DateTimeFormat('en-US', {
-  //   timeZone: 'America/New_York',
-  //   month: '2-digit',
-  //   day: '2-digit',
-  //   year: 'numeric',
-  // });
-  // const formattedDate = usFormatter.format(today);
-  // const currentDate = formattedDate.replace(/\//g, '-');
-
-  // const usTimestampFormatter = new Intl.DateTimeFormat('en-US', {
-  //   timeZone: 'America/New_York',
-  //   year: 'numeric',
-  //   month: '2-digit',
-  //   day: '2-digit',
-  //   hour: '2-digit',
-  //   minute: '2-digit',
-  //   second: '2-digit',
-  //   hourCycle: 'h23',
-  // });
-  // const timestamp = usTimestampFormatter.format(today);
-
   const state = store.getState();
   const user = state.auth.user;
   let userName = 'Unknown';
@@ -126,9 +104,9 @@ const axiosWrapper = async (
       api_url: url,
       api_payload_data: JSON.stringify(data || {}),
       http_method: method,
-      user_id: userId,
-      userEmail: userEmail,
-      userName: userName,
+      userId: userId || '',
+      userEmail: userEmail || '',
+      userName: userName || '',
       http_status_code: response.status,
       api_response_data: JSON.stringify(response.data || {}),
     });
@@ -136,9 +114,9 @@ const axiosWrapper = async (
     await userLogsCollection.add({
       timestamp: timestamp,
       status: 'success',
-      userId: userId,
-      userEmail: userEmail,
-      userName: userName,
+      userId: userId || '',
+      userEmail: userEmail || '',
+      userName: userName || '',
       api: {
         method: method,
         url: url,
@@ -156,41 +134,38 @@ const axiosWrapper = async (
 
     return response.data ? response.data : response;
   } catch (error) {
-    crashlytics().setAttributes({
+    let msg =
+      error?.response?.data?.validation?.body?.message ||
+      error?.response?.data?.desc ||
+      error?.response?.data?.message ||
+      error?.message;
+
+    await crashlytics().setAttributes({
       api_url: url,
       api_payload_data: JSON.stringify(data || {}),
-      userId: userId,
-      userEmail: userEmail,
-      userName: userName,
-      error_data: JSON.stringify(error?.response?.data || {}),
+      userId: userId || '',
+      userEmail: userEmail || '',
+      userName: userName || '',
+      error_data: JSON.stringify(!error || {}),
     });
     crashlytics().recordError(error);
 
     await userLogsCollection.add({
       timestamp: timestamp,
       status: 'failed',
-      userId: userId,
-      userEmail: userEmail,
-      userName: userName,
+      userId: userId || '',
+      userEmail: userEmail || '',
+      userName: userName || '',
       api: {
         method: method,
         url: url,
-        payload: !isFormData ? data : '' || {},
+        payload: !isFormData ? data : {},
       },
       response: {
-        status: errorCode,
-        data: error?.response?.data || {},
-      },
-      error: {
-        message: errorMessage,
+        status: error?.response?.status || 'N/A',
+        error_data: JSON.stringify(!error || {}),
       },
     });
-
-    let msg =
-      error?.response?.data?.validation?.body?.message ||
-      error?.response?.data?.desc ||
-      error?.response?.data?.message ||
-      error?.message;
 
     if (msg && showToast) {
       AlertService.toastPrompt(msg, 'error');
