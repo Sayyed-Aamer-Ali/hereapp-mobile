@@ -21,6 +21,8 @@ const Header = ({
   isLogout = false,
   logoutOnPress,
   rightIcons = true,
+  isHomeScreen = false,
+  onRefreshHomeScreen,
   ...props
 }) => {
   const navigation = useNavigation();
@@ -90,9 +92,18 @@ const Header = ({
 
       <View style={styles.rightIcons}>
         {rightIcons && (
-          <TouchableOpacity onPress={onPressNotificaiton}>
-            <NotificationsIcon notifications={totalNotification} />
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            {isHomeScreen && (
+              <TouchableOpacity
+                style={{paddingRight: 16, justifyContent: 'center'}}
+                onPress={onRefreshHomeScreen}>
+                <Icons.Refresh />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity onPress={onPressNotificaiton}>
+              <NotificationsIcon notifications={totalNotification} />
+            </TouchableOpacity>
+          </View>
         )}
         {isLogout && (
           <TouchableOpacity onPress={logoutOnPress}>

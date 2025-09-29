@@ -33,6 +33,7 @@ import AddressIcon from './AddressIcon.svg';
 import LogoutIcon from './logout.svg';
 import ClockIcon from './ClockIcon.svg';
 import Reload from './Reload.svg';
+import Refresh from './Refresh.svg';
 import ListIcon from './ListIcons.svg';
 import NotificationIcon from './NotificationIcon.svg';
 import ArrowBack from './arrow_back.svg';
@@ -80,6 +81,7 @@ export default Icons = {
   LogoutIcon,
   ClockIcon,
   Reload,
+  Refresh,
   ListIcon,
   NotificationIcon,
   ArrowBack,

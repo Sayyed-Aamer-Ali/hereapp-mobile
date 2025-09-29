@@ -136,25 +136,29 @@ export const sortClassesBySemesterAndTime = classes => {
   const currentSemOrder = semesterOrder.indexOf(currentSem);
 
   // Helper to extract semester info
-  const getSemesterInfo = (semesterStr) => {
+  const getSemesterInfo = semesterStr => {
     const match = semesterStr?.match(/(Spring|Summer|Fall)\s(\d{4})/);
-    if (!match) return { order: -1, year: 0, semester: '', str: semesterStr };
+    if (!match) return {order: -1, year: 0, semester: '', str: semesterStr};
     const semester = match[1];
     const year = parseInt(match[2], 10);
     const order = semesterOrder.indexOf(semester);
-    return { order, year, semester, str: semesterStr };
+    return {order, year, semester, str: semesterStr};
   };
 
   // Compare function for semester chronology
   const compareSemesterChrono = (a, b) => {
     if (a.year !== b.year) return a.year - b.year;
-    return semesterOrder.indexOf(a.semester) - semesterOrder.indexOf(b.semester);
+    return (
+      semesterOrder.indexOf(a.semester) - semesterOrder.indexOf(b.semester)
+    );
   };
 
   // Compare function for semester reverse chronology
   const compareSemesterReverse = (a, b) => {
     if (a.year !== b.year) return b.year - a.year;
-    return semesterOrder.indexOf(b.semester) - semesterOrder.indexOf(a.semester);
+    return (
+      semesterOrder.indexOf(b.semester) - semesterOrder.indexOf(a.semester)
+    );
   };
 
   // Split classes into future/current and past
@@ -182,7 +186,13 @@ export const sortClassesBySemesterAndTime = classes => {
     if (cmp !== 0) return cmp;
     // Within semester, sort by day and time
     const daysOfWeek = [
-      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
     ];
     const todayIndex = now.day();
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
@@ -195,13 +205,24 @@ export const sortClassesBySemesterAndTime = classes => {
     // If today, apply special logic for time
     if (aDayIndex === todayIndex && bDayIndex === todayIndex) {
       // Both classes are for today
-      const getEndMoment = (cls) => {
-        const [endHour, endMinute] = (cls.schedule.endTime || '00:00').split(':').map(Number);
-        return now.clone().set({ hour: endHour, minute: endMinute, second: 0, millisecond: 0 });
+      const getEndMoment = cls => {
+        const [endHour, endMinute] = (cls.schedule.endTime || '00:00')
+          .split(':')
+          .map(Number);
+        return now
+          .clone()
+          .set({hour: endHour, minute: endMinute, second: 0, millisecond: 0});
       };
-      const getStartMoment = (cls) => {
-        const [startHour, startMinute] = (cls.schedule.startTime || '00:00').split(':').map(Number);
-        return now.clone().set({ hour: startHour, minute: startMinute, second: 0, millisecond: 0 });
+      const getStartMoment = cls => {
+        const [startHour, startMinute] = (cls.schedule.startTime || '00:00')
+          .split(':')
+          .map(Number);
+        return now.clone().set({
+          hour: startHour,
+          minute: startMinute,
+          second: 0,
+          millisecond: 0,
+        });
       };
       const aEnd = getEndMoment(a);
       const bEnd = getEndMoment(b);
@@ -209,8 +230,10 @@ export const sortClassesBySemesterAndTime = classes => {
       const bStart = getStartMoment(b);
       const nowTime = now;
       // 1. Ongoing classes first, then upcoming, then past
-      const aIsOngoing = nowTime.isSameOrAfter(aStart) && nowTime.isBefore(aEnd);
-      const bIsOngoing = nowTime.isSameOrAfter(bStart) && nowTime.isBefore(bEnd);
+      const aIsOngoing =
+        nowTime.isSameOrAfter(aStart) && nowTime.isBefore(aEnd);
+      const bIsOngoing =
+        nowTime.isSameOrAfter(bStart) && nowTime.isBefore(bEnd);
       if (aIsOngoing !== bIsOngoing) return bIsOngoing - aIsOngoing; // ongoing first
       // 2. Upcoming classes (start time > now) before past classes (end time < now)
       const aIsUpcoming = aStart.isAfter(nowTime);
@@ -237,7 +260,13 @@ export const sortClassesBySemesterAndTime = classes => {
     if (cmp !== 0) return cmp;
     // Within semester, sort by day and time
     const daysOfWeek = [
-      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
     ];
     const aDayIndex = daysOfWeek.indexOf(a?.schedule?.day);
     const bDayIndex = daysOfWeek.indexOf(b?.schedule?.day);
@@ -349,7 +378,7 @@ export const getFormattedDate = date => {
 };
 
 // Returns an array of booleans: only the class currently ongoing (if any) is enabled, all others are disabled
-export const getAttendanceButtonDisabledStates = (classesForToday) => {
+export const getAttendanceButtonDisabledStates = classesForToday => {
   const currentTime = moments().tz('America/Chicago');
   const currentDay = currentTime.format('dddd');
   // Find the index of the first class for today whose time slot matches now
@@ -357,11 +386,20 @@ export const getAttendanceButtonDisabledStates = (classesForToday) => {
   classesForToday.forEach((cls, idx) => {
     const classDay = cls?.schedule?.day;
     if (classDay !== currentDay) return;
-    const [startHours, startMinutes] = cls.schedule.startTime.split(':').map(Number);
+    const [startHours, startMinutes] = cls.schedule.startTime
+      .split(':')
+      .map(Number);
     const [endHours, endMinutes] = cls.schedule.endTime.split(':').map(Number);
-    const startTime = moments().tz('America/Chicago').set({hour: startHours, minute: startMinutes, second: 0, millisecond: 0});
-    const endTime = moments().tz('America/Chicago').set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
-    if (activeIndex === -1 && currentTime.isBetween(startTime, endTime, undefined, '[)')) {
+    const startTime = moments()
+      .tz('America/Chicago')
+      .set({hour: startHours, minute: startMinutes, second: 0, millisecond: 0});
+    const endTime = moments()
+      .tz('America/Chicago')
+      .set({hour: endHours, minute: endMinutes, second: 0, millisecond: 0});
+    if (
+      activeIndex === -1 &&
+      currentTime.isBetween(startTime, endTime, undefined, '[)')
+    ) {
       activeIndex = idx;
     }
   });
@@ -371,4 +409,46 @@ export const getAttendanceButtonDisabledStates = (classesForToday) => {
     if (classDay !== currentDay) return true; // Disabled if not today
     return idx !== activeIndex; // Only the first active class is enabled
   });
+
+  //.....................................
+
+  // All active classes for today are enabled
+  // return classesForToday.map(cls => {
+  //   const classDay = cls?.schedule?.day;
+  //   const isClassToday = classDay === currentDay;
+
+  //   // Return false to enable the button if the class is for today
+  //   return !isClassToday;
+  // });
+
+  //.....................................
+
+  // return classesForToday.map(cls => {
+  //   const classDay = cls?.schedule?.day;
+  //   const [startHours, startMinutes] = cls?.schedule?.startTime
+  //     ?.split(':')
+  //     .map(Number) || [0, 0];
+  //   const [endHours, endMinutes] = cls?.schedule?.endTime
+  //     ?.split(':')
+  //     .map(Number) || [0, 0];
+
+  //   const startTime = moments().tz('America/Chicago').set({
+  //     hour: startHours,
+  //     minute: startMinutes,
+  //     second: 0,
+  //     millisecond: 0,
+  //   });
+  //   const endTime = moments().tz('America/Chicago').set({
+  //     hour: endHours,
+  //     minute: endMinutes,
+  //     second: 0,
+  //     millisecond: 0,
+  //   });
+
+  //   const isClassActive =
+  //     classDay === currentDay &&
+  //     currentTime.isBetween(startTime, endTime, undefined, '[)');
+
+  //   return !isClassActive;
+  // });
 };

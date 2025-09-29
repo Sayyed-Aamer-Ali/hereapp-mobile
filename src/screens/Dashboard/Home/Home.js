@@ -1,7 +1,13 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import DeviceInfo from 'react-native-device-info';
-import { Text, View, RefreshControl, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  Text,
+  View,
+  RefreshControl,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   ClassDetailBox,
   CustomFlatList,
@@ -11,10 +17,10 @@ import {
   ModifiedOTPInput,
 } from '../../../components';
 import styles from './styles';
-import { MyClasses } from '../../../Data/DummyData';
+import {MyClasses} from '../../../Data/DummyData';
 import Routes from '../../../navigation/Routes';
 import axiosWrapper from '../../../services/AxiosWrapper';
-import { API_URLS } from '../../../services/apiPathList';
+import {API_URLS} from '../../../services/apiPathList';
 import formatDate, {
   checkAttendanceStatus,
   getCurrentDateInFormat,
@@ -22,12 +28,13 @@ import formatDate, {
   sortClassesBySemesterAndTime,
   getAttendanceButtonDisabledStates,
 } from '../../../utility/FormateDate';
-import { setRefreshClassesForStudent } from '../../../redux/Reducers/TempData';
-import { UtilityMethods } from '../../../utility';
+import {setRefreshClassesForStudent} from '../../../redux/Reducers/TempData';
+import {UtilityMethods} from '../../../utility';
 import AlertService from '../../../services/AlertService';
-import { setFcmToken } from '../../../redux/Reducers/AuthReducer';
+import {setFcmToken} from '../../../redux/Reducers/AuthReducer';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -100,20 +107,22 @@ const Home = ({ navigation }) => {
         false,
       );
       classes.current = response.data;
-      console.log("URLL", `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`)
+      console.log(
+        'URLL',
+        `${API_URLS.GET_CLASSES}?date=${getCurrentDateInFormat()}`,
+      );
 
       if (!classes.current || classes.current.length === 0) {
         classes.current = [];
         return;
       }
-      console.log("CLASS", classes);
-
+      console.log('CLASS', classes);
 
       classes.current = sortClassesBySemesterAndTime(classes.current);
       // Process each class based on shouldDisableButton logic
       const classesWithAttendanceStatus = await Promise.all(
         classes.current.map(async classItem => {
-          console.log("classItem", classItem);
+          console.log('classItem', classItem);
           if (!shouldDisableButton(classItem)) {
             try {
               let data = {
@@ -174,13 +183,31 @@ const Home = ({ navigation }) => {
     }
   };
 
-  const handleAttendance = item => {
-    // console.log("asf",item)
+  const handleAttendance = async selectedItem => {
+    // console.log('@@@@ Handle Attendance Items', JSON.stringify(selectedItem));
+    // if (item?.alertMessage) {
+    //   Alert.alert('Alert', item?.alertMessage);
+    //   return;
+    // }
+
+    // setCheckOTPGenerated(true);
+    // setRefreshing(true);
+    await getInstructorClasses();
+    // setCheckOTPGenerated(false);
+
+    // console.log(`@@@@@ ${JSON.stringify(classes.current)}`);
+
+    const item = classes.current?.find(
+      classObj => classObj._id === selectedItem._id,
+    );
+
     if (item?.alertMessage) {
       Alert.alert('Alert', item?.alertMessage);
       return;
+    } else {
+      navigation.navigate(Routes.ATTENDANCE, {item});
     }
-    navigation.navigate(Routes.ATTENDANCE, {item});
+
     // navigation.navigate(Routes.ATTENDANCE, {item});
   };
 
@@ -190,19 +217,28 @@ const Home = ({ navigation }) => {
   }, []);
 
   // Add this state to store disabled states
-  const [attendanceButtonDisabledStates, setAttendanceButtonDisabledStates] = useState([]);
+  const [attendanceButtonDisabledStates, setAttendanceButtonDisabledStates] =
+    useState([]);
 
   useEffect(() => {
     // Update disabled states whenever classes.current changes
     if (classes.current && Array.isArray(classes.current)) {
-      setAttendanceButtonDisabledStates(getAttendanceButtonDisabledStates(classes.current));
+      setAttendanceButtonDisabledStates(
+        getAttendanceButtonDisabledStates(classes.current),
+      );
     }
   }, [classes.current]);
 
   return (
     <MainLayout loader={loader}>
       <View style={styles.cont}>
-        <Header title="Home" showBackButton={false} DrawerHeader={true} />
+        <Header
+          title="Home"
+          showBackButton={false}
+          DrawerHeader={true}
+          isHomeScreen={true}
+          onRefreshHomeScreen={onRefresh}
+        />
         <CustomFlatList
           listStyle={styles.listStyle}
           refreshControl={
